@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .nutri-button {
+    @apply px-6 py-3 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  
+  .nutri-button-primary {
+    @apply nutri-button bg-nutrient-primary text-nutrient-secondary hover:bg-gray-800 focus:ring-nutrient-primary;
+  }
+  
+  .nutri-button-secondary {
+    @apply nutri-button bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-400;
+  }
+  
+  .nutri-card {
+    @apply bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200;
+  }
+  
+  .nutri-card-header {
+    @apply bg-nutrient-primary text-nutrient-secondary px-6 py-4;
+  }
+  
+  .nutri-card-content {
+    @apply p-6;
+  }
+  
+  .nutri-card-footer {
+    @apply px-6 py-4 border-t border-gray-200 bg-gray-50;
+  }
+  
+  .nutri-editor {
+    @apply w-full bg-gray-50 border border-gray-300 rounded-lg;
+    min-height: 600px;
+  }
+  
+  .nutri-viewer {
+    @apply w-full h-editor bg-gray-50 border border-gray-300 rounded-lg;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .nutri-editor,
+    .nutri-viewer {
+      @apply h-96; /* Smaller height on mobile */
+    }
+  }
+  
+  .nutri-transition {
+    @apply flex items-center justify-center w-full h-screen bg-gray-50;
+  }
+  
+  .nutri-template-image {
+    @apply h-72 max-w-full object-contain mx-auto;
+  }
+}
+
+/* CodeMirror overrides */
+.CodeMirror {
+  @apply w-full border border-gray-300 rounded-lg;
+  height: 100% !important;
+  min-height: 600px;
+}
+
+.CodeMirror-scroll {
+  @apply min-h-full;
+}
+
+/* Ensure full height for main content */
+.main-content {
+  min-height: calc(100vh - 4rem); /* Subtract navigation height */
+}

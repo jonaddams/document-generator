@@ -1,0 +1,16 @@
+.next
+.claude
+/node_modules
+/.pnp
+.pnp.*
+package-lock.json
+yarn.lock
+dist
+.vscode
+.DS_Store
+.env
+.env.*
+public/web-sdk
+CLAUDE.md
+instructions.md
+.prettierrc

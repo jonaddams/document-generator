@@ -1,0 +1,35 @@
+{
+  "name": "document-generator-nextjs",
+  "version": "1.0.0",
+  "description": "Nutrient Document Generator - Next.js Application",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "postinstall": "echo 'Copying Web SDK files...' && shx mkdir -p ./public/web-sdk && shx cp -R ./node_modules/pspdfkit/dist/* ./public/web-sdk/"
+  },
+  "dependencies": {
+    "next": "^14.2.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "pspdfkit": "^2024.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.4.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "prettier": "^3.2.0",
+    "tailwindcss": "^3.4.0",
+    "postcss": "^8.4.0",
+    "autoprefixer": "^10.4.0",
+    "shx": "^0.3.4"
+  }
+}
