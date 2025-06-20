@@ -1,5 +1,6 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from 'tailwindcss';
+
+const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -7,17 +8,11 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        nutrient: {
-          primary: '#1a1414',
-          secondary: '#efebe7',
-          background: '#ffffff',
-        },
-      },
       height: {
         'editor': '64rem', // 1024px equivalent
       },
     },
   },
-  plugins: [],
 };
+
+export default config;

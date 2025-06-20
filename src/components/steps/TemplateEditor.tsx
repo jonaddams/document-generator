@@ -31,9 +31,37 @@ export default function TemplateEditor({
       return;
     }
 
+    // Wait for ref to be available with timeout
+    let attempts = 0;
+    const maxAttempts = 20;
+    while (!editorRef.current && attempts < maxAttempts) {
+      console.log(`🔄 Waiting for editor ref (attempt ${attempts + 1}/${maxAttempts})...`);
+      await new Promise(resolve => setTimeout(resolve, 100));
+      attempts++;
+    }
+
     if (!editorRef.current) {
-      console.warn('❌ No editor ref available');
+      console.warn('❌ No editor ref available after waiting');
       return;
+    }
+
+    // Additional validation: ensure the element is properly attached to DOM
+    if (!editorRef.current.isConnected) {
+      console.warn('❌ Editor ref element is not connected to DOM');
+      return;
+    }
+
+    // Ensure the element has proper dimensions
+    const rect = editorRef.current.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) {
+      console.warn('❌ Editor ref element has zero dimensions:', rect);
+      // Wait a bit more for layout to complete
+      await new Promise(resolve => setTimeout(resolve, 200));
+      const newRect = editorRef.current.getBoundingClientRect();
+      if (newRect.width === 0 || newRect.height === 0) {
+        console.warn('❌ Editor ref element still has zero dimensions after waiting:', newRect);
+        return;
+      }
     }
 
     if (!appState.template) {
@@ -81,42 +109,74 @@ export default function TemplateEditor({
         updateAppState({ templateDocument });
       }
 
-      // Initialize editor - re-check ref since it might have changed during async operations
-      const currentEditorRef = editorRef.current;
-      console.log('🔍 Re-checking editor ref before creation:', !!currentEditorRef);
+      // Initialize editor
+      console.log('🖊️ Creating template editor...');
       
-      if (docAuthSystem && templateDocument && currentEditorRef) {
-        console.log('🖊️ Creating template editor...');
-        const editor = await docAuthSystem.createEditor(currentEditorRef, {
+      // Clear any existing content in the container
+      const container = editorRef.current;
+      if (!container) {
+        console.warn('❌ Container became null during template editor initialization');
+        return;
+      }
+      
+      while (container.firstChild) {
+        const child = container.firstChild;
+        if (child.parentNode === container) {
+          container.removeChild(child);
+        } else {
+          // If parent relationship is broken, break the loop to prevent infinite loop
+          break;
+        }
+      }
+      
+      // Ensure container is properly styled and stable for the SDK
+      if (!container.id) {
+        container.id = `template-editor-${Date.now()}`;
+      }
+      container.style.position = 'relative';
+      container.style.overflow = 'hidden';
+      
+      // Wait a frame to ensure DOM is completely settled
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      
+      // Final validation before SDK call
+      if (!container.isConnected || !container.parentElement) {
+        console.warn('❌ Template container became disconnected before editor creation');
+        return;
+      }
+      
+      console.log('📝 Container cleared, creating editor with dimensions:', {
+        width: container.getBoundingClientRect().width,
+        height: container.getBoundingClientRect().height
+      });
+      
+      try {
+        const editor = await docAuthSystem.createEditor(container, {
           document: templateDocument,
         });
         console.log('✅ Template editor ready');
         updateAppState({ templateEditor: editor });
-      } else {
-        console.warn('❌ Cannot create editor - missing requirements:', {
-          hasDocAuthSystem: !!docAuthSystem,
-          hasTemplateDocument: !!templateDocument,
-          hasEditorRef: !!currentEditorRef
-        });
+      } catch (sdkError) {
+        console.error('❌ Document Authoring SDK error in template editor:', sdkError);
+        // Try to recover by retrying after a short delay
+        console.log('🔄 Retrying template SDK initialization after delay...');
+        await new Promise(resolve => setTimeout(resolve, 500));
         
-        // If ref is missing, try again after a short delay
-        if (!currentEditorRef && docAuthSystem && templateDocument) {
-          console.log('🔄 Ref missing, retrying in 200ms...');
-          setTimeout(() => {
-            const retryRef = editorRef.current;
-            console.log('🔄 Retry attempt - ref available:', !!retryRef);
-            if (retryRef && !appState.templateEditor) {
-              console.log('🖊️ Retrying template editor creation...');
-              docAuthSystem.createEditor(retryRef, {
-                document: templateDocument,
-              }).then(editor => {
-                console.log('✅ Template editor created on retry:', editor);
-                updateAppState({ templateEditor: editor });
-              }).catch(retryError => {
-                console.error('❌ Template editor retry failed:', retryError);
-              });
-            }
-          }, 200);
+        // Re-validate container is still available
+        if (container.isConnected && container.parentElement) {
+          try {
+            const editor = await docAuthSystem.createEditor(container, {
+              document: templateDocument,
+            });
+            console.log('✅ Template editor created successfully on retry:', editor);
+            updateAppState({ templateEditor: editor });
+          } catch (retryError) {
+            console.error('❌ Template Document Authoring SDK retry failed:', retryError);
+            throw retryError;
+          }
+        } else {
+          console.error('❌ Template container no longer available for retry');
+          throw sdkError;
         }
       }
     } catch (error) {
@@ -137,7 +197,10 @@ export default function TemplateEditor({
   }, [appState, updateAppState]);
 
   useEffect(() => {
-    initializeEditor();
+    // Only initialize if we have a template and don't already have an editor
+    if (appState.template && !appState.templateEditor && !isInitializing.current) {
+      initializeEditor();
+    }
 
     // Cleanup function
     return () => {
@@ -146,7 +209,7 @@ export default function TemplateEditor({
         updateAppState({ templateEditor: null });
       }
     };
-  }, []);
+  }, [appState.template, appState.templateEditor, initializeEditor, updateAppState]);
 
   const handleBackToSelection = useCallback(async () => {
     if (appState.templateEditor) {
@@ -169,17 +232,20 @@ export default function TemplateEditor({
         <h2 className="text-2xl font-bold">{STEP_TITLES['template-editor']}</h2>
       </div>
 
-      <div className="nutri-card-content flex-1 min-h-0 p-0">
-        {isLoading ? (
-          <div className="flex items-center justify-center h-full p-6">
+      <div className="nutri-card-content flex-1 min-h-0 p-0 relative">
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center z-10 bg-white bg-opacity-75">
             <div className="text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-nutrient-primary mx-auto mb-2"></div>
               <p className="text-gray-600">Loading template editor...</p>
             </div>
           </div>
-        ) : (
-          <div ref={editorRef} className="nutri-editor h-full m-6" />
         )}
+        <div 
+          ref={editorRef} 
+          className="nutri-editor h-full m-6"
+          style={{ minHeight: '500px', width: '100%' }}
+        />
       </div>
 
       <div className="nutri-card-footer flex-shrink-0 relative z-10">

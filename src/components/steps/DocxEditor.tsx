@@ -40,9 +40,37 @@ export default function DocxEditor({
       return;
     }
 
+    // Wait for ref to be available with timeout
+    let attempts = 0;
+    const maxAttempts = 20;
+    while (!editorRef.current && attempts < maxAttempts) {
+      console.log(`🔄 Waiting for DOCX editor ref (attempt ${attempts + 1}/${maxAttempts})...`);
+      await new Promise(resolve => setTimeout(resolve, 100));
+      attempts++;
+    }
+
     if (!editorRef.current) {
-      console.warn('❌ No editor ref available');
+      console.warn('❌ No DOCX editor ref available after waiting');
       return;
+    }
+
+    // Additional validation: ensure the element is properly attached to DOM
+    if (!editorRef.current.isConnected) {
+      console.warn('❌ DOCX editor ref element is not connected to DOM');
+      return;
+    }
+
+    // Ensure the element has proper dimensions
+    const rect = editorRef.current.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) {
+      console.warn('❌ DOCX editor ref element has zero dimensions:', rect);
+      // Wait a bit more for layout to complete
+      await new Promise(resolve => setTimeout(resolve, 200));
+      const newRect = editorRef.current.getBoundingClientRect();
+      if (newRect.width === 0 || newRect.height === 0) {
+        console.warn('❌ DOCX editor ref element still has zero dimensions after waiting:', newRect);
+        return;
+      }
     }
     
     if (!appState.templateDocument) {
@@ -95,46 +123,84 @@ export default function DocxEditor({
         console.log('✅ DOCX document already exists');
       }
 
-      // Initialize editor - re-check ref since it might have changed during async operations
-      const currentEditorRef = editorRef.current;
-      console.log('🔍 Re-checking editor ref before creation:', !!currentEditorRef);
+      // Initialize editor
+      console.log('🖊️ Creating Document Authoring editor for DOCX...');
       
-      if (docAuthSystem && docxDocument && currentEditorRef) {
-        console.log('🖊️ Creating Document Authoring editor for DOCX...');
-        console.log('Editor container:', currentEditorRef);
-        
-        const editor = await docAuthSystem.createEditor(currentEditorRef, {
-          document: docxDocument,
+      // Clear any existing content in the container
+      const container = editorRef.current;
+      if (!container) {
+        console.warn('❌ Container became null during initialization');
+        return;
+      }
+      
+      while (container.firstChild) {
+        const child = container.firstChild;
+        if (child.parentNode === container) {
+          container.removeChild(child);
+        } else {
+          // If parent relationship is broken, break the loop to prevent infinite loop
+          break;
+        }
+      }
+      
+      console.log('📝 Container cleared, creating DOCX editor with dimensions:', {
+        width: container.getBoundingClientRect().width,
+        height: container.getBoundingClientRect().height
+      });
+      
+      // Ensure container is still valid before creating editor
+      if (!container.isConnected) {
+        console.warn('❌ Container lost DOM connection before editor creation');
+        return;
+      }
+      
+      // Add a stable ID to the container for the SDK
+      if (!container.id) {
+        container.id = `docx-editor-${Date.now()}`;
+      }
+      
+      // Ensure container is properly styled and stable for the SDK
+      container.style.position = 'relative';
+      container.style.overflow = 'hidden';
+      
+      // Wait a frame to ensure DOM is completely settled
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      
+      // Final validation before SDK call
+      if (!container.isConnected || !container.parentElement) {
+        console.warn('❌ Container became disconnected before editor creation');
+        return;
+      }
+      
+      try {
+        const editor = await docAuthSystem!.createEditor(container, {
+          document: docxDocument!,
         });
         console.log('✅ DOCX editor created successfully:', editor);
         updateAppState({ docxEditor: editor });
         setIsInitialized(true);
-      } else {
-        console.warn('❌ Cannot create DOCX editor - missing requirements:', {
-          hasDocAuthSystem: !!docAuthSystem,
-          hasDocxDocument: !!docxDocument,
-          hasEditorRef: !!currentEditorRef
-        });
+      } catch (sdkError) {
+        console.error('❌ Document Authoring SDK error:', sdkError);
+        // Try to recover by retrying after a short delay
+        console.log('🔄 Retrying SDK initialization after delay...');
+        await new Promise(resolve => setTimeout(resolve, 500));
         
-        // If ref is missing, try again after a short delay
-        if (!currentEditorRef && docAuthSystem && docxDocument) {
-          console.log('🔄 Ref missing, retrying in 200ms...');
-          setTimeout(() => {
-            const retryRef = editorRef.current;
-            console.log('🔄 Retry attempt - ref available:', !!retryRef);
-            if (retryRef && !appState.docxEditor) {
-              console.log('🖊️ Retrying editor creation...');
-              docAuthSystem.createEditor(retryRef, {
-                document: docxDocument,
-              }).then(editor => {
-                console.log('✅ DOCX editor created on retry:', editor);
-                updateAppState({ docxEditor: editor });
-                setIsInitialized(true);
-              }).catch(retryError => {
-                console.error('❌ Retry failed:', retryError);
-              });
-            }
-          }, 200);
+        // Re-validate container is still available
+        if (container.isConnected && container.parentElement) {
+          try {
+            const editor = await docAuthSystem!.createEditor(container, {
+              document: docxDocument!,
+            });
+            console.log('✅ DOCX editor created successfully on retry:', editor);
+            updateAppState({ docxEditor: editor });
+            setIsInitialized(true);
+          } catch (retryError) {
+            console.error('❌ Document Authoring SDK retry failed:', retryError);
+            throw retryError;
+          }
+        } else {
+          console.error('❌ Container no longer available for retry');
+          throw sdkError;
         }
       }
     } catch (error) {
@@ -153,32 +219,39 @@ export default function DocxEditor({
       setIsLoading(false);
       console.log('🏁 DocxEditor initialization finished');
     }
-  }, [appState, updateAppState, isInitialized]);
+  }, [appState.templateDocument, appState.dataJson, appState.docAuthSystem, appState.docxDocument, appState.docxEditor, updateAppState, isInitialized]);
 
   useEffect(() => {
     console.log('🔄 DocxEditor useEffect mounted');
     
-    // Use setTimeout to ensure DOM is fully rendered
-    const timer = setTimeout(() => {
-      console.log('⏰ Timer triggered, checking DOM ref:', !!editorRef.current);
-      if (editorRef.current && !isInitialized && !isLoading) {
-        console.log('🚀 Starting DOCX editor initialization');
-        initializeDocxEditor();
-      }
-    }, 50);
+    // Only initialize if we have required data and no existing editor
+    if (appState.templateDocument && appState.dataJson && !appState.docxEditor && !isInitialized && !isLoading) {
+      // Use setTimeout to ensure DOM is fully rendered
+      const timer = setTimeout(() => {
+        console.log('⏰ Timer triggered, checking DOM ref:', !!editorRef.current);
+        if (editorRef.current) {
+          console.log('🚀 Starting DOCX editor initialization');
+          initializeDocxEditor();
+        }
+      }, 50);
+      
+      return () => {
+        console.log('🧹 DocxEditor cleanup called');
+        clearTimeout(timer);
+        if (appState.docxEditor) {
+          console.log('🗑️ Destroying existing DOCX editor');
+          appState.docxEditor.destroy();
+          updateAppState({ docxEditor: null });
+        }
+        setIsInitialized(false);
+      };
+    }
 
-    // Cleanup function
+    // Default cleanup for when no initialization occurs
     return () => {
-      console.log('🧹 DocxEditor cleanup called');
-      clearTimeout(timer);
-      if (appState.docxEditor) {
-        console.log('🗑️ Destroying existing DOCX editor');
-        appState.docxEditor.destroy();
-        updateAppState({ docxEditor: null });
-      }
-      setIsInitialized(false);
+      console.log('🧹 DocxEditor cleanup called (no-op)');
     };
-  }, []);
+  }, [appState.templateDocument, appState.dataJson, appState.docxEditor, initializeDocxEditor, isInitialized, isLoading, updateAppState]);
 
   const handleBackToData = useCallback(async () => {
     console.log('⬅️ Navigating back to data editor');

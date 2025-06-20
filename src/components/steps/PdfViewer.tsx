@@ -60,7 +60,7 @@ export default function PdfViewer({
         updateAppState({ pdfViewer: null });
       }
     };
-  }, []);
+  }, [appState.pdfViewer, initializePdfViewer, updateAppState]);
 
   const handleBackToDocx = useCallback(async () => {
     if (appState.pdfViewer && window.PSPDFKit) {

@@ -1,8 +1,12 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @layer base {
+  :root {
+    --nutrient-primary: #1a1414;
+    --nutrient-secondary: #efebe7;
+    --nutrient-background: #ffffff;
+  }
+  
   html {
     font-family: 'Inter', system-ui, sans-serif;
   }
@@ -14,11 +18,13 @@
   }
   
   .nutri-button-primary {
-    @apply nutri-button bg-nutrient-primary text-nutrient-secondary hover:bg-gray-800 focus:ring-nutrient-primary;
+    @apply px-6 py-3 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 text-white hover:bg-gray-800;
+    background-color: var(--nutrient-primary);
+    color: var(--nutrient-secondary);
   }
   
   .nutri-button-secondary {
-    @apply nutri-button bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-400;
+    @apply px-6 py-3 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-400;
   }
   
   .nutri-card {
@@ -26,7 +32,9 @@
   }
   
   .nutri-card-header {
-    @apply bg-nutrient-primary text-nutrient-secondary px-6 py-4;
+    @apply px-6 py-4;
+    background-color: var(--nutrient-primary);
+    color: var(--nutrient-secondary);
   }
   
   .nutri-card-content {
@@ -43,14 +51,15 @@
   }
   
   .nutri-viewer {
-    @apply w-full h-editor bg-gray-50 border border-gray-300 rounded-lg;
+    @apply w-full bg-gray-50 border border-gray-300 rounded-lg;
+    height: 64rem; /* 1024px equivalent */
   }
 
   /* Responsive adjustments */
   @media (max-width: 768px) {
     .nutri-editor,
     .nutri-viewer {
-      @apply h-96; /* Smaller height on mobile */
+      height: 24rem; /* Smaller height on mobile */
     }
   }
   

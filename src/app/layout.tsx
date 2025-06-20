@@ -50,6 +50,38 @@ export default function RootLayout({
           src="https://cdn.cloud.pspdfkit.com/pspdfkit-web@1.4.0/nutrient-viewer.js"
           strategy="beforeInteractive"
         />
+        
+        {/* Global error handler for SDK IntersectionObserver errors */}
+        <Script id="global-error-handler" strategy="beforeInteractive">
+          {`
+            // Suppress IntersectionObserver errors from Document Authoring SDK
+            window.addEventListener('error', function(event) {
+              const error = event.error;
+              const stack = error && error.stack ? error.stack.toString() : '';
+              
+              // Check if this is an IntersectionObserver error from the Document Authoring SDK
+              if (stack.includes('IntersectionObserver') && 
+                  stack.includes('document-authoring.cdn.nutrient.io')) {
+                console.warn('⚠️ Suppressed Document Authoring SDK IntersectionObserver error:', error);
+                event.preventDefault();
+                return false;
+              }
+            });
+            
+            // Also handle unhandled promise rejections
+            window.addEventListener('unhandledrejection', function(event) {
+              const reason = event.reason;
+              const stack = reason && reason.stack ? reason.stack.toString() : '';
+              
+              if (stack.includes('IntersectionObserver') && 
+                  stack.includes('document-authoring.cdn.nutrient.io')) {
+                console.warn('⚠️ Suppressed Document Authoring SDK IntersectionObserver promise rejection:', reason);
+                event.preventDefault();
+                return false;
+              }
+            });
+          `}
+        </Script>
 
         <nav className="bg-white shadow-sm border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

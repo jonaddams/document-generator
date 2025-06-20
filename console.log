@@ -1,0 +1,8 @@
+Error
+    at K (https://document-authoring.cdn.nutrient.io/2025/1/docauth-impl-7ed9e7e19f55803a.js:1:373)
+    at Object.update (https://document-authoring.cdn.nutrient.io/2025/1/docauth-impl-7ed9e7e19f55803a.js:782:19301)
+    at d (https://document-authoring.cdn.nutrient.io/2025/1/docauth-impl-7ed9e7e19f55803a.js:782:23427)
+    at https://document-authoring.cdn.nutrient.io/2025/1/docauth-impl-7ed9e7e19f55803a.js:782:23959
+    at i (https://document-authoring.cdn.nutrient.io/2025/1/docauth-impl-7ed9e7e19f55803a.js:3:21523)
+    at Object.emit (https://document-authoring.cdn.nutrient.io/2025/1/docauth-impl-7ed9e7e19f55803a.js:3:21670)
+    at IntersectionObserver.root (https://document-authoring.cdn.nutrient.io/2025/1/docauth-impl-7ed9e7e19f55803a.js:395:14357)
