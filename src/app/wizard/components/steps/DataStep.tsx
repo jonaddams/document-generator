@@ -223,57 +223,24 @@ export default function DataStep() {
     if (!state.dataEditor || !isValidJson()) return null;
     try {
       const data = JSON.parse(state.dataEditor.getValue());
+      // Only show the model data, ignore config
       return data.model || {};
     } catch {
       return null;
     }
   };
 
-  // Component for rendering human-friendly data preview
-  const DataPreview = ({ data, level = 0, keyName = '' }: { data: any; level?: number; keyName?: string }) => {
-    const [isExpanded, setIsExpanded] = useState(level < 2); // Auto-expand first 2 levels
-    const indent = level * 12; // Reduced spacing for better hierarchy
+  // Simple data preview component - just shows values, no labels
+  const DataPreview = ({ data, level = 0 }: { data: any; level?: number }) => {
+    const [isExpanded, setIsExpanded] = useState(level < 3); // Auto-expand first 3 levels
+    const indent = level * 12;
 
-    // Helper function to make field names more human-readable
-    const humanizeKey = (key: string): string => {
-      return key
-        .replace(/_/g, ' ')
-        .replace(/([A-Z])/g, ' $1')
-        .replace(/^./, str => str.toUpperCase())
-        .trim();
-    };
-
-    // Helper function to get a nice preview of array contents
-    const getArrayPreview = (arr: any[]): string => {
-      if (arr.length === 0) return 'No items';
-      
-      // Try to get meaningful preview from first item
-      const firstItem = arr[0];
-      if (typeof firstItem === 'string') {
-        return arr.slice(0, 3).join(', ') + (arr.length > 3 ? '...' : '');
-      }
-      
-      if (typeof firstItem === 'object' && firstItem !== null) {
-        // Look for common name fields
-        const nameFields = ['name', 'title', 'label', 'text', 'description'];
-        const nameField = nameFields.find(field => firstItem[field]);
-        if (nameField) {
-          const names = arr.slice(0, 3).map(item => item[nameField]).filter(Boolean);
-          return names.join(', ') + (arr.length > 3 ? ` and ${arr.length - 3} more` : '');
-        }
-      }
-      
-      return `${arr.length} item${arr.length !== 1 ? 's' : ''}`;
-    };
-
+    // Skip null/undefined
     if (data === null || data === undefined) {
-      return (
-        <div style={{ marginLeft: `${indent}px` }} className="text-gray-400 text-sm py-1">
-          <span className="italic">Not set</span>
-        </div>
-      );
+      return null;
     }
 
+    // For simple values, just show them
     if (typeof data === 'string' || typeof data === 'number' || typeof data === 'boolean') {
       return (
         <div style={{ marginLeft: `${indent}px` }} className="text-sm py-1">
@@ -282,107 +249,136 @@ export default function DataStep() {
       );
     }
 
+    // For arrays, show each item
     if (Array.isArray(data)) {
-      if (data.length === 0) {
-        return (
-          <div style={{ marginLeft: `${indent}px` }} className="text-sm py-1">
-            <span className="text-gray-400 italic">No items</span>
-          </div>
-        );
-      }
-
-      // For arrays, show each item directly without a summary line
+      if (data.length === 0) return null;
+      
       return (
         <div style={{ marginLeft: `${indent}px` }} className="py-1">
           {data.map((item, index) => (
             <DataPreview 
               key={index} 
               data={item} 
-              level={level} 
-              keyName=""
+              level={level}
             />
           ))}
         </div>
       );
     }
 
+    // For objects, find the best value to show as preview
     if (typeof data === 'object') {
       const keys = Object.keys(data);
-      if (keys.length === 0) {
-        return (
-          <div style={{ marginLeft: `${indent}px` }} className="text-sm py-1">
-            <span className="text-gray-400 italic">No details</span>
-          </div>
-        );
-      }
+      if (keys.length === 0) return null;
 
-      // For objects, show a preview of key values and track which field we used
-      const getObjectPreviewInfo = (): { preview: string; usedField: string | null } => {
-        const importantFields = ['name', 'title', 'label', 'text', 'description', 'type'];
-        const importantField = importantFields.find(field => data[field]);
-        if (importantField) {
-          return {
-            preview: String(data[importantField]),
-            usedField: importantField
-          };
-        }
-        
-        // If no important field found, but only one field exists, show its value
-        if (keys.length === 1) {
-          const singleKey = keys[0];
-          const value = data[singleKey];
-          if (typeof value === 'string' || typeof value === 'number') {
-            return {
-              preview: String(value),
-              usedField: singleKey
-            };
+      // Find the most meaningful value to display
+      const getDisplayValue = () => {
+        // Try common display fields first
+        const displayFields = ['name', 'title', 'label', 'text', 'description'];
+        for (const field of displayFields) {
+          if (data[field] && typeof data[field] === 'string') {
+            return data[field];
           }
         }
         
-        return {
-          preview: `${keys.length} detail${keys.length !== 1 ? 's' : ''}`,
-          usedField: null
-        };
+        // If only one field and it's a simple value, use it
+        if (keys.length === 1) {
+          const value = data[keys[0]];
+          if (typeof value === 'string' || typeof value === 'number') {
+            return String(value);
+          }
+        }
+        
+        // Otherwise, no good display value
+        return null;
       };
 
-      const { preview, usedField } = getObjectPreviewInfo();
+      const displayValue = getDisplayValue();
+      
+      // If we have nested data, show with dropdown
+      const hasNestedData = keys.some(key => {
+        const value = data[key];
+        return Array.isArray(value) || (typeof value === 'object' && value !== null);
+      });
 
+      if (displayValue && hasNestedData) {
+        return (
+          <div style={{ marginLeft: `${indent}px` }} className="py-1">
+            <div 
+              className="flex items-center cursor-pointer hover:bg-gray-100 rounded px-2 py-1 -mx-2 transition-colors" 
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              <div className={`w-4 h-4 mr-2 flex items-center justify-center transition-transform ${isExpanded ? 'rotate-90' : 'rotate-0'}`}>
+                <svg className="w-3 h-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 111.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <span className="text-gray-900">{displayValue}</span>
+            </div>
+            {isExpanded && (
+              <div className="mt-1 border-l-2 border-gray-200 ml-2">
+                {keys.map(key => {
+                  const value = data[key];
+                  // Skip the field we used for display and non-nested data
+                  if (key === getDisplayField(data) || (!Array.isArray(value) && typeof value !== 'object')) {
+                    return null;
+                  }
+                  return (
+                    <DataPreview 
+                      key={key} 
+                      data={value} 
+                      level={level + 1}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      }
+      
+      // If we have a display value but no nested data, just show it
+      if (displayValue) {
+        return (
+          <div style={{ marginLeft: `${indent}px` }} className="text-sm py-1">
+            <span className="text-gray-900">{displayValue}</span>
+          </div>
+        );
+      }
+      
+      // If no display value, show all nested data directly
       return (
         <div style={{ marginLeft: `${indent}px` }} className="py-1">
-          <div 
-            className="flex items-center cursor-pointer hover:bg-gray-100 rounded px-2 py-1 -mx-2 transition-colors" 
-            onClick={() => setIsExpanded(!isExpanded)}
-          >
-            <div className={`w-4 h-4 mr-2 flex items-center justify-center transition-transform ${isExpanded ? 'rotate-90' : 'rotate-0'}`}>
-              <svg className="w-3 h-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 111.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <span className="text-gray-600">{preview}</span>
-          </div>
-          {isExpanded && (
-            <div className="mt-2 border-l-2 border-gray-200 ml-2">
-              {keys
-                .filter(key => key !== usedField) // Skip the field we already showed in preview
-                .map(key => (
-                  <DataPreview 
-                    key={key} 
-                    data={data[key]} 
-                    level={level + 1} 
-                    keyName={key}
-                  />
-                ))}
-            </div>
-          )}
+          {keys.map(key => (
+            <DataPreview 
+              key={key} 
+              data={data[key]} 
+              level={level}
+            />
+          ))}
         </div>
       );
     }
 
-    return (
-      <div style={{ marginLeft: `${indent}px` }} className="text-gray-500 text-sm py-1">
-        {String(data)}
-      </div>
-    );
+    return null;
+  };
+
+  // Helper function to get which field was used for display
+  const getDisplayField = (obj: any) => {
+    const displayFields = ['name', 'title', 'label', 'text', 'description'];
+    for (const field of displayFields) {
+      if (obj[field] && typeof obj[field] === 'string') {
+        return field;
+      }
+    }
+    const keys = Object.keys(obj);
+    if (keys.length === 1) {
+      const value = obj[keys[0]];
+      if (typeof value === 'string' || typeof value === 'number') {
+        return keys[0];
+      }
+    }
+    return null;
   };
 
   return (
