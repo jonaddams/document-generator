@@ -23,6 +23,7 @@ export interface Document {
 // PSPDFKit Types
 export interface PSPDFKitViewer {
   exportPDF: () => Promise<ArrayBuffer>;
+  unload: () => Promise<void>;
 }
 
 export interface PSPDFKit {
@@ -30,7 +31,7 @@ export interface PSPDFKit {
     options: { document: ArrayBuffer },
     data: TemplateData
   ) => Promise<ArrayBuffer>;
-  unload: (viewer: PSPDFKitViewer) => Promise<void>;
+  unload: (container: HTMLElement | PSPDFKitViewer) => Promise<void>;
 }
 
 // CodeMirror interface for type safety
@@ -54,6 +55,7 @@ export interface AppState {
   docxDocument: Document | null;
   docxEditor: Editor | null;
   pdfViewer: PSPDFKitViewer | null;
+  pdfDocument: ArrayBuffer | null;
 }
 
 // Template Types

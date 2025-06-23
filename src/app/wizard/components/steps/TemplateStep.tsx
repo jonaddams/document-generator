@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useWizard } from '../../context/WizardContext';
 import StepNavigation from '../StepNavigation';
@@ -32,10 +32,31 @@ const templates = [
 export default function TemplateStep() {
   const { state, dispatch, nextStep, completeCurrentStep } = useWizard();
   const [selectedTemplate, setSelectedTemplate] = useState<string>(state.template || '');
+  
+  console.log('🔄 TemplateStep render:', {
+    stateTemplate: state.template,
+    selectedTemplate,
+    currentStep: state.currentStep
+  });
+  
+  // Add useEffect to sync local state with global state when navigating back
+  React.useEffect(() => {
+    console.log('🔄 TemplateStep useEffect - syncing selectedTemplate with state.template:', state.template);
+    setSelectedTemplate(state.template || '');
+  }, [state.template]);
+
+  // console.log('🎯 TemplateStep rendered:', {
+  //   selectedTemplate,
+  //   stateTemplate: state.template,
+  //   canProceed: !!selectedTemplate
+  // });
 
   const handleTemplateSelect = (templateId: string) => {
+    console.log('🎯 TemplateStep: User selected template:', templateId);
+    console.log('🎯 TemplateStep: Previous state.template was:', state.template);
     setSelectedTemplate(templateId);
     dispatch({ type: 'SET_TEMPLATE', payload: templateId });
+    console.log('🎯 TemplateStep: Dispatched SET_TEMPLATE with:', templateId);
   };
 
   const handleNext = () => {
@@ -46,7 +67,7 @@ export default function TemplateStep() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="h-full flex flex-col space-y-6">
       {/* Header */}
       <div className="text-center">
         <h2 className="text-3xl font-bold text-gray-900 mb-2">

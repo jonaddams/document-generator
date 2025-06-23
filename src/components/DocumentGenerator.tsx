@@ -24,6 +24,7 @@ const initialAppState: AppState = {
   docxDocument: null,
   docxEditor: null,
   pdfViewer: null,
+  pdfDocument: null,
 };
 
 export default function DocumentGenerator() {

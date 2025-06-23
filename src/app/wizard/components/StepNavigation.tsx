@@ -41,7 +41,7 @@ export default function StepNavigation({
   const isAtLastStep = state.currentStep === state.steps.length - 1;
 
   return (
-    <div className="flex items-center justify-between pt-8 border-t border-gray-200 mt-8">
+    <div className="flex items-center justify-between pt-4 border-t border-gray-200 mt-4">
       <div>
         {!isFirstStep && (
           <button

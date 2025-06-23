@@ -16,9 +16,15 @@ export interface WizardState {
   steps: WizardStep[];
   template: string | null;
   templateDocument: any;
+  templateEditor: any;
+  customTemplateBinary: ArrayBuffer | null;
   dataJson: any;
+  dataEditor: any;
   docxDocument: any;
+  docxEditor: any;
   pdfDocument: any;
+  pdfViewer: any;
+  docAuthSystem: any;
   isLoading: boolean;
   error: string | null;
 }
@@ -27,9 +33,15 @@ type WizardAction =
   | { type: 'SET_CURRENT_STEP'; payload: number }
   | { type: 'SET_TEMPLATE'; payload: string }
   | { type: 'SET_TEMPLATE_DOCUMENT'; payload: any }
+  | { type: 'SET_TEMPLATE_EDITOR'; payload: any }
+  | { type: 'SET_CUSTOM_TEMPLATE_BINARY'; payload: ArrayBuffer | null }
   | { type: 'SET_DATA_JSON'; payload: any }
+  | { type: 'SET_DATA_EDITOR'; payload: any }
   | { type: 'SET_DOCX_DOCUMENT'; payload: any }
+  | { type: 'SET_DOCX_EDITOR'; payload: any }
   | { type: 'SET_PDF_DOCUMENT'; payload: any }
+  | { type: 'SET_PDF_VIEWER'; payload: any }
+  | { type: 'SET_DOC_AUTH_SYSTEM'; payload: any }
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: string | null }
   | { type: 'COMPLETE_STEP'; payload: number }
@@ -79,15 +91,29 @@ const initialState: WizardState = {
   steps: initialSteps,
   template: null,
   templateDocument: null,
+  templateEditor: null,
+  customTemplateBinary: null,
   dataJson: null,
+  dataEditor: null,
   docxDocument: null,
+  docxEditor: null,
   pdfDocument: null,
+  pdfViewer: null,
+  docAuthSystem: null,
   isLoading: false,
   error: null,
 };
 
 // Reducer
 function wizardReducer(state: WizardState, action: WizardAction): WizardState {
+  console.log('🏪 WizardReducer:', action.type, 'payload:', 'payload' in action ? action.payload : 'none');
+  console.log('🏪 Current state before action:', {
+    template: state.template,
+    currentStep: state.currentStep,
+    templateEditor: !!state.templateEditor,
+    templateDocument: !!state.templateDocument
+  });
+  
   switch (action.type) {
     case 'SET_CURRENT_STEP':
       return {
@@ -105,14 +131,32 @@ function wizardReducer(state: WizardState, action: WizardAction): WizardState {
     case 'SET_TEMPLATE_DOCUMENT':
       return { ...state, templateDocument: action.payload };
 
+    case 'SET_TEMPLATE_EDITOR':
+      return { ...state, templateEditor: action.payload };
+
+    case 'SET_CUSTOM_TEMPLATE_BINARY':
+      return { ...state, customTemplateBinary: action.payload };
+
     case 'SET_DATA_JSON':
       return { ...state, dataJson: action.payload };
+
+    case 'SET_DATA_EDITOR':
+      return { ...state, dataEditor: action.payload };
 
     case 'SET_DOCX_DOCUMENT':
       return { ...state, docxDocument: action.payload };
 
+    case 'SET_DOCX_EDITOR':
+      return { ...state, docxEditor: action.payload };
+
     case 'SET_PDF_DOCUMENT':
       return { ...state, pdfDocument: action.payload };
+
+    case 'SET_PDF_VIEWER':
+      return { ...state, pdfViewer: action.payload };
+
+    case 'SET_DOC_AUTH_SYSTEM':
+      return { ...state, docAuthSystem: action.payload };
 
     case 'SET_LOADING':
       return { ...state, isLoading: action.payload };
@@ -154,12 +198,14 @@ export function WizardProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(wizardReducer, initialState);
 
   const nextStep = () => {
+    console.log('➡️ nextStep called, current step:', state.currentStep);
     if (state.currentStep < state.steps.length - 1) {
       dispatch({ type: 'SET_CURRENT_STEP', payload: state.currentStep + 1 });
     }
   };
 
   const prevStep = () => {
+    console.log('⬅️ prevStep called, current step:', state.currentStep, 'template:', state.template);
     if (state.currentStep > 0) {
       dispatch({ type: 'SET_CURRENT_STEP', payload: state.currentStep - 1 });
     }

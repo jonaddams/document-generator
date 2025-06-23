@@ -28,8 +28,10 @@ export default function StepContent() {
   };
 
   return (
-    <div className="px-8 py-6 min-h-[600px]">
-      {renderStep()}
+    <div className="px-8 py-6 flex-1 flex flex-col min-h-[600px]">
+      <div className="flex-1 flex flex-col">
+        {renderStep()}
+      </div>
     </div>
   );
 }

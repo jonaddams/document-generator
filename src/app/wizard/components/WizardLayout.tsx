@@ -11,7 +11,7 @@ export default function WizardLayout({ children }: WizardLayoutProps) {
   const { state } = useWizard();
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-xl overflow-hidden h-full flex flex-col">
       {/* Loading Overlay */}
       {state.isLoading && (
         <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50 rounded-2xl">
@@ -39,7 +39,7 @@ export default function WizardLayout({ children }: WizardLayoutProps) {
       )}
 
       {/* Main Content */}
-      <div className="relative">
+      <div className="relative flex-1 flex flex-col">
         {children}
       </div>
     </div>
