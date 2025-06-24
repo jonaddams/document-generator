@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { useWizard } from '../../context/WizardContext';
 import StepNavigation from '../StepNavigation';
@@ -32,6 +32,10 @@ const templates = [
 export default function TemplateStep() {
   const { state, dispatch, nextStep, completeCurrentStep } = useWizard();
   const [selectedTemplate, setSelectedTemplate] = useState<string>(state.template || '');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isDragOver, setIsDragOver] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   console.log('🔄 TemplateStep render:', {
     stateTemplate: state.template,
@@ -56,8 +60,104 @@ export default function TemplateStep() {
     console.log('🎯 TemplateStep: Previous state.template was:', state.template);
     setSelectedTemplate(templateId);
     dispatch({ type: 'SET_TEMPLATE', payload: templateId });
+    // Clear custom file if selecting predefined template
+    if (templateId !== 'custom') {
+      setSelectedFile(null);
+      dispatch({ type: 'SET_CUSTOM_TEMPLATE_BINARY', payload: null });
+    }
+    setUploadError(null);
     console.log('🎯 TemplateStep: Dispatched SET_TEMPLATE with:', templateId);
   };
+
+  // File validation helper
+  const validateFile = (file: File): string | null => {
+    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+    
+    // Check file size
+    if (file.size > MAX_FILE_SIZE) {
+      return 'File size must be less than 10MB';
+    }
+    
+    // Check file type
+    if (file.type !== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+      return 'Please select a valid DOCX file';
+    }
+    
+    return null;
+  };
+
+  // Convert file to ArrayBuffer
+  const readFileAsArrayBuffer = (file: File): Promise<ArrayBuffer> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result instanceof ArrayBuffer) {
+          resolve(reader.result);
+        } else {
+          reject(new Error('Failed to read file as ArrayBuffer'));
+        }
+      };
+      reader.onerror = () => reject(reader.error);
+      reader.readAsArrayBuffer(file);
+    });
+  };
+
+  // Handle file selection
+  const handleFileSelect = useCallback(async (file: File) => {
+    setUploadError(null);
+    
+    const validationError = validateFile(file);
+    if (validationError) {
+      setUploadError(validationError);
+      return;
+    }
+
+    try {
+      const arrayBuffer = await readFileAsArrayBuffer(file);
+      setSelectedFile(file);
+      setSelectedTemplate('custom');
+      dispatch({ type: 'SET_TEMPLATE', payload: 'custom' });
+      dispatch({ type: 'SET_CUSTOM_TEMPLATE_BINARY', payload: arrayBuffer });
+      console.log('🎯 TemplateStep: Custom template uploaded successfully');
+    } catch (error) {
+      console.error('Error reading file:', error);
+      setUploadError('Failed to read the selected file');
+    }
+  }, [dispatch]);
+
+  // Handle file input change
+  const handleFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      handleFileSelect(file);
+    }
+  }, [handleFileSelect]);
+
+  // Handle drag and drop
+  const handleDragOver = useCallback((event: React.DragEvent) => {
+    event.preventDefault();
+    setIsDragOver(true);
+  }, []);
+
+  const handleDragLeave = useCallback((event: React.DragEvent) => {
+    event.preventDefault();
+    setIsDragOver(false);
+  }, []);
+
+  const handleDrop = useCallback((event: React.DragEvent) => {
+    event.preventDefault();
+    setIsDragOver(false);
+    
+    const files = event.dataTransfer.files;
+    if (files.length > 0) {
+      handleFileSelect(files[0]);
+    }
+  }, [handleFileSelect]);
+
+  // Handle click to upload
+  const handleUploadClick = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
 
   const handleNext = () => {
     if (selectedTemplate) {
@@ -125,20 +225,102 @@ export default function TemplateStep() {
       </div>
 
       {/* Custom Upload Option */}
-      <div className="mt-8 p-6 border-2 border-dashed border-gray-300 rounded-xl text-center hover:border-gray-400 transition-colors">
-        <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+      <div 
+        className={`relative mt-8 p-6 border-2 border-dashed rounded-xl text-center transition-all duration-200 cursor-pointer ${
+          isDragOver 
+            ? 'border-indigo-400 bg-indigo-50' 
+            : selectedTemplate === 'custom'
+            ? 'border-indigo-500 bg-indigo-50'
+            : 'border-gray-300 hover:border-gray-400'
+        }`}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        onClick={handleUploadClick}
+      >
+        {/* Hidden file input */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".docx"
+          onChange={handleFileChange}
+          className="hidden"
+        />
+        
+        <svg className={`mx-auto h-12 w-12 ${isDragOver || selectedTemplate === 'custom' ? 'text-indigo-500' : 'text-gray-400'}`} stroke="currentColor" fill="none" viewBox="0 0 48 48">
           <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
         </svg>
+        
         <div className="mt-4">
-          <h3 className="text-lg font-medium text-gray-900">Upload Custom Template</h3>
-          <p className="text-sm text-gray-600 mt-1">
-            Have your own DOCX template? Upload it to get started
-          </p>
-          <button className="mt-3 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            Choose File
-          </button>
+          <h3 className={`text-lg font-medium ${selectedTemplate === 'custom' ? 'text-indigo-900' : 'text-gray-900'}`}>
+            Upload Custom Template
+          </h3>
+          
+          {selectedFile ? (
+            <div className="mt-2">
+              <p className="text-sm text-indigo-600 font-medium">
+                ✓ {selectedFile.name}
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+              </p>
+            </div>
+          ) : (
+            <p className="text-sm text-gray-600 mt-1">
+              {isDragOver 
+                ? 'Drop your DOCX file here' 
+                : 'Drag and drop your DOCX file here, or click to browse'
+              }
+            </p>
+          )}
+          
+          {!selectedFile && (
+            <button 
+              type="button"
+              className={`mt-3 inline-flex items-center px-4 py-2 border shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer ${
+                isDragOver 
+                  ? 'border-indigo-300 text-indigo-700 bg-indigo-50 hover:bg-indigo-100'
+                  : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
+              }`}
+            >
+              Choose File
+            </button>
+          )}
+          
+          {selectedFile && (
+            <button 
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedFile(null);
+                setSelectedTemplate('');
+                dispatch({ type: 'SET_TEMPLATE', payload: '' });
+                dispatch({ type: 'SET_CUSTOM_TEMPLATE_BINARY', payload: null });
+                setUploadError(null);
+              }}
+              className="mt-3 inline-flex items-center px-3 py-1 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer"
+            >
+              Remove File
+            </button>
+          )}
         </div>
+
+        {/* Selection Indicator */}
+        {selectedTemplate === 'custom' && selectedFile && (
+          <div className="absolute top-3 right-3 w-6 h-6 bg-indigo-500 rounded-full flex items-center justify-center">
+            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+            </svg>
+          </div>
+        )}
       </div>
+
+      {/* Error Message */}
+      {uploadError && (
+        <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-md">
+          <p className="text-sm text-red-600">{uploadError}</p>
+        </div>
+      )}
 
       <StepNavigation
         canProceed={!!selectedTemplate}
