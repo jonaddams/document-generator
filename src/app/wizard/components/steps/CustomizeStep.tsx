@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useCallback } from 'react';
 import { useWizard } from '../../context/WizardContext';
 import StepNavigation from '../StepNavigation';
 import { fetchTemplateJson } from '@/lib/utils';
+import { TemplateType } from '@/types';
 
 export default function CustomizeStep() {
   const { state, dispatch, completeCurrentStep, nextStep } = useWizard();
@@ -121,7 +122,7 @@ export default function CustomizeStep() {
         console.log('✅ Custom DOCX template imported');
       } else {
         try {
-          const templateJson = await fetchTemplateJson(state.template as any);
+          const templateJson = await fetchTemplateJson(state.template as TemplateType);
           templateDocument = await docAuthSystem.loadDocument(templateJson);
           console.log('✅ DocJSON template loaded for:', state.template);
         } catch (fetchError) {

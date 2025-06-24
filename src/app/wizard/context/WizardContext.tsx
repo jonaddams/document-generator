@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
+import { DocAuthSystem, DocAuthDocument, DocAuthEditor, CodeMirrorInstance, PSPDFKitViewer, TemplateData } from '@/types';
 
 // Types
 export interface WizardStep {
@@ -15,16 +16,16 @@ export interface WizardState {
   currentStep: number;
   steps: WizardStep[];
   template: string | null;
-  templateDocument: any;
-  templateEditor: any;
+  templateDocument: DocAuthDocument | null;
+  templateEditor: DocAuthEditor | null;
   customTemplateBinary: ArrayBuffer | null;
-  dataJson: any;
-  dataEditor: any;
-  docxDocument: any;
-  docxEditor: any;
-  pdfDocument: any;
-  pdfViewer: any;
-  docAuthSystem: any;
+  dataJson: TemplateData | null;
+  dataEditor: CodeMirrorInstance | null;
+  docxDocument: DocAuthDocument | null;
+  docxEditor: DocAuthEditor | null;
+  pdfDocument: ArrayBuffer | null;
+  pdfViewer: PSPDFKitViewer | null;
+  docAuthSystem: DocAuthSystem | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -32,16 +33,16 @@ export interface WizardState {
 type WizardAction =
   | { type: 'SET_CURRENT_STEP'; payload: number }
   | { type: 'SET_TEMPLATE'; payload: string }
-  | { type: 'SET_TEMPLATE_DOCUMENT'; payload: any }
-  | { type: 'SET_TEMPLATE_EDITOR'; payload: any }
+  | { type: 'SET_TEMPLATE_DOCUMENT'; payload: DocAuthDocument | null }
+  | { type: 'SET_TEMPLATE_EDITOR'; payload: DocAuthEditor | null }
   | { type: 'SET_CUSTOM_TEMPLATE_BINARY'; payload: ArrayBuffer | null }
-  | { type: 'SET_DATA_JSON'; payload: any }
-  | { type: 'SET_DATA_EDITOR'; payload: any }
-  | { type: 'SET_DOCX_DOCUMENT'; payload: any }
-  | { type: 'SET_DOCX_EDITOR'; payload: any }
-  | { type: 'SET_PDF_DOCUMENT'; payload: any }
-  | { type: 'SET_PDF_VIEWER'; payload: any }
-  | { type: 'SET_DOC_AUTH_SYSTEM'; payload: any }
+  | { type: 'SET_DATA_JSON'; payload: TemplateData | null }
+  | { type: 'SET_DATA_EDITOR'; payload: CodeMirrorInstance | null }
+  | { type: 'SET_DOCX_DOCUMENT'; payload: DocAuthDocument | null }
+  | { type: 'SET_DOCX_EDITOR'; payload: DocAuthEditor | null }
+  | { type: 'SET_PDF_DOCUMENT'; payload: ArrayBuffer | null }
+  | { type: 'SET_PDF_VIEWER'; payload: PSPDFKitViewer | null }
+  | { type: 'SET_DOC_AUTH_SYSTEM'; payload: DocAuthSystem | null }
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: string | null }
   | { type: 'COMPLETE_STEP'; payload: number }

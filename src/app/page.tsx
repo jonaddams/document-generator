@@ -1,37 +1,122 @@
-import DocumentGenerator from '@/components/DocumentGenerator';
-import Link from 'next/link';
+'use client';
 
-export default function Home() {
+import { useState, useEffect } from 'react';
+import { WizardProvider } from './wizard/context/WizardContext';
+import WizardLayout from './wizard/components/WizardLayout';
+import StepIndicator from './wizard/components/StepIndicator';
+import StepContent from './wizard/components/StepContent';
+
+export default function HomePage() {
+  // Simplified global error handler for SDK IntersectionObserver errors
+  useEffect(() => {
+    const handleSDKError = (event: ErrorEvent) => {
+      const filename = event.filename || '';
+      const message = event.message || '';
+      const stack = event.error?.stack || '';
+      
+      // Handle SDK errors more aggressively
+      if (filename.includes('docauth-impl') || 
+          filename.includes('document-authoring.cdn.nutrient.io') ||
+          stack.includes('docauth-impl') ||
+          stack.includes('document-authoring.cdn.nutrient.io') ||
+          message.includes('IntersectionObserver')) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        return false;
+      }
+    };
+
+    // Simplified promise rejection handler
+    const handleSDKRejection = (event: PromiseRejectionEvent) => {
+      const stack = event.reason?.stack || '';
+      
+      if (stack.includes('docauth-impl') || 
+          stack.includes('document-authoring.cdn.nutrient.io')) {
+        console.warn('🛡️ SDK promise rejection suppressed');
+        event.preventDefault();
+        return false;
+      }
+    };
+
+    // Override console.error only for SDK errors to completely suppress them
+    const originalConsoleError = console.error;
+    console.error = (...args: unknown[]) => {
+      const message = args.join(' ');
+      const errorArg = args.find((arg): arg is Error => 
+        arg instanceof Error || (typeof arg === 'object' && arg !== null && 'stack' in arg)
+      );
+      const stack = errorArg?.stack || '';
+      
+      // Suppress SDK errors completely
+      if (message.includes('docauth-impl') || 
+          stack.includes('docauth-impl') ||
+          stack.includes('document-authoring.cdn.nutrient.io')) {
+        return; // Completely silent
+      }
+      
+      originalConsoleError.apply(console, args);
+    };
+
+    // Monkey-patch IntersectionObserver with complete error suppression
+    const OriginalIntersectionObserver = window.IntersectionObserver;
+    if (OriginalIntersectionObserver) {
+      window.IntersectionObserver = class extends OriginalIntersectionObserver {
+        constructor(callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {
+          const safeCallback: IntersectionObserverCallback = (entries, observer) => {
+            try {
+              callback(entries, observer);
+            } catch (error) {
+              // Completely silent - no logging at all
+              return;
+            }
+          };
+          super(safeCallback, options);
+        }
+      };
+    }
+
+    // Minimal event handlers only
+    window.addEventListener('error', handleSDKError);
+    window.addEventListener('unhandledrejection', handleSDKRejection);
+    
+    return () => {
+      window.removeEventListener('error', handleSDKError);
+      window.removeEventListener('unhandledrejection', handleSDKRejection);
+      // Restore original IntersectionObserver
+      if (OriginalIntersectionObserver) {
+        window.IntersectionObserver = OriginalIntersectionObserver;
+      }
+      // Restore original console.error
+      console.error = originalConsoleError;
+    };
+  }, []);
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* New Wizard Option */}
-      <div className="mb-8 p-6 bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-200 rounded-xl">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">
-              ✨ Try the New Modern Wizard
-            </h2>
-            <p className="text-gray-600">
-              Experience our redesigned document generator with a cleaner interface and better user experience.
-            </p>
+    <WizardProvider>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
+        <div className="container mx-auto px-4 py-8 flex-1 flex flex-col">
+          <div className="max-w-7xl mx-auto flex-1 flex flex-col">
+            {/* Header */}
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                Document Generator
+              </h1>
+              <p className="text-lg text-gray-600">
+                Create professional documents in just a few steps
+              </p>
+            </div>
+
+            {/* Main Wizard */}
+            <div className="flex-1">
+              <WizardLayout>
+                <StepIndicator />
+                <StepContent />
+              </WizardLayout>
+            </div>
           </div>
-          <Link
-            href="/wizard"
-            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
-          >
-            Launch Wizard
-            <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
-          </Link>
         </div>
       </div>
-
-      {/* Original App */}
-      <div className="border-t border-gray-200 pt-8">
-        <h2 className="text-lg font-medium text-gray-700 mb-4">Original Document Generator (Reference)</h2>
-        <DocumentGenerator />
-      </div>
-    </div>
+    </WizardProvider>
   );
 }

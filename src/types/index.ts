@@ -1,21 +1,21 @@
 // Document Authoring SDK Types
 export interface DocAuthSystem {
-  createEditor: (element: HTMLElement, options: { document: Document }) => Promise<Editor>;
-  createViewer: (element: HTMLElement, options: { document: Document }) => Promise<Viewer>;
-  importDOCX: (buffer: ArrayBuffer) => Promise<Document>;
-  loadDocument: (docJson: any) => Promise<Document>;
+  createEditor: (element: HTMLElement, options: { document: DocAuthDocument }) => Promise<DocAuthEditor>;
+  createViewer: (element: HTMLElement, options: { document: DocAuthDocument }) => Promise<DocAuthViewer>;
+  importDOCX: (buffer: ArrayBuffer) => Promise<DocAuthDocument>;
+  loadDocument: (docJson: unknown) => Promise<DocAuthDocument>;
 }
 
-export interface Editor {
+export interface DocAuthEditor {
   destroy: () => void;
 }
 
-export interface Viewer {
+export interface DocAuthViewer {
   destroy: () => void;
   exportPDF: () => Promise<ArrayBuffer>;
 }
 
-export interface Document {
+export interface DocAuthDocument {
   exportDOCX: () => Promise<ArrayBuffer>;
   exportPDF: () => Promise<ArrayBuffer>;
 }
@@ -48,12 +48,12 @@ export interface AppState {
   docAuthSystem: DocAuthSystem | null;
   template: TemplateType | null;
   customTemplateBinary: ArrayBuffer | null;
-  templateDocument: Document | null;
-  templateEditor: Editor | null;
+  templateDocument: DocAuthDocument | null;
+  templateEditor: DocAuthEditor | null;
   dataJson: TemplateData | null;
   dataEditor: CodeMirrorInstance | null;
-  docxDocument: Document | null;
-  docxEditor: Editor | null;
+  docxDocument: DocAuthDocument | null;
+  docxEditor: DocAuthEditor | null;
   pdfViewer: PSPDFKitViewer | null;
   pdfDocument: ArrayBuffer | null;
 }
@@ -70,7 +70,7 @@ export interface TemplateConfig {
 
 export interface TemplateData {
   config: TemplateConfig;
-  model: Record<string, any>;
+  model: Record<string, unknown>;
 }
 
 // Step Management Types
@@ -94,7 +94,7 @@ export interface TemplateOption {
 export interface AppError {
   message: string;
   step?: StepType;
-  details?: any;
+  details?: unknown;
 }
 
 // Component Props Types
@@ -125,6 +125,8 @@ declare global {
         document: ArrayBuffer;
       }) => Promise<PSPDFKitViewer>;
     };
-    CodeMirror: any;
+    CodeMirror: {
+      fromTextArea: (textarea: HTMLTextAreaElement, options: Record<string, unknown>) => CodeMirrorInstance;
+    };
   }
 }

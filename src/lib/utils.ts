@@ -8,7 +8,7 @@ export const fetchTemplateData = async (template: TemplateType): Promise<Templat
   return response.json();
 };
 
-export const fetchTemplateJson = async (template: TemplateType): Promise<any> => {
+export const fetchTemplateJson = async (template: TemplateType): Promise<unknown> => {
   const response = await fetch(`/templates/${template}.json`);
   if (!response.ok) {
     throw new Error(`Failed to fetch template JSON for ${template}`);

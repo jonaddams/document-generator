@@ -5,6 +5,7 @@ import { useWizard } from '../../context/WizardContext';
 import StepNavigation from '../StepNavigation';
 import { fetchTemplateData, validateJsonString } from '@/lib/utils';
 import { transformJsonToReadable } from '@/lib/jsonTransformer';
+import { TemplateType, CodeMirrorInstance, TemplateData } from '@/types';
 
 export default function DataStep() {
   const { state, dispatch, completeCurrentStep, nextStep } = useWizard();
@@ -70,14 +71,19 @@ export default function DataStep() {
       console.log('📄 Fetching template data for:', state.template);
       let dataJson;
       try {
-        dataJson = await fetchTemplateData(state.template as any);
+        dataJson = await fetchTemplateData(state.template as TemplateType);
         console.log('✅ Template data fetched for:', state.template, dataJson);
         dispatch({ type: 'SET_DATA_JSON', payload: dataJson });
       } catch (fetchError) {
         console.error('❌ Error fetching template data:', fetchError);
         // Use default data structure if fetch fails
         dataJson = {
-          config: { delimiter: ['{{', '}}'] },
+          config: { 
+            delimiter: { 
+              start: '{{', 
+              end: '}}' 
+            } 
+          },
           model: {
             companyName: 'Acme Corporation',
             invoiceNumber: 'INV-001',
@@ -130,7 +136,7 @@ export default function DataStep() {
       console.log('✅ CodeMirror data editor created');
 
       // Validate JSON on change
-      editor.on('change', (instance: any) => {
+      editor.on('change', (instance: CodeMirrorInstance) => {
         const value = instance.getValue();
         if (validateJsonString(value)) {
           setJsonError(null);
@@ -257,7 +263,7 @@ export default function DataStep() {
   };
 
   // Read file as text and parse JSON
-  const readJsonFile = (file: File): Promise<any> => {
+  const readJsonFile = (file: File): Promise<unknown> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
@@ -289,7 +295,7 @@ export default function DataStep() {
       // Update the CodeMirror editor with the uploaded JSON
       if (state.dataEditor) {
         state.dataEditor.setValue(JSON.stringify(jsonData, null, 2));
-        dispatch({ type: 'SET_DATA_JSON', payload: jsonData });
+        dispatch({ type: 'SET_DATA_JSON', payload: jsonData as TemplateData });
       }
       
       setUploadedJsonFile(file);
@@ -353,7 +359,7 @@ export default function DataStep() {
     keyName = '', 
     options = { indentSize: 16, maxArrayPreview: 3, autoExpandLevels: 2 } 
   }: { 
-    data: any; 
+    data: unknown; 
     level?: number; 
     keyName?: string; 
     options?: TransformOptions;
@@ -379,7 +385,7 @@ export default function DataStep() {
     };
 
     // Get smart preview for arrays and objects
-    const getSmartPreview = (value: any): string => {
+    const getSmartPreview = (value: unknown): string => {
       if (Array.isArray(value)) {
         if (value.length === 0) return 'empty';
         
@@ -392,7 +398,8 @@ export default function DataStep() {
             // Look for a representative field
             const displayFields = ['name', 'title', 'label', 'text', 'description'];
             for (const field of displayFields) {
-              if (item[field]) return String(item[field]);
+              const itemObj = item as Record<string, unknown>;
+              if (itemObj[field]) return String(itemObj[field]);
             }
             return 'object';
           }
@@ -405,13 +412,14 @@ export default function DataStep() {
       }
 
       if (typeof value === 'object' && value !== null) {
-        const keys = Object.keys(value);
+        const keys = Object.keys(value as Record<string, unknown>);
         if (keys.length === 0) return 'empty';
         
         // Try to find a representative value
         const displayFields = ['name', 'title', 'label', 'text', 'description'];
         for (const field of displayFields) {
-          if (value[field]) return String(value[field]);
+          const valueObj = value as Record<string, unknown>;
+          if (valueObj[field]) return String(valueObj[field]);
         }
         
         return `${keys.length} field${keys.length !== 1 ? 's' : ''}`;
@@ -498,7 +506,7 @@ export default function DataStep() {
 
     // Handle objects
     if (typeof data === 'object') {
-      const keys = Object.keys(data);
+      const keys = Object.keys(data as Record<string, unknown>);
       if (keys.length === 0) {
         if (!keyName) return null;
         return (
@@ -511,8 +519,9 @@ export default function DataStep() {
       }
 
       const preview = getSmartPreview(data);
+      const dataObj = data as Record<string, unknown>;
       const hasNestedData = keys.some(key => 
-        Array.isArray(data[key]) || (typeof data[key] === 'object' && data[key] !== null)
+        Array.isArray(dataObj[key]) || (typeof dataObj[key] === 'object' && dataObj[key] !== null)
       );
 
       return (
@@ -541,7 +550,7 @@ export default function DataStep() {
               {keys.map(key => (
                 <DataPreview 
                   key={key} 
-                  data={data[key]} 
+                  data={dataObj[key]} 
                   level={keyName ? level + 1 : level}
                   keyName={key}
                   options={options}

@@ -1,6 +1,6 @@
 interface JsonData {
-  config?: any;
-  model: Record<string, any>;
+  config?: unknown;
+  model: Record<string, unknown>;
 }
 
 export function transformJsonToReadable(jsonData: JsonData): string {
@@ -14,7 +14,7 @@ export function transformJsonToReadable(jsonData: JsonData): string {
   return result.join('\n');
 }
 
-function processObject(obj: Record<string, any>, result: string[], indentLevel: number): void {
+function processObject(obj: Record<string, unknown>, result: string[], indentLevel: number): void {
   const indent = '    '.repeat(indentLevel); // 4 spaces per level
 
   for (const [key, value] of Object.entries(obj)) {
@@ -29,9 +29,9 @@ function processObject(obj: Record<string, any>, result: string[], indentLevel: 
         result.push(`${indent}▼ ${titleCaseKey}:`);
         processArray(value, result, indentLevel + 1);
       }
-    } else if (typeof value === 'object') {
+    } else if (typeof value === 'object' && value !== null) {
       result.push(`${indent}▼ ${titleCaseKey}:`);
-      processObject(value, result, indentLevel + 1);
+      processObject(value as Record<string, unknown>, result, indentLevel + 1);
     } else {
       // Simple value (string, number, boolean)
       result.push(`${indent}• ${titleCaseKey}: ${value}`);
@@ -39,7 +39,7 @@ function processObject(obj: Record<string, any>, result: string[], indentLevel: 
   }
 }
 
-function processArray(arr: any[], result: string[], indentLevel: number): void {
+function processArray(arr: unknown[], result: string[], indentLevel: number): void {
   const indent = '    '.repeat(indentLevel);
 
   arr.forEach((item, index) => {
@@ -48,9 +48,9 @@ function processArray(arr: any[], result: string[], indentLevel: number): void {
     } else if (Array.isArray(item)) {
       result.push(`${indent}▼ [${index}]:`);
       processArray(item, result, indentLevel + 1);
-    } else if (typeof item === 'object') {
+    } else if (typeof item === 'object' && item !== null) {
       result.push(`${indent}▼ [${index}]:`);
-      processObject(item, result, indentLevel + 1);
+      processObject(item as Record<string, unknown>, result, indentLevel + 1);
     } else {
       result.push(`${indent}• [${index}]: ${item}`);
     }
