@@ -17,11 +17,11 @@ export default function StepIndicator() {
                 onClick={() => goToStep(stepIdx)}
                 className={`group relative w-10 h-10 flex items-center justify-center rounded-full transition-colors duration-200 ${
                   step.isComplete
-                    ? 'bg-indigo-600 hover:bg-indigo-700'
+                    ? 'bg-indigo-600 hover:bg-indigo-700 cursor-pointer'
                     : step.isActive
-                    ? 'border-2 border-indigo-600 bg-white'
-                    : 'border-2 border-gray-300 bg-white hover:border-gray-400'
-                }`}
+                    ? 'border-2 border-indigo-600 bg-white cursor-pointer'
+                    : 'border-2 border-gray-300 bg-white hover:border-gray-400 cursor-pointer'
+                } ${(!step.isComplete && !step.isActive) ? 'cursor-not-allowed opacity-50' : ''}`}
                 disabled={!step.isComplete && !step.isActive}
               >
                 <span className="sr-only">{step.title}</span>

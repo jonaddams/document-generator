@@ -274,9 +274,9 @@ export default function CustomizeStep() {
   };
 
   return (
-    <div className="h-full flex flex-col space-y-6">
+    <div className="h-full flex flex-col gap-6">
       {/* Header */}
-      <div className="text-center">
+      <div className="text-center flex-shrink-0">
         <h2 className="text-3xl font-bold text-gray-900 mb-2">
           Customize Your Template
         </h2>
@@ -286,7 +286,7 @@ export default function CustomizeStep() {
       </div>
 
       {/* Template Editor Container */}
-      <div className="bg-white border border-gray-200 rounded-xl flex-1 relative overflow-hidden" style={{ minHeight: '500px' }}>
+      <div className="bg-white border border-gray-200 rounded-xl flex-1 relative overflow-hidden" style={{ minHeight: 'calc(100vh - 400px)' }}>
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center z-10 bg-white bg-opacity-75">
             <div className="text-center">
@@ -318,18 +318,20 @@ export default function CustomizeStep() {
           ref={editorRef} 
           className="w-full h-full"
           style={{ 
+            height: 'calc(100vh - 400px)',
             minHeight: '500px',
-            height: '100%',
             position: 'relative',
             overflow: 'hidden'
           }}
         />
       </div>
 
-      <StepNavigation
-        canProceed={!!state.template && !!state.templateEditor && !isLoading}
-        onNext={handleNext}
-      />
+      <div className="flex-shrink-0">
+        <StepNavigation
+          canProceed={!!state.template && !!state.templateEditor && !isLoading}
+          onNext={handleNext}
+        />
+      </div>
     </div>
   );
 }
