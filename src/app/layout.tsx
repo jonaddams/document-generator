@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
 import Image from 'next/image';
+import Link from 'next/link';
 import '@/styles/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -86,7 +87,7 @@ export default function RootLayout({
         <nav className="bg-white shadow-sm border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
-              <div className="flex items-center space-x-3">
+              <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity cursor-pointer">
                 <Image
                   src="/assets/logo-nutrient-docs.svg"
                   alt="Nutrient Logo"
@@ -98,7 +99,7 @@ export default function RootLayout({
                 <h1 className="text-xl font-semibold text-gray-900">
                   Document Generator Demo
                 </h1>
-              </div>
+              </Link>
             </div>
           </div>
         </nav>

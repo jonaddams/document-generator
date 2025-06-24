@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useRef, useCallback, useState } from 'react';
-import Link from 'next/link';
 import { useWizard } from '../../context/WizardContext';
 import { downloadPdf } from '@/lib/utils';
 
@@ -384,7 +383,7 @@ export default function DownloadStep() {
       </div>
 
       {/* Actions */}
-      <div className="flex justify-center space-x-4 pt-8 border-t border-gray-200">
+      <div className="flex justify-center pt-8 border-t border-gray-200">
         <button
           onClick={handleReset}
           className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer"
@@ -394,12 +393,6 @@ export default function DownloadStep() {
           </svg>
           Create Another Document
         </button>
-        <Link
-          href="/"
-          className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer"
-        >
-          Back to Home
-        </Link>
       </div>
     </div>
   );
