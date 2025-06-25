@@ -170,6 +170,9 @@ export default function DownloadStep() {
   const isInitializingRef = useRef(false);
   
   useEffect(() => {
+    // Capture the current ref value
+    const currentViewer = viewerRef.current;
+    
     // Only initialize if we have PDF document and no existing viewer and not already initializing
     if (state.pdfDocument && !state.pdfViewer && !isInitializingRef.current) {
       isInitializingRef.current = true;
@@ -180,16 +183,16 @@ export default function DownloadStep() {
 
     // Cleanup function
     return () => {
-      if (viewerRef.current && window.PSPDFKit && state.pdfViewer) {
+      if (currentViewer && window.PSPDFKit && state.pdfViewer) {
         console.log('🧹 Cleaning up PDF viewer');
         try {
-          window.PSPDFKit.unload(viewerRef.current);
+          window.PSPDFKit.unload(currentViewer);
         } catch (error) {
           console.warn('⚠️ PDF viewer cleanup error:', error);
         }
       }
     };
-  }, [state.pdfDocument]); // Removed problematic dependencies to prevent infinite loop
+  }, [state.pdfDocument, state.pdfViewer, initializePdfViewer]); // Include all dependencies
 
   const handleDownloadPdf = useCallback(async () => {
     if (!state.pdfDocument) {

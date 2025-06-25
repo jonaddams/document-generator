@@ -40,6 +40,19 @@ export default function PreviewStep() {
       return;
     }
 
+    // Clean up any existing editor first
+    if (state.docxEditor) {
+      console.log('🧹 Cleaning up existing DOCX editor before initializing new one');
+      try {
+        state.docxEditor.destroy();
+      } catch (error) {
+        console.warn('⚠️ DOCX editor cleanup error:', error);
+      }
+      dispatch({ type: 'SET_DOCX_EDITOR', payload: null });
+      dispatch({ type: 'SET_DOCX_DOCUMENT', payload: null });
+      dispatch({ type: 'SET_PDF_DOCUMENT', payload: null });
+    }
+
     // Wait for ref to be available
     let attempts = 0;
     const maxAttempts = 20;
@@ -238,8 +251,9 @@ export default function PreviewStep() {
       setIsLoading(false);
       isInitializing.current = false;
     }
-  }, [state.templateDocument, state.dataJson, state.docAuthSystem, state.docxDocument, dispatch]);
+  }, [state, dispatch]);
 
+  // Effect to handle template/data changes and editor initialization
   useEffect(() => {
     console.log('📍 PreviewStep useEffect triggered with:', {
       templateDocument: !!state.templateDocument,
@@ -247,21 +261,8 @@ export default function PreviewStep() {
       docxEditor: !!state.docxEditor
     });
     
-    // Always clean up existing editor and downstream state first
-    if (state.docxEditor) {
-      console.log('🧹 Cleaning up existing DOCX editor');
-      try {
-        state.docxEditor.destroy();
-      } catch (error) {
-        console.warn('⚠️ DOCX editor cleanup error:', error);
-      }
-      dispatch({ type: 'SET_DOCX_EDITOR', payload: null });
-      dispatch({ type: 'SET_DOCX_DOCUMENT', payload: null });
-      dispatch({ type: 'SET_PDF_DOCUMENT', payload: null });
-    }
-    
-    // Initialize if we have required data
-    if (state.templateDocument && state.dataJson && !isInitializing.current) {
+    // Only initialize if we have required data and no existing editor
+    if (state.templateDocument && state.dataJson && !state.docxEditor && !isInitializing.current) {
       console.log('🎆 Initializing DOCX editor for preview');
       // Wrap initialization in try-catch to handle any SDK errors
       try {
@@ -270,21 +271,46 @@ export default function PreviewStep() {
         console.warn('⚠️ Error in initializeDocxEditor:', error);
         // Don't let this error break the component
       }
+    } else {
+      console.log('🚫 Not initializing DOCX editor:', {
+        hasTemplateDocument: !!state.templateDocument,
+        hasDataJson: !!state.dataJson,
+        hasEditor: !!state.docxEditor,
+        isInitializing: isInitializing.current
+      });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.templateDocument, state.dataJson, dispatch, initializeDocxEditor]); // Only depend on template/data and initialization function, intentionally not including state.docxEditor to avoid infinite loop
 
-    // Cleanup function
+  // Separate effect to handle cleanup when template/data changes
+  useEffect(() => {
     return () => {
       if (state.docxEditor) {
-        console.log('🧹 Cleaning up DOCX editor on unmount');
+        console.log('🧹 Cleaning up DOCX editor on template/data change');
         try {
           state.docxEditor.destroy();
         } catch (error) {
           console.warn('⚠️ DOCX editor cleanup error:', error);
         }
-        dispatch({ type: 'SET_DOCX_EDITOR', payload: null });
       }
     };
-  }, [state.templateDocument, state.dataJson]); // Only depend on input data to force reinit when they change
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.templateDocument, state.dataJson]); // Clean up when template/data changes, intentionally not including state.docxEditor to avoid infinite loop
+
+  // Effect to handle component unmount cleanup
+  useEffect(() => {
+    return () => {
+      if (state.docxEditor) {
+        console.log('🧹 Final cleanup on unmount');
+        try {
+          state.docxEditor.destroy();
+        } catch (error) {
+          console.warn('⚠️ Final cleanup error:', error);
+        }
+      }
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run on unmount, intentionally not including state.docxEditor
 
   const handleGenerateDocument = useCallback(async () => {
     if (!state.docxDocument) {

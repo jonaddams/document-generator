@@ -60,6 +60,19 @@ export default function CustomizeStep() {
       return;
     }
 
+    // Clean up any existing editor first
+    if (state.templateEditor) {
+      console.log('🧹 Cleaning up existing template editor before initializing new one');
+      try {
+        state.templateEditor.destroy();
+        console.log('✅ Template editor destroyed successfully');
+      } catch (error) {
+        console.warn('⚠️ Template editor cleanup error:', error);
+      }
+      dispatch({ type: 'SET_TEMPLATE_EDITOR', payload: null });
+      dispatch({ type: 'SET_TEMPLATE_DOCUMENT', payload: null });
+    }
+
     // Wait for ref to be available
     let attempts = 0;
     const maxAttempts = 20;
@@ -222,6 +235,7 @@ export default function CustomizeStep() {
     }
   }, [state, dispatch]);
 
+  // Effect to handle template changes and editor initialization
   useEffect(() => {
     console.log('📍 CustomizeStep useEffect triggered with:', {
       template: state.template,
@@ -231,43 +245,49 @@ export default function CustomizeStep() {
       currentStep: state.currentStep
     });
     
-    // Always clean up existing editor first when template changes
-    if (state.templateEditor) {
-      console.log('🧹 Cleaning up existing template editor');
-      try {
-        state.templateEditor.destroy();
-        console.log('✅ Template editor destroyed successfully');
-      } catch (error) {
-        console.warn('⚠️ Template editor cleanup error:', error);
-      }
-      dispatch({ type: 'SET_TEMPLATE_EDITOR', payload: null });
-      dispatch({ type: 'SET_TEMPLATE_DOCUMENT', payload: null });
-    }
-    
-    // Initialize editor if we have a template
-    if (state.template && !isInitializing.current) {
+    // Only initialize if we have a template and no existing editor
+    if (state.template && !state.templateEditor && !isInitializing.current) {
       console.log('🎆 About to initialize editor for template:', state.template);
       initializeEditor();
     } else {
       console.log('🚫 Not initializing editor:', {
         hasTemplate: !!state.template,
+        hasEditor: !!state.templateEditor,
         isInitializing: isInitializing.current
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.template, dispatch, initializeEditor]); // Only depend on template and initialization function, intentionally not including state.templateEditor to avoid infinite loop
 
-    // Cleanup function
+  // Separate effect to handle cleanup when template changes
+  useEffect(() => {
     return () => {
       if (state.templateEditor) {
-        console.log('🧹 Cleaning up template editor on unmount');
+        console.log('🧹 Cleaning up template editor on unmount/template change');
         try {
           state.templateEditor.destroy();
         } catch (error) {
           console.warn('⚠️ Template editor cleanup error:', error);
         }
-        dispatch({ type: 'SET_TEMPLATE_EDITOR', payload: null });
       }
     };
-  }, [state.template]); // Only depend on template to force reinit when template changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.template]); // Clean up when template changes, intentionally not including state.templateEditor to avoid infinite loop
+
+  // Effect to handle component unmount cleanup
+  useEffect(() => {
+    return () => {
+      if (state.templateEditor) {
+        console.log('🧹 Final cleanup on unmount');
+        try {
+          state.templateEditor.destroy();
+        } catch (error) {
+          console.warn('⚠️ Final cleanup error:', error);
+        }
+      }
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run on unmount, intentionally not including state.templateEditor
 
   const handleNext = () => {
     completeCurrentStep();

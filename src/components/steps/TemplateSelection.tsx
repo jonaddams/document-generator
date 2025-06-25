@@ -13,12 +13,17 @@ interface TemplateSelectionProps {
   appState: AppState;
   updateAppState: (updates: Partial<AppState>) => void;
   navigateToStep: (step: 'template-editor') => Promise<void>;
+  showError?: (message: string, duration?: number) => string;
+  showSuccess?: (message: string, duration?: number) => string;
+  showWarning?: (message: string, duration?: number) => string;
 }
 
 export default function TemplateSelection({ 
   appState, 
   updateAppState, 
-  navigateToStep 
+  navigateToStep,
+  showError,
+  showWarning 
 }: TemplateSelectionProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +65,7 @@ export default function TemplateSelection({
     
     // File size validation
     if (file.size > MAX_FILE_SIZE) {
-      alert('File size must be less than 10MB');
+      showError?.('File size must be less than 10MB');
       event.target.value = '';
       setSelectedFile(null);
       return;
@@ -70,11 +75,11 @@ export default function TemplateSelection({
     if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
       setSelectedFile(file);
     } else {
-      alert('Please select a valid DOCX file');
+      showError?.('Please select a valid DOCX file');
       event.target.value = '';
       setSelectedFile(null);
     }
-  }, []);
+  }, [showError]);
 
   return (
     <div className="nutri-card">

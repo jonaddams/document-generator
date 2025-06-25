@@ -189,6 +189,16 @@ export default function TemplateStep() {
                 : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
             }`}
             onClick={() => handleTemplateSelect(template.id)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleTemplateSelect(template.id);
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-pressed={selectedTemplate === template.id}
+            aria-label={`Select ${template.name} template. ${template.description}`}
           >
             {/* Preview Image */}
             <div className="aspect-[3/4] bg-gray-100 overflow-hidden">
@@ -237,14 +247,27 @@ export default function TemplateStep() {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={handleUploadClick}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleUploadClick();
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        aria-label="Upload custom DOCX template by clicking or dragging files here"
+        aria-describedby="upload-instructions upload-help"
       >
-        {/* Hidden file input */}
+        {/* Accessible file input */}
         <input
           ref={fileInputRef}
           type="file"
           accept=".docx"
           onChange={handleFileChange}
-          className="hidden"
+          className="sr-only"
+          id="custom-template-upload"
+          aria-label="Upload custom DOCX template file"
+          aria-describedby="upload-instructions upload-help"
         />
         
         <svg className={`mx-auto h-12 w-12 ${isDragOver || selectedTemplate === 'custom' ? 'text-indigo-500' : 'text-gray-400'}`} stroke="currentColor" fill="none" viewBox="0 0 48 48">
@@ -313,6 +336,14 @@ export default function TemplateStep() {
             </svg>
           </div>
         )}
+      </div>
+
+      {/* Accessibility helper text */}
+      <div id="upload-instructions" className="sr-only">
+        Click this area or press Enter to select a DOCX file from your computer. You can also drag and drop a file directly onto this area.
+      </div>
+      <div id="upload-help" className="sr-only">
+        Upload a DOCX file to use as a custom template. Maximum file size is 10MB. Supported format: Microsoft Word DOCX files.
       </div>
 
       {/* Error Message */}

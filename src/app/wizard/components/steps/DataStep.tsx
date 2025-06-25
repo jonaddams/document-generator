@@ -27,6 +27,18 @@ export default function DataStep() {
       return;
     }
 
+    // Clean up any existing editor first
+    if (state.dataEditor) {
+      console.log('🧹 Cleaning up existing data editor before initializing new one');
+      try {
+        state.dataEditor.toTextArea();
+      } catch (error) {
+        console.warn('⚠️ CodeMirror cleanup failed:', error);
+      }
+      dispatch({ type: 'SET_DATA_EDITOR', payload: null });
+      dispatch({ type: 'SET_DATA_JSON', payload: null });
+    }
+
     // Wait for ref to be available
     let attempts = 0;
     const maxAttempts = 20;
@@ -160,46 +172,55 @@ export default function DataStep() {
       setIsLoading(false);
       isInitializing.current = false;
     }
-  }, [state.template, state.dataJson, state.dataEditor, dispatch]);
+  }, [state, dispatch]);
 
+  // Effect to handle template changes and editor initialization
   useEffect(() => {
     console.log('📍 DataStep useEffect triggered with template:', state.template, 'editor exists:', !!state.dataEditor);
     
-    // Always clean up existing editor and data first when template changes
-    if (state.dataEditor) {
-      console.log('🧹 Cleaning up existing data editor');
-      try {
-        state.dataEditor.toTextArea();
-      } catch (error) {
-        console.warn('⚠️ CodeMirror cleanup failed:', error);
-      }
-      dispatch({ type: 'SET_DATA_EDITOR', payload: null });
-    }
-    
-    // Clear the data JSON when template changes to force reload
-    if (state.template) {
-      dispatch({ type: 'SET_DATA_JSON', payload: null });
-    }
-    
-    // Initialize editor if we have a template
-    if (state.template && !isInitializing.current) {
+    // Only initialize if we have a template and no existing editor
+    if (state.template && !state.dataEditor && !isInitializing.current) {
       console.log('🎆 Initializing data editor for template:', state.template);
       initializeDataEditor();
+    } else {
+      console.log('🚫 Not initializing data editor:', {
+        hasTemplate: !!state.template,
+        hasEditor: !!state.dataEditor,
+        isInitializing: isInitializing.current
+      });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.template, dispatch, initializeDataEditor]); // Only depend on template and initialization function, intentionally not including state.dataEditor to avoid infinite loop
 
-    // Cleanup function
+  // Separate effect to handle cleanup when template changes
+  useEffect(() => {
     return () => {
       if (state.dataEditor) {
-        console.log('🧹 Cleaning up data editor on unmount');
+        console.log('🧹 Cleaning up data editor on template change');
         try {
           state.dataEditor.toTextArea();
         } catch (error) {
           console.warn('⚠️ CodeMirror cleanup failed:', error);
         }
-        dispatch({ type: 'SET_DATA_EDITOR', payload: null });
       }
     };
-  }, [state.template]); // Only depend on template to force reinit when template changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.template]); // Clean up when template changes, intentionally not including state.dataEditor to avoid infinite loop
+
+  // Effect to handle component unmount cleanup
+  useEffect(() => {
+    return () => {
+      if (state.dataEditor) {
+        console.log('🧹 Final cleanup on unmount');
+        try {
+          state.dataEditor.toTextArea();
+        } catch (error) {
+          console.warn('⚠️ Final cleanup error:', error);
+        }
+      }
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run on unmount, intentionally not including state.dataEditor
 
 
   const handleNext = () => {
@@ -582,7 +603,7 @@ export default function DataStep() {
         {/* Editor */}
         <div className="flex flex-col min-h-0">
           <div className="flex items-center justify-between mb-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label htmlFor="json-editor" className="block text-sm font-medium text-gray-700">
               JSON Data
             </label>
             <div className="h-6"></div> {/* Spacer to match toggle button height */}
@@ -608,7 +629,20 @@ export default function DataStep() {
               ref={editorContainerRef}
               className="w-full h-full border border-gray-300 rounded-lg overflow-hidden"
               style={{ minHeight: '400px' }}
+              id="json-editor"
+              role="textbox"
+              aria-label="JSON data editor for template variables"
+              aria-describedby="json-editor-help json-editor-instructions"
+              aria-multiline="true"
             />
+            
+            {/* Accessibility helper text */}
+            <div id="json-editor-help" className="sr-only">
+              JSON editor for template data. Edit the data that will populate your document template. Use proper JSON syntax with config and model properties.
+            </div>
+            <div id="json-editor-instructions" className="sr-only">
+              This is a code editor. Use Tab to indent, Shift+Tab to unindent. Press Ctrl+A to select all text.
+            </div>
           </div>
 
           {/* JSON File Upload for Custom Templates */}
@@ -626,14 +660,27 @@ export default function DataStep() {
                 onDragLeave={handleJsonDragLeave}
                 onDrop={handleJsonDrop}
                 onClick={handleJsonUploadClick}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleJsonUploadClick();
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label="Upload JSON data file by clicking or dragging files here"
+                aria-describedby="json-upload-help"
               >
-                {/* Hidden file input */}
+                {/* Accessible file input */}
                 <input
                   ref={fileInputRef}
                   type="file"
                   accept=".json"
                   onChange={handleJsonFileChange}
-                  className="hidden"
+                  className="sr-only"
+                  id="json-file-upload"
+                  aria-label="Upload JSON data file"
+                  aria-describedby="json-upload-help"
                 />
                 
                 <svg className={`mx-auto h-8 w-8 mb-2 ${isDragOver ? 'text-blue-500' : uploadedJsonFile ? 'text-green-500' : 'text-gray-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -664,6 +711,11 @@ export default function DataStep() {
                 )}
               </div>
 
+              {/* JSON upload accessibility help */}
+              <div id="json-upload-help" className="sr-only">
+                Upload a JSON file containing template data. The file should contain config and model properties for populating the document template.
+              </div>
+
               {/* Upload Error */}
               {uploadError && (
                 <p className="mt-1 text-xs text-red-600">{uploadError}</p>
@@ -684,7 +736,7 @@ export default function DataStep() {
             <label className="block text-sm font-medium text-gray-700">
               Data Preview
             </label>
-            <div className="flex rounded-md shadow-sm" role="group">
+            <div className="flex rounded-md shadow-sm" role="group" aria-label="Data preview mode selection">
               <button
                 type="button"
                 onClick={() => setPreviewMode('interactive')}
@@ -693,6 +745,8 @@ export default function DataStep() {
                     ? 'bg-blue-50 text-blue-700 border-blue-300'
                     : 'bg-white text-gray-500 border-gray-300 hover:bg-gray-50'
                 } rounded-l-md`}
+                aria-pressed={previewMode === 'interactive'}
+                aria-describedby="preview-mode-help"
               >
                 Interactive
               </button>
@@ -704,11 +758,19 @@ export default function DataStep() {
                     ? 'bg-blue-50 text-blue-700 border-blue-300'
                     : 'bg-white text-gray-500 border-gray-300 hover:bg-gray-50'
                 } rounded-r-md`}
+                aria-pressed={previewMode === 'simple'}
+                aria-describedby="preview-mode-help"
               >
                 Simple
               </button>
             </div>
           </div>
+          
+          {/* Preview mode help text */}
+          <div id="preview-mode-help" className="sr-only">
+            Choose between Interactive mode for collapsible data structure or Simple mode for plain text view of your JSON data.
+          </div>
+          
           <div className="flex-1 p-4 bg-gray-50 border border-gray-300 rounded-lg overflow-auto" style={{ minHeight: '400px' }}>
             {(() => {
               const previewData = getPreviewData();

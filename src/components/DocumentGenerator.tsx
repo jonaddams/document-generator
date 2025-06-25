@@ -1,8 +1,12 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { AppState, StepType, AppError } from '@/types';
 import { TRANSITION_MESSAGES } from '@/lib/constants';
+import { useToast } from '@/hooks/useToast';
+import { ToastContainer } from './Toast';
+import { useStepNavigation } from '@/hooks/useKeyboardNavigation';
+import { useStepFocus } from '@/hooks/useFocusManagement';
 
 // Import step components
 import TemplateSelection from './steps/TemplateSelection';
@@ -12,6 +16,7 @@ import DocxEditor from './steps/DocxEditor';
 import PdfViewer from './steps/PdfViewer';
 import Transition from './Transition';
 import ErrorBoundary from './ErrorBoundary';
+import KeyboardShortcuts from './KeyboardShortcuts';
 
 const initialAppState: AppState = {
   docAuthSystem: null,
@@ -33,6 +38,19 @@ export default function DocumentGenerator() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [transitionMessage, setTransitionMessage] = useState('');
   const [error, setError] = useState<AppError | null>(null);
+  const { toasts, showError, showSuccess, showWarning, removeToast } = useToast();
+  const { focusStepContent, announceStepChange } = useStepFocus();
+
+  const getStepNumber = useCallback((step: StepType): number => {
+    const stepOrder: StepType[] = [
+      'template-selection',
+      'template-editor',
+      'data-editor',
+      'docx-editor',
+      'pdf-viewer'
+    ];
+    return stepOrder.indexOf(step) + 1;
+  }, []);
 
   const updateAppState = useCallback((updates: Partial<AppState>) => {
     setAppState(prev => ({ ...prev, ...updates }));
@@ -47,7 +65,20 @@ export default function DocumentGenerator() {
     setCurrentStep(step);
     setIsTransitioning(false);
     setTransitionMessage('');
-  }, []);
+    
+    // Focus management and announcement for accessibility
+    setTimeout(() => {
+      focusStepContent();
+      const stepTitles = {
+        'template-selection': 'Select Template',
+        'template-editor': 'Edit DocJSON Template',
+        'data-editor': 'Prepare JSON Data',
+        'docx-editor': 'Edit Generated DOCX',
+        'pdf-viewer': 'Final PDF',
+      };
+      announceStepChange(stepTitles[step], getStepNumber(step), 5);
+    }, 100);
+  }, [focusStepContent, announceStepChange, getStepNumber]);
 
   const navigateToStep = useCallback(async (step: StepType, message?: string) => {
     try {
@@ -118,6 +149,23 @@ export default function DocumentGenerator() {
     setError(null);
   }, [appState, navigateToStep]);
 
+  // Set up keyboard navigation for steps
+  const canGoNext = currentStep !== 'pdf-viewer' && !isTransitioning;
+  const canGoPrevious = currentStep !== 'template-selection' && !isTransitioning;
+
+  useStepNavigation({
+    currentStep,
+    onNext: canGoNext ? handleNext : undefined,
+    onPrevious: canGoPrevious ? handlePrevious : undefined,
+    canGoNext,
+    canGoPrevious,
+  });
+
+  // Focus management on initial load
+  useEffect(() => {
+    announceStepChange('Select Template', 1, 5);
+  }, [announceStepChange]);
+
   if (error) {
     return (
       <div className="max-w-4xl mx-auto">
@@ -159,6 +207,9 @@ export default function DocumentGenerator() {
                 appState={appState}
                 updateAppState={updateAppState}
                 navigateToStep={(step: 'template-editor') => navigateToStep(step)}
+                showError={showError}
+                showSuccess={showSuccess}
+                showWarning={showWarning}
               />
             )}
             
@@ -208,6 +259,16 @@ export default function DocumentGenerator() {
           </>
         )}
       </div>
+      
+      {/* Toast notifications */}
+      <ToastContainer toasts={toasts} onClose={removeToast} />
+      
+      {/* Keyboard shortcuts help */}
+      <KeyboardShortcuts 
+        currentStep={currentStep} 
+        canGoNext={canGoNext} 
+        canGoPrevious={canGoPrevious} 
+      />
     </ErrorBoundary>
   );
 }

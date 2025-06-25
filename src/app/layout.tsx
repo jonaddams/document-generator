@@ -34,6 +34,16 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.className} bg-gray-50 min-h-screen`}>
+        {/* Skip Links for keyboard navigation */}
+        <div className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-50">
+          <a 
+            href="#main-content" 
+            className="inline-block px-4 py-2 bg-blue-600 text-white rounded shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Skip to main content
+          </a>
+        </div>
+        
         {/* External Scripts */}
         <Script
           src="https://document-authoring.cdn.nutrient.io/releases/document-authoring-1.7.0-umd.js"
@@ -103,7 +113,7 @@ export default function RootLayout({
             </div>
           </div>
         </nav>
-        <main className="main-content">{children}</main>
+        <main id="main-content" className="main-content">{children}</main>
       </body>
     </html>
   );

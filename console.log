@@ -1,8 +1,616 @@
-Error
-    at K (https://document-authoring.cdn.nutrient.io/2025/1/docauth-impl-7ed9e7e19f55803a.js:1:373)
-    at Object.update (https://document-authoring.cdn.nutrient.io/2025/1/docauth-impl-7ed9e7e19f55803a.js:782:19301)
-    at d (https://document-authoring.cdn.nutrient.io/2025/1/docauth-impl-7ed9e7e19f55803a.js:782:23427)
-    at https://document-authoring.cdn.nutrient.io/2025/1/docauth-impl-7ed9e7e19f55803a.js:782:23959
-    at i (https://document-authoring.cdn.nutrient.io/2025/1/docauth-impl-7ed9e7e19f55803a.js:3:21523)
-    at Object.emit (https://document-authoring.cdn.nutrient.io/2025/1/docauth-impl-7ed9e7e19f55803a.js:3:21670)
-    at IntersectionObserver.root (https://document-authoring.cdn.nutrient.io/2025/1/docauth-impl-7ed9e7e19f55803a.js:395:14357)
+ 🔄 TemplateStep render: Object
+ 🔄 TemplateStep render: Object
+ 🔄 TemplateStep useEffect - syncing selectedTemplate with state.template: null
+ 🎯 TemplateStep: User selected template: invoice
+ 🎯 TemplateStep: Previous state.template was: null
+ 🎯 TemplateStep: Dispatched SET_TEMPLATE with: invoice
+ 🏪 WizardReducer: SET_TEMPLATE payload: invoice
+ 🏪 Current state before action: Object
+ 🏪 WizardReducer: SET_TEMPLATE payload: invoice
+ 🏪 Current state before action: Object
+ 🏪 WizardReducer: SET_CUSTOM_TEMPLATE_BINARY payload: null
+ 🏪 Current state before action: Object
+ 🏪 WizardReducer: SET_CUSTOM_TEMPLATE_BINARY payload: null
+ 🏪 Current state before action: Object
+ 🔄 TemplateStep render: Object
+ 🔄 TemplateStep render: Object
+ 🔄 TemplateStep useEffect - syncing selectedTemplate with state.template: invoice
+ 🔄 TemplateStep render: Object
+ 🔄 TemplateStep render: Object
+WizardContext.tsx:202 ➡️ nextStep called, current step: 0
+WizardContext.tsx:110 🏪 WizardReducer: COMPLETE_STEP payload: 0
+WizardContext.tsx:111 🏪 Current state before action: Object
+WizardContext.tsx:110 🏪 WizardReducer: COMPLETE_STEP payload: 0
+WizardContext.tsx:111 🏪 Current state before action: Object
+WizardContext.tsx:110 🏪 WizardReducer: SET_CURRENT_STEP payload: 1
+WizardContext.tsx:111 🏪 Current state before action: Object
+WizardContext.tsx:110 🏪 WizardReducer: SET_CURRENT_STEP payload: 1
+WizardContext.tsx:111 🏪 Current state before action: Object
+CustomizeStep.tsx:15 🎨 CustomizeStep render: Object
+hook.js:377 🎨 CustomizeStep render: Object
+CustomizeStep.tsx:240 📍 CustomizeStep useEffect triggered with: Object
+CustomizeStep.tsx:250 🎆 About to initialize editor for template: invoice
+CustomizeStep.tsx:50 🚀 INITIALIZEEDITOR CALLED with state: Object
+hook.js:377 📍 CustomizeStep useEffect triggered with: Object
+hook.js:377 🚫 Not initializing editor: Object
+CustomizeStep.tsx:15 🎨 CustomizeStep render: Object
+hook.js:377 🎨 CustomizeStep render: Object
+docauth-impl-7ed9e7e19f55803a.js:314 Nutrient Licensing (a328b9a32c5f4ca096fa860fd84fb445d73a6435)
+docauth-impl-7ed9e7e19f55803a.js:314 ┌──────────────────────────────────────────────────────────────────────────────────────────┐
+docauth-impl-7ed9e7e19f55803a.js:314 │ Welcome to Document Authoring 1.7.0 (a93679b90643bd8972ca8fe1a92003f3cb5e99c8).          │
+docauth-impl-7ed9e7e19f55803a.js:314 │ This version is not for redistribution and is time-limited to 1 hour.                    │
+docauth-impl-7ed9e7e19f55803a.js:314 │                                                                                          │
+docauth-impl-7ed9e7e19f55803a.js:314 │ Your bundle identifier: localhost                                                        │
+docauth-impl-7ed9e7e19f55803a.js:314 │ Guides & Support:  https://www.nutrient.io/sdk/developers/                               │
+docauth-impl-7ed9e7e19f55803a.js:314 │ Already a customer? Get your license key at https://my.nutrient.io/                      │
+docauth-impl-7ed9e7e19f55803a.js:314 └──────────────────────────────────────────────────────────────────────────────────────────┘
+CustomizeStep.tsx:125 ✅ Document Authoring system created
+CustomizeStep.tsx:130 📄 Loading template document for: invoice
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOC_AUTH_SYSTEM payload: Object
+WizardContext.tsx:111 🏪 Current state before action: Object
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOC_AUTH_SYSTEM payload: Object
+WizardContext.tsx:111 🏪 Current state before action: Object
+CustomizeStep.tsx:15 🎨 CustomizeStep render: Object
+hook.js:377 🎨 CustomizeStep render: Object
+CustomizeStep.tsx:240 📍 CustomizeStep useEffect triggered with: Object
+CustomizeStep.tsx:253 🚫 Not initializing editor: Object
+CustomizeStep.tsx:140 ✅ DocJSON template loaded for: invoice
+CustomizeStep.tsx:150 🖊️ Creating template editor...
+WizardContext.tsx:110 🏪 WizardReducer: SET_TEMPLATE_DOCUMENT payload: Object
+WizardContext.tsx:111 🏪 Current state before action: Object
+WizardContext.tsx:110 🏪 WizardReducer: SET_TEMPLATE_DOCUMENT payload: Object
+WizardContext.tsx:111 🏪 Current state before action: Object
+CustomizeStep.tsx:15 🎨 CustomizeStep render: Object
+hook.js:377 🎨 CustomizeStep render: Object
+CustomizeStep.tsx:240 📍 CustomizeStep useEffect triggered with: Object
+CustomizeStep.tsx:253 🚫 Not initializing editor: Object
+CustomizeStep.tsx:188 📝 Container ready, creating editor with dimensions: Object
+CustomizeStep.tsx:197 ✅ Template editor ready
+WizardContext.tsx:110 🏪 WizardReducer: SET_TEMPLATE_EDITOR payload: Object
+WizardContext.tsx:111 🏪 Current state before action: Object
+WizardContext.tsx:110 🏪 WizardReducer: SET_TEMPLATE_EDITOR payload: Object
+WizardContext.tsx:111 🏪 Current state before action: Object
+CustomizeStep.tsx:15 🎨 CustomizeStep render: Object
+hook.js:377 🎨 CustomizeStep render: Object
+CustomizeStep.tsx:240 📍 CustomizeStep useEffect triggered with: Object
+CustomizeStep.tsx:253 🚫 Not initializing editor: Object
+hot-reloader-client.js:197 [Fast Refresh] rebuilding
+report-hmr-latency.js:14 [Fast Refresh] done in 31ms
+WizardContext.tsx:202 ➡️ nextStep called, current step: 1
+WizardContext.tsx:110 🏪 WizardReducer: COMPLETE_STEP payload: 1
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 1, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: COMPLETE_STEP payload: 1
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 1, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_CURRENT_STEP payload: 2
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 1, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_CURRENT_STEP payload: 2
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 1, templateEditor: true, templateDocument: true}
+DataStep.tsx:179 📍 DataStep useEffect triggered with template: invoice editor exists: false
+DataStep.tsx:183 🎆 Initializing data editor for template: invoice
+DataStep.tsx:23 🔄 DataStep: Initializing data editor for: invoice
+DataStep.tsx:83 📄 Fetching template data for: invoice
+DataStep.tsx:179 📍 DataStep useEffect triggered with template: invoice editor exists: false
+DataStep.tsx:186 🚫 Not initializing data editor: {hasTemplate: true, hasEditor: false, isInitializing: true}
+DataStep.tsx:87 ✅ Template data fetched for: invoice {config: {…}, model: {…}}
+DataStep.tsx:116 🖊️ Creating CodeMirror data editor...
+DataStep.tsx:136 📝 Textarea added to container
+DataStep.tsx:148 ✅ CodeMirror data editor created
+DataStep.tsx:167 ✅ Data editor ready
+WizardContext.tsx:110 🏪 WizardReducer: SET_DATA_JSON payload: {config: {…}, model: {…}}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 2, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DATA_JSON payload: {config: {…}, model: {…}}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 2, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DATA_EDITOR payload: p {options: {…}, doc: f, display: ui, state: {…}, curOp: null, …}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 2, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DATA_EDITOR payload: p {options: {…}, doc: f, display: ui, state: {…}, curOp: null, …}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 2, templateEditor: true, templateDocument: true}
+DataStep.tsx:179 📍 DataStep useEffect triggered with template: invoice editor exists: true
+DataStep.tsx:186 🚫 Not initializing data editor: {hasTemplate: true, hasEditor: true, isInitializing: false}
+WizardContext.tsx:202 ➡️ nextStep called, current step: 2
+WizardContext.tsx:110 🏪 WizardReducer: SET_DATA_JSON payload: {config: {…}, model: {…}}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 2, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DATA_JSON payload: {config: {…}, model: {…}}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 2, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: COMPLETE_STEP payload: 2
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 2, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: COMPLETE_STEP payload: 2
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 2, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_CURRENT_STEP payload: 3
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 2, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_CURRENT_STEP payload: 3
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 2, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+PreviewStep.tsx:265 🎆 Initializing DOCX editor for preview
+PreviewStep.tsx:36 🔄 PreviewStep: Initializing DOCX editor
+PreviewStep.tsx:93 📄 Generating DOCX document from template and data...
+PreviewStep.tsx:105 🔧 Exporting template to DOCX buffer...
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+PreviewStep.tsx:107 ✅ Template exported to buffer, size: 15122
+PreviewStep.tsx:109 🔧 Populating template with data...
+PreviewStep.tsx:110 Data to populate: {config: {…}, model: {…}}
+dotnet.native.js:8 PSPDFKit : Nutrient Licensing (0a1a55d970715cb99c3721a0074c71defdb166ce)
+dotnet.native.js:8 PSPDFKit : ┌──────────────────────────────────────────────────────────────────────────────────────────┐
+dotnet.native.js:8 PSPDFKit : │ Welcome to 14.3.7.0.                                                                     │
+dotnet.native.js:8 PSPDFKit : │ This version is not for redistribution and is time-limited to 1 hour.                    │
+dotnet.native.js:8 PSPDFKit : │                                                                                          │
+dotnet.native.js:8 PSPDFKit : │ Your bundle identifier: localhost                                                        │
+dotnet.native.js:8 PSPDFKit : │ Guides & Support:  https://www.nutrient.io/guides/dotnet/                                │
+dotnet.native.js:8 PSPDFKit : │ Already a customer? Get your license key at https://my.nutrient.io/users/sign_in         │
+dotnet.native.js:8 PSPDFKit : └──────────────────────────────────────────────────────────────────────────────────────────┘
+PreviewStep.tsx:115 ✅ Template populated, result size: 15108
+PreviewStep.tsx:117 🔧 Importing populated DOCX into Document Authoring...
+PreviewStep.tsx:119 ✅ DOCX document imported: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+PreviewStep.tsx:127 🖊️ Creating Document Authoring editor for DOCX...
+PreviewStep.tsx:145 📝 Container cleared, creating DOCX editor with dimensions: {width: 1214, height: 830}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+PreviewStep.tsx:200 ✅ DOCX editor created successfully
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: true}
+PreviewStep.tsx:252 🧹 Cleaning up existing DOCX editor
+PreviewStep.tsx:265 🎆 Initializing DOCX editor for preview
+PreviewStep.tsx:36 🔄 PreviewStep: Initializing DOCX editor
+PreviewStep.tsx:123 ✅ DOCX document already exists
+PreviewStep.tsx:127 🖊️ Creating Document Authoring editor for DOCX...
+PreviewStep.tsx:145 📝 Container cleared, creating DOCX editor with dimensions: {width: 1214, height: 830}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:278 🧹 Cleaning up DOCX editor on unmount
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:200 ✅ DOCX editor created successfully
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: true}
+PreviewStep.tsx:252 🧹 Cleaning up existing DOCX editor
+PreviewStep.tsx:265 🎆 Initializing DOCX editor for preview
+PreviewStep.tsx:36 🔄 PreviewStep: Initializing DOCX editor
+PreviewStep.tsx:93 📄 Generating DOCX document from template and data...
+PreviewStep.tsx:105 🔧 Exporting template to DOCX buffer...
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:278 🧹 Cleaning up DOCX editor on unmount
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:107 ✅ Template exported to buffer, size: 15122
+PreviewStep.tsx:109 🔧 Populating template with data...
+PreviewStep.tsx:110 Data to populate: {config: {…}, model: {…}}
+dotnet.native.js:8 PSPDFKit : Nutrient Licensing (0a1a55d970715cb99c3721a0074c71defdb166ce)
+dotnet.native.js:8 PSPDFKit : ┌──────────────────────────────────────────────────────────────────────────────────────────┐
+dotnet.native.js:8 PSPDFKit : │ Welcome to 14.3.7.0.                                                                     │
+dotnet.native.js:8 PSPDFKit : │ This version is not for redistribution and is time-limited to 1 hour.                    │
+dotnet.native.js:8 PSPDFKit : │                                                                                          │
+dotnet.native.js:8 PSPDFKit : │ Your bundle identifier: localhost                                                        │
+dotnet.native.js:8 PSPDFKit : │ Guides & Support:  https://www.nutrient.io/guides/dotnet/                                │
+dotnet.native.js:8 PSPDFKit : │ Already a customer? Get your license key at https://my.nutrient.io/users/sign_in         │
+dotnet.native.js:8 PSPDFKit : └──────────────────────────────────────────────────────────────────────────────────────────┘
+PreviewStep.tsx:115 ✅ Template populated, result size: 15108
+PreviewStep.tsx:117 🔧 Importing populated DOCX into Document Authoring...
+PreviewStep.tsx:119 ✅ DOCX document imported: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+PreviewStep.tsx:127 🖊️ Creating Document Authoring editor for DOCX...
+PreviewStep.tsx:145 📝 Container cleared, creating DOCX editor with dimensions: {width: 1214, height: 830}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+PreviewStep.tsx:200 ✅ DOCX editor created successfully
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: true}
+PreviewStep.tsx:252 🧹 Cleaning up existing DOCX editor
+PreviewStep.tsx:265 🎆 Initializing DOCX editor for preview
+PreviewStep.tsx:36 🔄 PreviewStep: Initializing DOCX editor
+PreviewStep.tsx:123 ✅ DOCX document already exists
+PreviewStep.tsx:127 🖊️ Creating Document Authoring editor for DOCX...
+PreviewStep.tsx:145 📝 Container cleared, creating DOCX editor with dimensions: {width: 1214, height: 830}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:278 🧹 Cleaning up DOCX editor on unmount
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:200 ✅ DOCX editor created successfully
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: true}
+PreviewStep.tsx:252 🧹 Cleaning up existing DOCX editor
+PreviewStep.tsx:265 🎆 Initializing DOCX editor for preview
+PreviewStep.tsx:36 🔄 PreviewStep: Initializing DOCX editor
+PreviewStep.tsx:93 📄 Generating DOCX document from template and data...
+PreviewStep.tsx:105 🔧 Exporting template to DOCX buffer...
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:278 🧹 Cleaning up DOCX editor on unmount
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:107 ✅ Template exported to buffer, size: 15122
+PreviewStep.tsx:109 🔧 Populating template with data...
+PreviewStep.tsx:110 Data to populate: {config: {…}, model: {…}}
+dotnet.native.js:8 PSPDFKit : Nutrient Licensing (0a1a55d970715cb99c3721a0074c71defdb166ce)
+dotnet.native.js:8 PSPDFKit : ┌──────────────────────────────────────────────────────────────────────────────────────────┐
+dotnet.native.js:8 PSPDFKit : │ Welcome to 14.3.7.0.                                                                     │
+dotnet.native.js:8 PSPDFKit : │ This version is not for redistribution and is time-limited to 1 hour.                    │
+dotnet.native.js:8 PSPDFKit : │                                                                                          │
+dotnet.native.js:8 PSPDFKit : │ Your bundle identifier: localhost                                                        │
+dotnet.native.js:8 PSPDFKit : │ Guides & Support:  https://www.nutrient.io/guides/dotnet/                                │
+dotnet.native.js:8 PSPDFKit : │ Already a customer? Get your license key at https://my.nutrient.io/users/sign_in         │
+dotnet.native.js:8 PSPDFKit : └──────────────────────────────────────────────────────────────────────────────────────────┘
+PreviewStep.tsx:115 ✅ Template populated, result size: 15108
+PreviewStep.tsx:117 🔧 Importing populated DOCX into Document Authoring...
+PreviewStep.tsx:119 ✅ DOCX document imported: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+PreviewStep.tsx:127 🖊️ Creating Document Authoring editor for DOCX...
+PreviewStep.tsx:145 📝 Container cleared, creating DOCX editor with dimensions: {width: 1214, height: 830}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+PreviewStep.tsx:200 ✅ DOCX editor created successfully
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: true}
+PreviewStep.tsx:252 🧹 Cleaning up existing DOCX editor
+PreviewStep.tsx:265 🎆 Initializing DOCX editor for preview
+PreviewStep.tsx:36 🔄 PreviewStep: Initializing DOCX editor
+PreviewStep.tsx:123 ✅ DOCX document already exists
+PreviewStep.tsx:127 🖊️ Creating Document Authoring editor for DOCX...
+PreviewStep.tsx:145 📝 Container cleared, creating DOCX editor with dimensions: {width: 1214, height: 830}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:278 🧹 Cleaning up DOCX editor on unmount
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:200 ✅ DOCX editor created successfully
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: true}
+PreviewStep.tsx:252 🧹 Cleaning up existing DOCX editor
+PreviewStep.tsx:265 🎆 Initializing DOCX editor for preview
+PreviewStep.tsx:36 🔄 PreviewStep: Initializing DOCX editor
+PreviewStep.tsx:93 📄 Generating DOCX document from template and data...
+PreviewStep.tsx:105 🔧 Exporting template to DOCX buffer...
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:278 🧹 Cleaning up DOCX editor on unmount
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:107 ✅ Template exported to buffer, size: 15122
+PreviewStep.tsx:109 🔧 Populating template with data...
+PreviewStep.tsx:110 Data to populate: {config: {…}, model: {…}}
+dotnet.native.js:8 PSPDFKit : Nutrient Licensing (0a1a55d970715cb99c3721a0074c71defdb166ce)
+dotnet.native.js:8 PSPDFKit : ┌──────────────────────────────────────────────────────────────────────────────────────────┐
+dotnet.native.js:8 PSPDFKit : │ Welcome to 14.3.7.0.                                                                     │
+dotnet.native.js:8 PSPDFKit : │ This version is not for redistribution and is time-limited to 1 hour.                    │
+dotnet.native.js:8 PSPDFKit : │                                                                                          │
+dotnet.native.js:8 PSPDFKit : │ Your bundle identifier: localhost                                                        │
+dotnet.native.js:8 PSPDFKit : │ Guides & Support:  https://www.nutrient.io/guides/dotnet/                                │
+dotnet.native.js:8 PSPDFKit : │ Already a customer? Get your license key at https://my.nutrient.io/users/sign_in         │
+dotnet.native.js:8 PSPDFKit : └──────────────────────────────────────────────────────────────────────────────────────────┘
+PreviewStep.tsx:115 ✅ Template populated, result size: 15108
+PreviewStep.tsx:117 🔧 Importing populated DOCX into Document Authoring...
+PreviewStep.tsx:119 ✅ DOCX document imported: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+PreviewStep.tsx:127 🖊️ Creating Document Authoring editor for DOCX...
+PreviewStep.tsx:145 📝 Container cleared, creating DOCX editor with dimensions: {width: 1214, height: 830}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+PreviewStep.tsx:200 ✅ DOCX editor created successfully
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: true}
+PreviewStep.tsx:252 🧹 Cleaning up existing DOCX editor
+PreviewStep.tsx:265 🎆 Initializing DOCX editor for preview
+PreviewStep.tsx:36 🔄 PreviewStep: Initializing DOCX editor
+PreviewStep.tsx:123 ✅ DOCX document already exists
+PreviewStep.tsx:127 🖊️ Creating Document Authoring editor for DOCX...
+PreviewStep.tsx:145 📝 Container cleared, creating DOCX editor with dimensions: {width: 1214, height: 830}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:278 🧹 Cleaning up DOCX editor on unmount
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:200 ✅ DOCX editor created successfully
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: true}
+PreviewStep.tsx:252 🧹 Cleaning up existing DOCX editor
+PreviewStep.tsx:265 🎆 Initializing DOCX editor for preview
+PreviewStep.tsx:36 🔄 PreviewStep: Initializing DOCX editor
+PreviewStep.tsx:93 📄 Generating DOCX document from template and data...
+PreviewStep.tsx:105 🔧 Exporting template to DOCX buffer...
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:278 🧹 Cleaning up DOCX editor on unmount
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:107 ✅ Template exported to buffer, size: 15122
+PreviewStep.tsx:109 🔧 Populating template with data...
+PreviewStep.tsx:110 Data to populate: {config: {…}, model: {…}}
+dotnet.native.js:8 PSPDFKit : Nutrient Licensing (0a1a55d970715cb99c3721a0074c71defdb166ce)
+dotnet.native.js:8 PSPDFKit : ┌──────────────────────────────────────────────────────────────────────────────────────────┐
+dotnet.native.js:8 PSPDFKit : │ Welcome to 14.3.7.0.                                                                     │
+dotnet.native.js:8 PSPDFKit : │ This version is not for redistribution and is time-limited to 1 hour.                    │
+dotnet.native.js:8 PSPDFKit : │                                                                                          │
+dotnet.native.js:8 PSPDFKit : │ Your bundle identifier: localhost                                                        │
+dotnet.native.js:8 PSPDFKit : │ Guides & Support:  https://www.nutrient.io/guides/dotnet/                                │
+dotnet.native.js:8 PSPDFKit : │ Already a customer? Get your license key at https://my.nutrient.io/users/sign_in         │
+dotnet.native.js:8 PSPDFKit : └──────────────────────────────────────────────────────────────────────────────────────────┘
+PreviewStep.tsx:115 ✅ Template populated, result size: 15108
+PreviewStep.tsx:117 🔧 Importing populated DOCX into Document Authoring...
+PreviewStep.tsx:119 ✅ DOCX document imported: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+PreviewStep.tsx:127 🖊️ Creating Document Authoring editor for DOCX...
+PreviewStep.tsx:145 📝 Container cleared, creating DOCX editor with dimensions: {width: 1214, height: 830}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+PreviewStep.tsx:200 ✅ DOCX editor created successfully
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: true}
+PreviewStep.tsx:252 🧹 Cleaning up existing DOCX editor
+PreviewStep.tsx:265 🎆 Initializing DOCX editor for preview
+PreviewStep.tsx:36 🔄 PreviewStep: Initializing DOCX editor
+PreviewStep.tsx:123 ✅ DOCX document already exists
+PreviewStep.tsx:127 🖊️ Creating Document Authoring editor for DOCX...
+PreviewStep.tsx:145 📝 Container cleared, creating DOCX editor with dimensions: {width: 1214, height: 830}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:278 🧹 Cleaning up DOCX editor on unmount
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:200 ✅ DOCX editor created successfully
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: true}
+PreviewStep.tsx:252 🧹 Cleaning up existing DOCX editor
+PreviewStep.tsx:265 🎆 Initializing DOCX editor for preview
+PreviewStep.tsx:36 🔄 PreviewStep: Initializing DOCX editor
+PreviewStep.tsx:93 📄 Generating DOCX document from template and data...
+PreviewStep.tsx:105 🔧 Exporting template to DOCX buffer...
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:278 🧹 Cleaning up DOCX editor on unmount
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:107 ✅ Template exported to buffer, size: 15122
+PreviewStep.tsx:109 🔧 Populating template with data...
+PreviewStep.tsx:110 Data to populate: {config: {…}, model: {…}}
+dotnet.native.js:8 PSPDFKit : Nutrient Licensing (0a1a55d970715cb99c3721a0074c71defdb166ce)
+dotnet.native.js:8 PSPDFKit : ┌──────────────────────────────────────────────────────────────────────────────────────────┐
+dotnet.native.js:8 PSPDFKit : │ Welcome to 14.3.7.0.                                                                     │
+dotnet.native.js:8 PSPDFKit : │ This version is not for redistribution and is time-limited to 1 hour.                    │
+dotnet.native.js:8 PSPDFKit : │                                                                                          │
+dotnet.native.js:8 PSPDFKit : │ Your bundle identifier: localhost                                                        │
+dotnet.native.js:8 PSPDFKit : │ Guides & Support:  https://www.nutrient.io/guides/dotnet/                                │
+dotnet.native.js:8 PSPDFKit : │ Already a customer? Get your license key at https://my.nutrient.io/users/sign_in         │
+dotnet.native.js:8 PSPDFKit : └──────────────────────────────────────────────────────────────────────────────────────────┘
+PreviewStep.tsx:115 ✅ Template populated, result size: 15108
+PreviewStep.tsx:117 🔧 Importing populated DOCX into Document Authoring...
+PreviewStep.tsx:119 ✅ DOCX document imported: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+PreviewStep.tsx:127 🖊️ Creating Document Authoring editor for DOCX...
+PreviewStep.tsx:145 📝 Container cleared, creating DOCX editor with dimensions: {width: 1214, height: 830}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: {docAuthSystem: ƒ, saveDocument: ƒ, saveDocumentJSONString: ƒ, exportPDF: ƒ, exportDOCX: ƒ, …}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+PreviewStep.tsx:200 ✅ DOCX editor created successfully
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+PreviewStep.tsx:244 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: true}
+PreviewStep.tsx:252 🧹 Cleaning up existing DOCX editor
+PreviewStep.tsx:265 🎆 Initializing DOCX editor for preview
+PreviewStep.tsx:36 🔄 PreviewStep: Initializing DOCX editor
+PreviewStep.tsx:123 ✅ DOCX document already exists
+PreviewStep.tsx:127 🖊️ Creating Document Authoring editor for DOCX...
+PreviewStep.tsx:145 📝 Container cleared, creating DOCX editor with dimensions: {width: 1214, height: 830}
+WizardContext.tsx:110 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+WizardContext.tsx:111 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+ 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+ 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+ 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+ 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+ 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ 🧹 Cleaning up DOCX editor on unmount
+ 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+ 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+ 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+ 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ ✅ DOCX editor created successfully
+ 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+ 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ 🏪 WizardReducer: SET_DOCX_EDITOR payload: {docAuthSystem: ƒ, setCurrentDocument: ƒ, currentDocument: ƒ, destroy: ƒ}
+ 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: true}
+ 🧹 Cleaning up existing DOCX editor
+ 🎆 Initializing DOCX editor for preview
+ 🔄 PreviewStep: Initializing DOCX editor
+ 📄 Generating DOCX document from template and data...
+ 🔧 Exporting template to DOCX buffer...
+ 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+ 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+ 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+ 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ 🏪 WizardReducer: SET_DOCX_DOCUMENT payload: null
+ 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+ 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ 🏪 WizardReducer: SET_PDF_DOCUMENT payload: null
+ 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ 🧹 Cleaning up DOCX editor on unmount
+ 📍 PreviewStep useEffect triggered with: {templateDocument: true, dataJson: true, docxEditor: false}
+ 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+ 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ 🏪 WizardReducer: SET_DOCX_EDITOR payload: null
+ 🏪 Current state before action: {template: 'invoice', currentStep: 3, templateEditor: true, templateDocument: true}
+ ✅ Template exported to buffer, size: 15122
+ 🔧 Populating template with data...
+ Data to populate: {config: {…}, model: {…}}

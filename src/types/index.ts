@@ -105,6 +105,9 @@ export interface StepProps {
   appState: AppState;
   updateAppState: (updates: Partial<AppState>) => void;
   navigateToStep?: (step: StepType) => Promise<void>;
+  showError?: (message: string, duration?: number) => string;
+  showSuccess?: (message: string, duration?: number) => string;
+  showWarning?: (message: string, duration?: number) => string;
 }
 
 export interface TransitionProps {

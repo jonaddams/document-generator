@@ -14,3 +14,5 @@ public/web-sdk
 CLAUDE.md
 instructions.md
 .prettierrc
+console.log
+code-review.md
