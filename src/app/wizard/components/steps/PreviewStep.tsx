@@ -302,20 +302,44 @@ export default function PreviewStep() {
       docxEditor: !!state.docxEditor,
     });
 
-    // Only initialize if we have required data and no existing editor
+    // Check if we need to initialize or reconnect editor
     if (
       state.templateDocument &&
       state.dataJson &&
-      !state.docxEditor &&
       !isInitializing.current
     ) {
-      console.log('🎆 Initializing DOCX editor for preview');
-      // Wrap initialization in try-catch to handle any SDK errors
-      try {
-        initializeDocxEditor();
-      } catch (error) {
-        console.warn('⚠️ Error in initializeDocxEditor:', error);
-        // Don't let this error break the component
+      if (!state.docxEditor) {
+        console.log('🎆 Initializing DOCX editor for preview');
+        // Wrap initialization in try-catch to handle any SDK errors
+        try {
+          initializeDocxEditor();
+        } catch (error) {
+          console.warn('⚠️ Error in initializeDocxEditor:', error);
+          // Don't let this error break the component
+        }
+      } else {
+        // Editor exists but might need reconnection to DOM
+        console.log('🔄 Checking if existing DOCX editor needs reconnection...');
+        
+        // Check if the current container is empty or if we need to reinitialize
+        const currentContainer = editorRef.current;
+        
+        if (!currentContainer || currentContainer.children.length === 0) {
+          console.log('🔄 DOCX editor container is empty, reinitializing...');
+          // Clear the disconnected editor from state and reinitialize
+          dispatch({ type: 'SET_DOCX_EDITOR', payload: null });
+          setTimeout(() => {
+            if (!isInitializing.current) {
+              try {
+                initializeDocxEditor();
+              } catch (error) {
+                console.warn('⚠️ Error in reinitializeDocxEditor:', error);
+              }
+            }
+          }, 100);
+        } else {
+          console.log('✅ DOCX editor container has content, assuming ready');
+        }
       }
     } else {
       console.log('🚫 Not initializing DOCX editor:', {

@@ -187,14 +187,32 @@
                 "pPr": {
                   "styleId": "Normal",
                   "alignment": "left",
-                  "indentation": { "firstLineShift": 0, "left": 0, "right": 0 },
-                  "lineSpacingFactor": 1.08,
+                  "indentation": {
+                    "firstLineShift": 0,
+                    "left": 20,
+                    "right": 0
+                  },
+                  "lineSpacingFactor": 1.0,
                   "spaceBefore": 0,
-                  "spaceAfter": 8
+                  "spaceAfter": 0
                 },
-                "elements": [
-                  { "type": "r", "text": "{{#items}}☐{{text}}{{/items}}" }
-                ]
+                "elements": [{ "type": "r", "text": "{{#items}}• {{text}}" }]
+              },
+              {
+                "type": "p",
+                "pPr": {
+                  "styleId": "Normal",
+                  "alignment": "left",
+                  "indentation": {
+                    "firstLineShift": 0,
+                    "left": 20,
+                    "right": 0
+                  },
+                  "lineSpacingFactor": 1.0,
+                  "spaceBefore": 0,
+                  "spaceAfter": 0
+                },
+                "elements": [{ "type": "r", "text": "{{/items}}" }]
               },
               {
                 "type": "p",

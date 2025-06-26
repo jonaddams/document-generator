@@ -131,10 +131,17 @@ export default function DownloadStep() {
             // Create a fresh copy of the PDF document to ensure it's not detached
             const pdfDocumentCopy = state.pdfDocument.slice();
 
-            viewer = await window.NutrientViewer.load({
+            const viewerConfig: {
+              container: string;
+              document: ArrayBuffer;
+              licenseKey?: string;
+            } = {
               container: `#${containerId}`, // Use CSS selector as expected by NutrientViewer
               document: pdfDocumentCopy,
-            });
+              licenseKey: process.env.NEXT_PUBLIC_NUTRIENT_LICENSE_KEY,
+            };
+
+            viewer = await window.NutrientViewer.load(viewerConfig);
             console.log('✅ PDF viewer initialized successfully');
             break;
           } catch (loadError) {

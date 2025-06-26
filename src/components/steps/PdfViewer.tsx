@@ -37,10 +37,17 @@ export default function PdfViewer({
         const containerId = 'pdf-viewer-container';
         viewerRef.current.id = containerId;
 
-        const viewer = await window.NutrientViewer.load({
+        const viewerConfig: {
+          container: string;
+          document: ArrayBuffer;
+          licenseKey?: string;
+        } = {
           container: `#${containerId}`,
           document: pdfBuffer,
-        });
+          licenseKey: process.env.NEXT_PUBLIC_NUTRIENT_LICENSE_KEY,
+        };
+
+        const viewer = await window.NutrientViewer.load(viewerConfig);
         updateAppState({ pdfViewer: viewer });
       }
     } catch (error) {

@@ -203,10 +203,42 @@ export default function DataStep() {
       !!state.dataEditor
     );
 
-    // Only initialize if we have a template and no existing editor
-    if (state.template && !state.dataEditor && !isInitializing.current) {
-      console.log('🎆 Initializing data editor for template:', state.template);
-      initializeDataEditor();
+    // Check if we need to initialize or reconnect editor
+    if (state.template && !isInitializing.current) {
+      if (!state.dataEditor) {
+        console.log('🎆 Initializing data editor for template:', state.template);
+        initializeDataEditor();
+      } else {
+        // Editor exists but might need reconnection to DOM
+        console.log('🔄 Checking if existing editor needs reconnection...');
+        
+        // Check if editor is properly connected to current DOM
+        const editorElement = state.dataEditor.getWrapperElement();
+        const currentContainer = editorContainerRef.current;
+        
+        if (!editorElement || !editorElement.isConnected || 
+            !currentContainer || !currentContainer.contains(editorElement)) {
+          console.log('🔄 Editor disconnected from DOM, reinitializing...');
+          // Clear the disconnected editor from state and reinitialize
+          dispatch({ type: 'SET_DATA_EDITOR', payload: null });
+          setTimeout(() => {
+            if (!isInitializing.current) {
+              initializeDataEditor();
+            }
+          }, 100);
+        } else {
+          // Editor is connected, but ensure it has the current data
+          console.log('✅ Editor connected, updating content...');
+          if (state.dataJson) {
+            const currentValue = state.dataEditor.getValue();
+            const expectedValue = JSON.stringify(state.dataJson, null, 2);
+            if (currentValue !== expectedValue) {
+              console.log('🔄 Updating editor content with current data');
+              state.dataEditor.setValue(expectedValue);
+            }
+          }
+        }
+      }
     } else {
       console.log('🚫 Not initializing data editor:', {
         hasTemplate: !!state.template,
@@ -215,7 +247,7 @@ export default function DataStep() {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.template, dispatch, initializeDataEditor]); // Only depend on template and initialization function, intentionally not including state.dataEditor to avoid infinite loop
+  }, [state.template, state.dataJson, dispatch, initializeDataEditor]); // Include dataJson to detect when content needs updating
 
   // Separate effect to handle cleanup when template changes
   useEffect(() => {
@@ -342,13 +374,15 @@ export default function DataStep() {
       try {
         const jsonData = await readJsonFile(file);
 
-        // Update the CodeMirror editor with the uploaded JSON
+        // Always update state with uploaded JSON
+        dispatch({
+          type: 'SET_DATA_JSON',
+          payload: jsonData as TemplateData,
+        });
+
+        // Update the CodeMirror editor if it exists
         if (state.dataEditor) {
           state.dataEditor.setValue(JSON.stringify(jsonData, null, 2));
-          dispatch({
-            type: 'SET_DATA_JSON',
-            payload: jsonData as TemplateData,
-          });
         }
 
         setUploadedJsonFile(file);
