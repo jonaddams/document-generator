@@ -210,15 +210,13 @@ export default function DataStep() {
         initializeDataEditor();
       } else {
         // Editor exists but might need reconnection to DOM
-        console.log('🔄 Checking if existing editor needs reconnection...');
+        console.log('🔄 Checking if existing data editor needs reconnection...');
         
-        // Check if editor is properly connected to current DOM
-        const editorElement = state.dataEditor.getWrapperElement();
+        // Check if the current container is empty or if we need to reinitialize
         const currentContainer = editorContainerRef.current;
         
-        if (!editorElement || !editorElement.isConnected || 
-            !currentContainer || !currentContainer.contains(editorElement)) {
-          console.log('🔄 Editor disconnected from DOM, reinitializing...');
+        if (!currentContainer || currentContainer.children.length === 0) {
+          console.log('🔄 Data editor container is empty, reinitializing...');
           // Clear the disconnected editor from state and reinitialize
           dispatch({ type: 'SET_DATA_EDITOR', payload: null });
           setTimeout(() => {
@@ -227,8 +225,8 @@ export default function DataStep() {
             }
           }, 100);
         } else {
-          // Editor is connected, but ensure it has the current data
-          console.log('✅ Editor connected, updating content...');
+          // Editor container has content, ensure it has the current data
+          console.log('✅ Data editor container has content, updating data...');
           if (state.dataJson) {
             const currentValue = state.dataEditor.getValue();
             const expectedValue = JSON.stringify(state.dataJson, null, 2);
