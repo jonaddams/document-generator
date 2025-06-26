@@ -24,7 +24,10 @@ export default function TemplateEditor({
   const isInitializing = useRef(false);
 
   const initializeEditor = useCallback(async () => {
-    console.log('🔄 TemplateEditor: Initializing for template:', appState.template);
+    console.log(
+      '🔄 TemplateEditor: Initializing for template:',
+      appState.template
+    );
 
     if (isInitializing.current) {
       console.log('⏸️ Initialization already in progress, skipping');
@@ -35,8 +38,10 @@ export default function TemplateEditor({
     let attempts = 0;
     const maxAttempts = 20;
     while (!editorRef.current && attempts < maxAttempts) {
-      console.log(`🔄 Waiting for editor ref (attempt ${attempts + 1}/${maxAttempts})...`);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      console.log(
+        `🔄 Waiting for editor ref (attempt ${attempts + 1}/${maxAttempts})...`
+      );
+      await new Promise((resolve) => setTimeout(resolve, 100));
       attempts++;
     }
 
@@ -56,10 +61,13 @@ export default function TemplateEditor({
     if (rect.width === 0 || rect.height === 0) {
       console.warn('❌ Editor ref element has zero dimensions:', rect);
       // Wait a bit more for layout to complete
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
       const newRect = editorRef.current.getBoundingClientRect();
       if (newRect.width === 0 || newRect.height === 0) {
-        console.warn('❌ Editor ref element still has zero dimensions after waiting:', newRect);
+        console.warn(
+          '❌ Editor ref element still has zero dimensions after waiting:',
+          newRect
+        );
         return;
       }
     }
@@ -111,14 +119,16 @@ export default function TemplateEditor({
 
       // Initialize editor
       console.log('🖊️ Creating template editor...');
-      
+
       // Clear any existing content in the container
       const container = editorRef.current;
       if (!container) {
-        console.warn('❌ Container became null during template editor initialization');
+        console.warn(
+          '❌ Container became null during template editor initialization'
+        );
         return;
       }
-      
+
       while (container.firstChild) {
         const child = container.firstChild;
         if (child.parentNode === container) {
@@ -128,28 +138,30 @@ export default function TemplateEditor({
           break;
         }
       }
-      
+
       // Ensure container is properly styled and stable for the SDK
       if (!container.id) {
         container.id = `template-editor-${Date.now()}`;
       }
       container.style.position = 'relative';
       container.style.overflow = 'hidden';
-      
+
       // Wait a frame to ensure DOM is completely settled
-      await new Promise(resolve => requestAnimationFrame(resolve));
-      
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+
       // Final validation before SDK call
       if (!container.isConnected || !container.parentElement) {
-        console.warn('❌ Template container became disconnected before editor creation');
+        console.warn(
+          '❌ Template container became disconnected before editor creation'
+        );
         return;
       }
-      
+
       console.log('📝 Container cleared, creating editor with dimensions:', {
         width: container.getBoundingClientRect().width,
-        height: container.getBoundingClientRect().height
+        height: container.getBoundingClientRect().height,
       });
-      
+
       try {
         const editor = await docAuthSystem.createEditor(container, {
           document: templateDocument,
@@ -157,21 +169,30 @@ export default function TemplateEditor({
         console.log('✅ Template editor ready');
         updateAppState({ templateEditor: editor });
       } catch (sdkError) {
-        console.error('❌ Document Authoring SDK error in template editor:', sdkError);
+        console.error(
+          '❌ Document Authoring SDK error in template editor:',
+          sdkError
+        );
         // Try to recover by retrying after a short delay
         console.log('🔄 Retrying template SDK initialization after delay...');
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
         // Re-validate container is still available
         if (container.isConnected && container.parentElement) {
           try {
             const editor = await docAuthSystem.createEditor(container, {
               document: templateDocument,
             });
-            console.log('✅ Template editor created successfully on retry:', editor);
+            console.log(
+              '✅ Template editor created successfully on retry:',
+              editor
+            );
             updateAppState({ templateEditor: editor });
           } catch (retryError) {
-            console.error('❌ Template Document Authoring SDK retry failed:', retryError);
+            console.error(
+              '❌ Template Document Authoring SDK retry failed:',
+              retryError
+            );
             throw retryError;
           }
         } else {
@@ -198,7 +219,11 @@ export default function TemplateEditor({
 
   useEffect(() => {
     // Only initialize if we have a template and don't already have an editor
-    if (appState.template && !appState.templateEditor && !isInitializing.current) {
+    if (
+      appState.template &&
+      !appState.templateEditor &&
+      !isInitializing.current
+    ) {
       initializeEditor();
     }
 
@@ -209,7 +234,12 @@ export default function TemplateEditor({
         updateAppState({ templateEditor: null });
       }
     };
-  }, [appState.template, appState.templateEditor, initializeEditor, updateAppState]);
+  }, [
+    appState.template,
+    appState.templateEditor,
+    initializeEditor,
+    updateAppState,
+  ]);
 
   const handleBackToSelection = useCallback(async () => {
     if (appState.templateEditor) {
@@ -241,8 +271,8 @@ export default function TemplateEditor({
             </div>
           </div>
         )}
-        <div 
-          ref={editorRef} 
+        <div
+          ref={editorRef}
           className="nutri-editor h-full m-6"
           style={{ minHeight: '500px', width: '100%' }}
         />

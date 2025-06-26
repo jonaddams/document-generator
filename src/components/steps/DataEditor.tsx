@@ -14,10 +14,10 @@ interface DataEditorProps {
   navigateToStep: (step: 'template-editor' | 'docx-editor') => Promise<void>;
 }
 
-export default function DataEditor({ 
-  appState, 
-  updateAppState, 
-  navigateToStep 
+export default function DataEditor({
+  appState,
+  updateAppState,
+  navigateToStep,
 }: DataEditorProps) {
   const editorContainerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -30,15 +30,17 @@ export default function DataEditor({
       template: appState.template,
       hasDataJson: !!appState.dataJson,
       hasDataEditor: !!appState.dataEditor,
-      windowCodeMirror: !!window.CodeMirror
+      windowCodeMirror: !!window.CodeMirror,
     });
 
     // Wait for ref to be available with timeout
     let attempts = 0;
     const maxAttempts = 20;
     while (!editorContainerRef.current && attempts < maxAttempts) {
-      console.log(`🔄 Waiting for editor container ref (attempt ${attempts + 1}/${maxAttempts})...`);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      console.log(
+        `🔄 Waiting for editor container ref (attempt ${attempts + 1}/${maxAttempts})...`
+      );
+      await new Promise((resolve) => setTimeout(resolve, 100));
       attempts++;
     }
 
@@ -56,16 +58,22 @@ export default function DataEditor({
     // Ensure the element has proper dimensions
     const rect = editorContainerRef.current.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) {
-      console.warn('❌ Editor container ref element has zero dimensions:', rect);
+      console.warn(
+        '❌ Editor container ref element has zero dimensions:',
+        rect
+      );
       // Wait a bit more for layout to complete
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
       const newRect = editorContainerRef.current.getBoundingClientRect();
       if (newRect.width === 0 || newRect.height === 0) {
-        console.warn('❌ Editor container ref element still has zero dimensions after waiting:', newRect);
+        console.warn(
+          '❌ Editor container ref element still has zero dimensions after waiting:',
+          newRect
+        );
         return;
       }
     }
-    
+
     if (!appState.template) {
       console.warn('❌ No template selected');
       return;
@@ -98,14 +106,17 @@ export default function DataEditor({
       if (dataJson) {
         console.log('🖊️ Creating CodeMirror editor...');
         console.log('Editor container:', editorContainerRef.current);
-        
+
         const textarea = document.createElement('textarea');
         textarea.value = JSON.stringify(dataJson, null, 2);
-        console.log('📝 JSON data to edit:', JSON.stringify(dataJson, null, 2).substring(0, 200) + '...');
-        
+        console.log(
+          '📝 JSON data to edit:',
+          JSON.stringify(dataJson, null, 2).substring(0, 200) + '...'
+        );
+
         // Clear container and add textarea safely
         const container = editorContainerRef.current;
-        
+
         // Only clear if there's no active CodeMirror editor
         if (!appState.dataEditor) {
           while (container.firstChild) {
@@ -118,11 +129,11 @@ export default function DataEditor({
             }
           }
         }
-        
+
         container.appendChild(textarea);
         console.log('📝 Textarea added to container, dimensions:', {
           width: container.getBoundingClientRect().width,
-          height: container.getBoundingClientRect().height
+          height: container.getBoundingClientRect().height,
         });
 
         // Initialize CodeMirror
@@ -160,14 +171,19 @@ export default function DataEditor({
         appState: {
           template: appState.template,
           hasDataJson: !!appState.dataJson,
-          hasDataEditor: !!appState.dataEditor
-        }
+          hasDataEditor: !!appState.dataEditor,
+        },
       });
     } finally {
       setIsLoading(false);
       console.log('🏁 DataEditor initialization finished');
     }
-  }, [appState.template, appState.dataJson, appState.dataEditor, updateAppState]);
+  }, [
+    appState.template,
+    appState.dataJson,
+    appState.dataEditor,
+    updateAppState,
+  ]);
 
   useEffect(() => {
     console.log('🔄 DataEditor useEffect mounted');
@@ -184,13 +200,21 @@ export default function DataEditor({
         try {
           appState.dataEditor.toTextArea();
         } catch (error) {
-          console.warn('⚠️ CodeMirror cleanup failed (likely due to missing DOM elements):', error);
+          console.warn(
+            '⚠️ CodeMirror cleanup failed (likely due to missing DOM elements):',
+            error
+          );
           // Continue with cleanup even if toTextArea fails
         }
         updateAppState({ dataEditor: null });
       }
     };
-  }, [appState.template, appState.dataEditor, initializeDataEditor, updateAppState]);
+  }, [
+    appState.template,
+    appState.dataEditor,
+    initializeDataEditor,
+    updateAppState,
+  ]);
 
   const handleBackToTemplate = useCallback(async () => {
     console.log('⬅️ Navigating back to template editor');
@@ -202,9 +226,9 @@ export default function DataEditor({
         console.warn('⚠️ CodeMirror cleanup failed during navigation:', error);
       }
     }
-    updateAppState({ 
+    updateAppState({
       dataEditor: null,
-      dataJson: null 
+      dataJson: null,
     });
     await navigateToStep('template-editor');
   }, [appState.dataEditor, updateAppState, navigateToStep]);
@@ -219,7 +243,7 @@ export default function DataEditor({
     try {
       const jsonString = appState.dataEditor.getValue();
       console.log('📝 Current JSON string length:', jsonString.length);
-      
+
       if (!validateJsonString(jsonString)) {
         console.warn('❌ JSON validation failed');
         setJsonError('Please fix JSON errors before proceeding');
@@ -229,7 +253,7 @@ export default function DataEditor({
       const dataJson = JSON.parse(jsonString);
       console.log('✅ JSON parsed successfully:', dataJson);
       updateAppState({ dataJson });
-      
+
       await navigateToStep('docx-editor');
     } catch (error) {
       console.error('❌ Error processing JSON:', error);
@@ -242,7 +266,7 @@ export default function DataEditor({
     template: appState.template,
     hasDataJson: !!appState.dataJson,
     hasDataEditor: !!appState.dataEditor,
-    jsonError
+    jsonError,
   });
 
   return (
@@ -250,7 +274,7 @@ export default function DataEditor({
       <div className="nutri-card-header flex-shrink-0">
         <h2 className="text-2xl font-bold">{STEP_TITLES['data-editor']}</h2>
       </div>
-      
+
       <div className="nutri-card-content flex-1 min-h-0 flex flex-col p-6 relative">
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center z-10 bg-white bg-opacity-75">
@@ -265,13 +289,13 @@ export default function DataEditor({
             <p className="text-red-700 text-sm">{jsonError}</p>
           </div>
         )}
-        <div 
+        <div
           ref={editorContainerRef}
           className="w-full flex-1 min-h-0"
           style={{ minHeight: '300px' }}
         />
       </div>
-      
+
       <div className="nutri-card-footer flex-shrink-0 relative z-10">
         <div className="flex justify-between">
           <button

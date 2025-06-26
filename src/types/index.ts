@@ -1,7 +1,13 @@
 // Document Authoring SDK Types
 export interface DocAuthSystem {
-  createEditor: (element: HTMLElement, options: { document: DocAuthDocument }) => Promise<DocAuthEditor>;
-  createViewer: (element: HTMLElement, options: { document: DocAuthDocument }) => Promise<DocAuthViewer>;
+  createEditor: (
+    element: HTMLElement,
+    options: { document: DocAuthDocument }
+  ) => Promise<DocAuthEditor>;
+  createViewer: (
+    element: HTMLElement,
+    options: { document: DocAuthDocument }
+  ) => Promise<DocAuthViewer>;
   importDOCX: (buffer: ArrayBuffer) => Promise<DocAuthDocument>;
   loadDocument: (docJson: unknown) => Promise<DocAuthDocument>;
 }
@@ -74,7 +80,12 @@ export interface TemplateData {
 }
 
 // Step Management Types
-export type StepType = 'template-selection' | 'template-editor' | 'data-editor' | 'docx-editor' | 'pdf-viewer';
+export type StepType =
+  | 'template-selection'
+  | 'template-editor'
+  | 'data-editor'
+  | 'docx-editor'
+  | 'pdf-viewer';
 
 export interface StepState {
   currentStep: StepType;
@@ -129,7 +140,10 @@ declare global {
       }) => Promise<PSPDFKitViewer>;
     };
     CodeMirror: {
-      fromTextArea: (textarea: HTMLTextAreaElement, options: Record<string, unknown>) => CodeMirrorInstance;
+      fromTextArea: (
+        textarea: HTMLTextAreaElement,
+        options: Record<string, unknown>
+      ) => CodeMirrorInstance;
     };
   }
 }

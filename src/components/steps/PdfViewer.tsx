@@ -14,10 +14,10 @@ interface PdfViewerProps {
   navigateToStep: (step: 'docx-editor') => Promise<void>;
 }
 
-export default function PdfViewer({ 
-  appState, 
-  updateAppState, 
-  navigateToStep 
+export default function PdfViewer({
+  appState,
+  updateAppState,
+  navigateToStep,
 }: PdfViewerProps) {
   const viewerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -36,7 +36,7 @@ export default function PdfViewer({
         // Give the container a unique ID for NutrientViewer
         const containerId = 'pdf-viewer-container';
         viewerRef.current.id = containerId;
-        
+
         const viewer = await window.NutrientViewer.load({
           container: `#${containerId}`,
           document: pdfBuffer,
@@ -90,7 +90,7 @@ export default function PdfViewer({
       <div className="nutri-card-header">
         <h2 className="text-2xl font-bold">{STEP_TITLES['pdf-viewer']}</h2>
       </div>
-      
+
       <div className="nutri-card-content">
         {isLoading ? (
           <div className="flex items-center justify-center h-64">
@@ -100,13 +100,10 @@ export default function PdfViewer({
             </div>
           </div>
         ) : (
-          <div 
-            ref={viewerRef}
-            className="nutri-viewer"
-          />
+          <div ref={viewerRef} className="nutri-viewer" />
         )}
       </div>
-      
+
       <div className="nutri-card-footer">
         <div className="flex justify-between">
           <button

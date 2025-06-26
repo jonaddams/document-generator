@@ -194,7 +194,9 @@
                   "spaceBefore": 0,
                   "spaceAfter": 8
                 },
-                "elements": [{ "type": "r", "text": "Invoice {{invoice_number}}" }]
+                "elements": [
+                  { "type": "r", "text": "Invoice {{invoice_number}}" }
+                ]
               },
               {
                 "type": "t",
@@ -408,7 +410,9 @@
                           {
                             "type": "p",
                             "pPr": { "spaceBefore": 0, "spaceAfter": 0 },
-                            "elements": [{ "type": "r", "text": "{{customer_name}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{customer_name}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -454,7 +458,9 @@
                           {
                             "type": "p",
                             "pPr": { "spaceBefore": 0, "spaceAfter": 0 },
-                            "elements": [{ "type": "r", "text": "{{recipient_name}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{recipient_name}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -504,7 +510,9 @@
                           {
                             "type": "p",
                             "pPr": { "spaceBefore": 0, "spaceAfter": 0 },
-                            "elements": [{ "type": "r", "text": "{{customer_id}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{customer_id}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -550,7 +558,9 @@
                           {
                             "type": "p",
                             "pPr": { "spaceBefore": 0, "spaceAfter": 0 },
-                            "elements": [{ "type": "r", "text": "{{recipient_address}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{recipient_address}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -600,7 +610,9 @@
                           {
                             "type": "p",
                             "pPr": { "spaceBefore": 0, "spaceAfter": 0 },
-                            "elements": [{ "type": "r", "text": "{{customer_address}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{customer_address}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -646,7 +658,9 @@
                           {
                             "type": "p",
                             "pPr": { "spaceBefore": 0, "spaceAfter": 0 },
-                            "elements": [{ "type": "r", "text": "{{recipient_phone}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{recipient_phone}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -696,7 +710,9 @@
                           {
                             "type": "p",
                             "pPr": { "spaceBefore": 0, "spaceAfter": 0 },
-                            "elements": [{ "type": "r", "text": "{{customer_phone}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{customer_phone}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -786,7 +802,9 @@
                           {
                             "type": "p",
                             "pPr": { "spaceBefore": 0, "spaceAfter": 0 },
-                            "elements": [{ "type": "r", "text": "{{payment_due_date}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{payment_due_date}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -832,7 +850,9 @@
                           {
                             "type": "p",
                             "pPr": { "spaceBefore": 0, "spaceAfter": 0 },
-                            "elements": [{ "type": "r", "text": "{{delivery_date}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{delivery_date}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -882,7 +902,9 @@
                           {
                             "type": "p",
                             "pPr": { "spaceBefore": 0, "spaceAfter": 0 },
-                            "elements": [{ "type": "r", "text": "{{salesperson}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{salesperson}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -928,7 +950,9 @@
                           {
                             "type": "p",
                             "pPr": { "spaceBefore": 0, "spaceAfter": 0 },
-                            "elements": [{ "type": "r", "text": "{{shipping_method}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{shipping_method}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -978,7 +1002,9 @@
                           {
                             "type": "p",
                             "pPr": { "spaceBefore": 0, "spaceAfter": 0 },
-                            "elements": [{ "type": "r", "text": "{{payment_terms}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{payment_terms}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -1024,7 +1050,9 @@
                           {
                             "type": "p",
                             "pPr": { "spaceBefore": 0, "spaceAfter": 0 },
-                            "elements": [{ "type": "r", "text": "{{shipping_terms}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{shipping_terms}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -1311,7 +1339,9 @@
                           {
                             "type": "p",
                             "pPr": { "spaceBefore": 0, "spaceAfter": 0 },
-                            "elements": [{ "type": "r", "text": "{{#items}}{{quantity}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{#items}}{{quantity}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -1351,7 +1381,9 @@
                           {
                             "type": "p",
                             "pPr": { "spaceBefore": 0, "spaceAfter": 0 },
-                            "elements": [{ "type": "r", "text": "{{description}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{description}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -1399,7 +1431,9 @@
                               "spaceBefore": 0,
                               "spaceAfter": 0
                             },
-                            "elements": [{ "type": "r", "text": "{{discount}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{discount}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -1423,7 +1457,9 @@
                               "spaceBefore": 0,
                               "spaceAfter": 0
                             },
-                            "elements": [{ "type": "r", "text": "{{total}} {{/items}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{total}} {{/items}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -1535,7 +1571,9 @@
                               "spaceBefore": 0,
                               "spaceAfter": 0
                             },
-                            "elements": [{ "type": "r", "text": "Total Discount " }]
+                            "elements": [
+                              { "type": "r", "text": "Total Discount " }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -1559,7 +1597,9 @@
                               "spaceBefore": 0,
                               "spaceAfter": 0
                             },
-                            "elements": [{ "type": "r", "text": "{{total_discount}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{total_discount}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -1695,7 +1735,9 @@
                               "spaceBefore": 0,
                               "spaceAfter": 0
                             },
-                            "elements": [{ "type": "r", "text": "{{subtotal}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{subtotal}}" }
+                            ]
                           }
                         ],
                         "tcPr": {
@@ -1831,7 +1873,9 @@
                               "spaceBefore": 0,
                               "spaceAfter": 0
                             },
-                            "elements": [{ "type": "r", "text": "{{sales_tax}}" }]
+                            "elements": [
+                              { "type": "r", "text": "{{sales_tax}}" }
+                            ]
                           }
                         ],
                         "tcPr": {

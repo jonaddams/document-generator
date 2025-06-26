@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       height: {
-        'editor': '64rem', // 1024px equivalent
+        editor: '64rem', // 1024px equivalent
       },
     },
   },

@@ -1,7 +1,14 @@
 'use client';
 
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
-import { DocAuthSystem, DocAuthDocument, DocAuthEditor, CodeMirrorInstance, PSPDFKitViewer, TemplateData } from '@/types';
+import {
+  DocAuthSystem,
+  DocAuthDocument,
+  DocAuthEditor,
+  CodeMirrorInstance,
+  PSPDFKitViewer,
+  TemplateData,
+} from '@/types';
 
 // Types
 export interface WizardStep {
@@ -107,14 +114,19 @@ const initialState: WizardState = {
 
 // Reducer
 function wizardReducer(state: WizardState, action: WizardAction): WizardState {
-  console.log('🏪 WizardReducer:', action.type, 'payload:', 'payload' in action ? action.payload : 'none');
+  console.log(
+    '🏪 WizardReducer:',
+    action.type,
+    'payload:',
+    'payload' in action ? action.payload : 'none'
+  );
   console.log('🏪 Current state before action:', {
     template: state.template,
     currentStep: state.currentStep,
     templateEditor: !!state.templateEditor,
-    templateDocument: !!state.templateDocument
+    templateDocument: !!state.templateDocument,
   });
-  
+
   switch (action.type) {
     case 'SET_CURRENT_STEP':
       return {
@@ -206,7 +218,12 @@ export function WizardProvider({ children }: { children: ReactNode }) {
   };
 
   const prevStep = () => {
-    console.log('⬅️ prevStep called, current step:', state.currentStep, 'template:', state.template);
+    console.log(
+      '⬅️ prevStep called, current step:',
+      state.currentStep,
+      'template:',
+      state.template
+    );
     if (state.currentStep > 0) {
       dispatch({ type: 'SET_CURRENT_STEP', payload: state.currentStep - 1 });
     }
@@ -232,9 +249,7 @@ export function WizardProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <WizardContext.Provider value={value}>
-      {children}
-    </WizardContext.Provider>
+    <WizardContext.Provider value={value}>{children}</WizardContext.Provider>
   );
 }
 

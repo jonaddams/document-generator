@@ -7,6 +7,7 @@ This is a modern, production-ready document generation application built with Ne
 ## ✨ Features
 
 ### 🎯 Complete Document Workflow
+
 Transform templates into professional documents through an intuitive 5-step process:
 
 1. **📋 Choose Template** - Select from predefined templates (Invoice, Checklist, Menu) or upload custom DOCX files
@@ -16,6 +17,7 @@ Transform templates into professional documents through an intuitive 5-step proc
 5. **📄 Download** - Generate and download your final PDF with perfect fidelity
 
 ### 🚀 Modern Technology Stack
+
 - **Next.js 14+** with App Router
 - **TypeScript** with strict type safety
 - **Tailwind CSS** with custom Nutrient branding
@@ -25,6 +27,7 @@ Transform templates into professional documents through an intuitive 5-step proc
 - **CodeMirror** for JSON editing with syntax highlighting
 
 ### 💼 Professional Features
+
 - **Responsive Design** - Works seamlessly on desktop and mobile
 - **Error Handling** - Comprehensive error boundaries and user feedback
 - **Memory Management** - Automatic cleanup of SDK instances
@@ -35,24 +38,29 @@ Transform templates into professional documents through an intuitive 5-step proc
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 16+ 
+
+- Node.js 16+
 - npm or yarn package manager
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd document-generator
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
+
    This automatically copies the Nutrient Web SDK files to `./public/web-sdk/`
 
 3. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -76,6 +84,7 @@ npm run type-check  # Run TypeScript compiler check
 ## 🏗️ Architecture
 
 ### Project Structure
+
 ```
 src/
 ├── app/                          # Next.js App Router
@@ -112,20 +121,25 @@ public/
 ### Key Components
 
 #### WizardContext
+
 Central state management using React Context and useReducer:
+
 - **Template Selection** - Manages selected templates and custom uploads
 - **Document State** - Tracks all SDK instances and documents
 - **Step Navigation** - Controls wizard flow and completion status
 - **Error Handling** - Global error state management
 
 #### Step Components
+
 Each step is a self-contained React component:
+
 - **Initialization** - SDK setup and document loading
 - **Memory Management** - Automatic cleanup on unmount
 - **Error Boundaries** - Graceful error handling
 - **Type Safety** - Full TypeScript integration
 
 #### JSON Data Features
+
 - **Interactive Preview** - Expandable tree view with icons
 - **Simple Preview** - Text-based hierarchical display
 - **File Upload** - Drag & drop JSON files for custom templates
@@ -135,6 +149,7 @@ Each step is a self-contained React component:
 ## 🎨 UI/UX Features
 
 ### Design System
+
 - **Tailwind CSS** with custom Nutrient color palette
 - **Responsive Grid** layouts for all screen sizes
 - **Interactive Elements** with hover states and transitions
@@ -142,6 +157,7 @@ Each step is a self-contained React component:
 - **Error States** with clear user feedback
 
 ### Accessibility
+
 - **Screen Reader Support** with proper ARIA labels
 - **Keyboard Navigation** for all interactive elements
 - **Focus Management** with visible focus indicators
@@ -150,6 +166,7 @@ Each step is a self-contained React component:
 ## 🔧 Technical Implementation
 
 ### Document Processing Flow
+
 1. **Template Loading** - DocJSON from templates or DOCX import
 2. **Template Editing** - Document Authoring SDK integration
 3. **Data Preparation** - JSON editing with validation
@@ -158,11 +175,12 @@ Each step is a self-contained React component:
 6. **PDF Export** - High-fidelity PDF generation
 
 ### Memory Management
+
 ```typescript
 useEffect(() => {
   // Component initialization
   initializeEditor();
-  
+
   return () => {
     // Automatic cleanup
     if (editor) {
@@ -173,7 +191,9 @@ useEffect(() => {
 ```
 
 ### Type Safety
+
 All components use strict TypeScript with proper interfaces:
+
 ```typescript
 interface WizardState {
   currentStep: number;
@@ -186,11 +206,13 @@ interface WizardState {
 ## 🔌 SDK Integration
 
 ### Document Authoring SDK
+
 - **Template Creation** - Edit DocJSON templates
 - **Document Editing** - Modify populated DOCX files
 - **PDF Export** - Generate final PDFs
 
 ### Web SDK (PSPDFKit)
+
 - **Template Population** - Fill templates with data
 - **PDF Viewing** - Display generated PDFs
 - **Memory Management** - Proper cleanup and unloading
@@ -198,12 +220,14 @@ interface WizardState {
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
+
 ```bash
 npm run build
 # Deploy to Vercel with automatic Next.js detection
 ```
 
 ### Manual Deployment
+
 ```bash
 npm run build
 npm start
@@ -211,16 +235,19 @@ npm start
 ```
 
 ### Environment Configuration
+
 The application works out of the box with no additional environment variables required.
 
 ## 🧪 Development
 
 ### Code Quality
+
 - **ESLint** - Code linting with Next.js rules
 - **TypeScript** - Strict type checking
 - **Prettier** - Code formatting (configurable)
 
 ### Best Practices
+
 - **Component Isolation** - Each step is self-contained
 - **Error Boundaries** - Graceful error handling
 - **Memory Management** - Automatic SDK cleanup
@@ -245,6 +272,7 @@ The application works out of the box with no additional environment variables re
 ## 📄 License
 
 This project demonstrates Nutrient SDK capabilities. Please respect the licensing terms for all dependencies:
+
 - Next.js - MIT License
 - Tailwind CSS - MIT License
 - CodeMirror - MIT License
@@ -253,6 +281,7 @@ This project demonstrates Nutrient SDK capabilities. Please respect the licensin
 ## 🆘 Support
 
 For technical support or questions about Nutrient SDKs:
+
 - 📖 [Documentation](https://www.nutrient.io/sdk)
 - 💬 [Support Portal](https://www.nutrient.io/support)
 - 🐛 [Report Issues](https://github.com/your-repo/issues)

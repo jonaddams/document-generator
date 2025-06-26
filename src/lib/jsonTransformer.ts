@@ -14,7 +14,11 @@ export function transformJsonToReadable(jsonData: JsonData): string {
   return result.join('\n');
 }
 
-function processObject(obj: Record<string, unknown>, result: string[], indentLevel: number): void {
+function processObject(
+  obj: Record<string, unknown>,
+  result: string[],
+  indentLevel: number
+): void {
   const indent = '    '.repeat(indentLevel); // 4 spaces per level
 
   for (const [key, value] of Object.entries(obj)) {
@@ -39,7 +43,11 @@ function processObject(obj: Record<string, unknown>, result: string[], indentLev
   }
 }
 
-function processArray(arr: unknown[], result: string[], indentLevel: number): void {
+function processArray(
+  arr: unknown[],
+  result: string[],
+  indentLevel: number
+): void {
   const indent = '    '.repeat(indentLevel);
 
   arr.forEach((item, index) => {

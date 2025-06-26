@@ -8,26 +8,26 @@ interface LoadingSpinnerProps {
   className?: string;
 }
 
-export default function LoadingSpinner({ 
-  message = 'Loading...', 
+export default function LoadingSpinner({
+  message = 'Loading...',
   size = 'md',
-  className = '' 
+  className = '',
 }: LoadingSpinnerProps) {
   const sizeClasses = {
     sm: 'h-4 w-4',
     md: 'h-8 w-8',
-    lg: 'h-12 w-12'
+    lg: 'h-12 w-12',
   };
 
   return (
-    <div 
+    <div
       className={`flex items-center justify-center ${className}`}
       role="status"
       aria-live="polite"
       aria-label={message}
     >
       <div className="text-center">
-        <div 
+        <div
           className={`animate-spin rounded-full border-b-2 border-blue-600 mx-auto mb-2 ${sizeClasses[size]}`}
           aria-hidden="true"
         />
@@ -44,11 +44,11 @@ interface ProgressBarProps {
   className?: string;
 }
 
-export function ProgressBar({ 
-  progress, 
-  label, 
+export function ProgressBar({
+  progress,
+  label,
   showPercentage = true,
-  className = '' 
+  className = '',
 }: ProgressBarProps) {
   const percentage = Math.round(Math.max(0, Math.min(100, progress)));
 
@@ -62,7 +62,7 @@ export function ProgressBar({
           )}
         </div>
       )}
-      <div 
+      <div
         className="w-full bg-gray-200 rounded-full h-2.5"
         role="progressbar"
         aria-valuenow={percentage}
@@ -70,8 +70,8 @@ export function ProgressBar({
         aria-valuemax={100}
         aria-label={label || 'Progress'}
       >
-        <div 
-          className="bg-blue-600 h-2.5 rounded-full transition-all duration-300 ease-out" 
+        <div
+          className="bg-blue-600 h-2.5 rounded-full transition-all duration-300 ease-out"
           style={{ width: `${percentage}%` }}
         />
       </div>
@@ -91,18 +91,18 @@ interface LoadingOverlayProps {
   children?: React.ReactNode;
 }
 
-export function LoadingOverlay({ 
-  isVisible, 
-  message = 'Loading...', 
+export function LoadingOverlay({
+  isVisible,
+  message = 'Loading...',
   progress,
-  children 
+  children,
 }: LoadingOverlayProps) {
   if (!isVisible) return <>{children}</>;
 
   return (
     <div className="relative">
       {children}
-      <div 
+      <div
         className="absolute inset-0 flex items-center justify-center z-10 bg-white bg-opacity-90 rounded-lg"
         role="status"
         aria-live="polite"
@@ -112,10 +112,10 @@ export function LoadingOverlay({
           <LoadingSpinner message={message} size="lg" />
           {typeof progress === 'number' && (
             <div className="mt-4 w-full">
-              <ProgressBar 
-                progress={progress} 
-                label="Progress" 
-                className="max-w-sm mx-auto" 
+              <ProgressBar
+                progress={progress}
+                label="Progress"
+                className="max-w-sm mx-auto"
               />
             </div>
           )}

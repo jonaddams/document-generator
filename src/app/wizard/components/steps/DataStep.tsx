@@ -12,7 +12,9 @@ export default function DataStep() {
   const editorContainerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [jsonError, setJsonError] = useState<string | null>(null);
-  const [previewMode, setPreviewMode] = useState<'interactive' | 'simple'>('interactive');
+  const [previewMode, setPreviewMode] = useState<'interactive' | 'simple'>(
+    'interactive'
+  );
   const [uploadedJsonFile, setUploadedJsonFile] = useState<File | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -29,7 +31,9 @@ export default function DataStep() {
 
     // Clean up any existing editor first
     if (state.dataEditor) {
-      console.log('🧹 Cleaning up existing data editor before initializing new one');
+      console.log(
+        '🧹 Cleaning up existing data editor before initializing new one'
+      );
       try {
         state.dataEditor.toTextArea();
       } catch (error) {
@@ -43,8 +47,10 @@ export default function DataStep() {
     let attempts = 0;
     const maxAttempts = 20;
     while (!editorContainerRef.current && attempts < maxAttempts) {
-      console.log(`🔄 Waiting for data editor container ref (attempt ${attempts + 1}/${maxAttempts})...`);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      console.log(
+        `🔄 Waiting for data editor container ref (attempt ${attempts + 1}/${maxAttempts})...`
+      );
+      await new Promise((resolve) => setTimeout(resolve, 100));
       attempts++;
     }
 
@@ -55,21 +61,29 @@ export default function DataStep() {
 
     // Validate DOM connection and dimensions
     if (!editorContainerRef.current.isConnected) {
-      console.warn('❌ Data editor container ref element is not connected to DOM');
+      console.warn(
+        '❌ Data editor container ref element is not connected to DOM'
+      );
       return;
     }
 
     const rect = editorContainerRef.current.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) {
-      console.warn('❌ Data editor container ref element has zero dimensions:', rect);
-      await new Promise(resolve => setTimeout(resolve, 200));
+      console.warn(
+        '❌ Data editor container ref element has zero dimensions:',
+        rect
+      );
+      await new Promise((resolve) => setTimeout(resolve, 200));
       const newRect = editorContainerRef.current.getBoundingClientRect();
       if (newRect.width === 0 || newRect.height === 0) {
-        console.warn('❌ Data editor container ref element still has zero dimensions after waiting:', newRect);
+        console.warn(
+          '❌ Data editor container ref element still has zero dimensions after waiting:',
+          newRect
+        );
         return;
       }
     }
-    
+
     if (!state.template) {
       console.warn('❌ No template selected');
       return;
@@ -77,7 +91,7 @@ export default function DataStep() {
 
     isInitializing.current = true;
     setIsLoading(true);
-    
+
     try {
       // Always fetch the template JSON data for the current template
       console.log('📄 Fetching template data for:', state.template);
@@ -90,19 +104,19 @@ export default function DataStep() {
         console.error('❌ Error fetching template data:', fetchError);
         // Use default data structure if fetch fails
         dataJson = {
-          config: { 
-            delimiter: { 
-              start: '{{', 
-              end: '}}' 
-            } 
+          config: {
+            delimiter: {
+              start: '{{',
+              end: '}}',
+            },
           },
           model: {
             companyName: 'Acme Corporation',
             invoiceNumber: 'INV-001',
             date: '2024-01-15',
             customerName: 'John Doe',
-            amount: '$1,250.00'
-          }
+            amount: '$1,250.00',
+          },
         };
         dispatch({ type: 'SET_DATA_JSON', payload: dataJson });
       }
@@ -114,12 +128,12 @@ export default function DataStep() {
       }
 
       console.log('🖊️ Creating CodeMirror data editor...');
-      
+
       const textarea = document.createElement('textarea');
       textarea.value = JSON.stringify(dataJson, null, 2);
-      
+
       const container = editorContainerRef.current;
-      
+
       // Only clear if there's no active CodeMirror editor
       if (!state.dataEditor) {
         while (container.firstChild) {
@@ -131,7 +145,7 @@ export default function DataStep() {
           }
         }
       }
-      
+
       container.appendChild(textarea);
       console.log('📝 Textarea added to container');
 
@@ -167,7 +181,13 @@ export default function DataStep() {
       console.log('✅ Data editor ready');
     } catch (error) {
       console.error('❌ Error initializing data editor:', error);
-      dispatch({ type: 'SET_ERROR', payload: error instanceof Error ? error.message : 'Data editor initialization failed' });
+      dispatch({
+        type: 'SET_ERROR',
+        payload:
+          error instanceof Error
+            ? error.message
+            : 'Data editor initialization failed',
+      });
     } finally {
       setIsLoading(false);
       isInitializing.current = false;
@@ -176,8 +196,13 @@ export default function DataStep() {
 
   // Effect to handle template changes and editor initialization
   useEffect(() => {
-    console.log('📍 DataStep useEffect triggered with template:', state.template, 'editor exists:', !!state.dataEditor);
-    
+    console.log(
+      '📍 DataStep useEffect triggered with template:',
+      state.template,
+      'editor exists:',
+      !!state.dataEditor
+    );
+
     // Only initialize if we have a template and no existing editor
     if (state.template && !state.dataEditor && !isInitializing.current) {
       console.log('🎆 Initializing data editor for template:', state.template);
@@ -186,10 +211,10 @@ export default function DataStep() {
       console.log('🚫 Not initializing data editor:', {
         hasTemplate: !!state.template,
         hasEditor: !!state.dataEditor,
-        isInitializing: isInitializing.current
+        isInitializing: isInitializing.current,
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.template, dispatch, initializeDataEditor]); // Only depend on template and initialization function, intentionally not including state.dataEditor to avoid infinite loop
 
   // Separate effect to handle cleanup when template changes
@@ -204,7 +229,7 @@ export default function DataStep() {
         }
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.template]); // Clean up when template changes, intentionally not including state.dataEditor to avoid infinite loop
 
   // Effect to handle component unmount cleanup
@@ -219,9 +244,8 @@ export default function DataStep() {
         }
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only run on unmount, intentionally not including state.dataEditor
-
 
   const handleNext = () => {
     if (state.dataEditor) {
@@ -264,22 +288,26 @@ export default function DataStep() {
   };
 
   // JSON file upload functionality
-  const isCustomTemplate = state.template === 'custom' && state.customTemplateBinary;
+  const isCustomTemplate =
+    state.template === 'custom' && state.customTemplateBinary;
 
   // JSON file validation helper
   const validateJsonFile = (file: File): string | null => {
     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-    
+
     // Check file size
     if (file.size > MAX_FILE_SIZE) {
       return 'File size must be less than 5MB';
     }
-    
+
     // Check file type
-    if (file.type !== 'application/json' && !file.name.toLowerCase().endsWith('.json')) {
+    if (
+      file.type !== 'application/json' &&
+      !file.name.toLowerCase().endsWith('.json')
+    ) {
       return 'Please select a valid JSON file';
     }
-    
+
     return null;
   };
 
@@ -301,40 +329,51 @@ export default function DataStep() {
   };
 
   // Handle JSON file selection
-  const handleJsonFileSelect = useCallback(async (file: File) => {
-    setUploadError(null);
-    
-    const validationError = validateJsonFile(file);
-    if (validationError) {
-      setUploadError(validationError);
-      return;
-    }
+  const handleJsonFileSelect = useCallback(
+    async (file: File) => {
+      setUploadError(null);
 
-    try {
-      const jsonData = await readJsonFile(file);
-      
-      // Update the CodeMirror editor with the uploaded JSON
-      if (state.dataEditor) {
-        state.dataEditor.setValue(JSON.stringify(jsonData, null, 2));
-        dispatch({ type: 'SET_DATA_JSON', payload: jsonData as TemplateData });
+      const validationError = validateJsonFile(file);
+      if (validationError) {
+        setUploadError(validationError);
+        return;
       }
-      
-      setUploadedJsonFile(file);
-      setJsonError(null);
-      console.log('🎯 DataStep: JSON file uploaded successfully:', file.name);
-    } catch (error) {
-      console.error('Error reading JSON file:', error);
-      setUploadError('Failed to parse JSON file. Please check the file format.');
-    }
-  }, [dispatch, state.dataEditor]);
+
+      try {
+        const jsonData = await readJsonFile(file);
+
+        // Update the CodeMirror editor with the uploaded JSON
+        if (state.dataEditor) {
+          state.dataEditor.setValue(JSON.stringify(jsonData, null, 2));
+          dispatch({
+            type: 'SET_DATA_JSON',
+            payload: jsonData as TemplateData,
+          });
+        }
+
+        setUploadedJsonFile(file);
+        setJsonError(null);
+        console.log('🎯 DataStep: JSON file uploaded successfully:', file.name);
+      } catch (error) {
+        console.error('Error reading JSON file:', error);
+        setUploadError(
+          'Failed to parse JSON file. Please check the file format.'
+        );
+      }
+    },
+    [dispatch, state.dataEditor]
+  );
 
   // Handle JSON file input change
-  const handleJsonFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      handleJsonFileSelect(file);
-    }
-  }, [handleJsonFileSelect]);
+  const handleJsonFileChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (file) {
+        handleJsonFileSelect(file);
+      }
+    },
+    [handleJsonFileSelect]
+  );
 
   // Handle JSON file drag and drop
   const handleJsonDragOver = useCallback((event: React.DragEvent) => {
@@ -347,15 +386,18 @@ export default function DataStep() {
     setIsDragOver(false);
   }, []);
 
-  const handleJsonDrop = useCallback((event: React.DragEvent) => {
-    event.preventDefault();
-    setIsDragOver(false);
-    
-    const files = event.dataTransfer.files;
-    if (files.length > 0) {
-      handleJsonFileSelect(files[0]);
-    }
-  }, [handleJsonFileSelect]);
+  const handleJsonDrop = useCallback(
+    (event: React.DragEvent) => {
+      event.preventDefault();
+      setIsDragOver(false);
+
+      const files = event.dataTransfer.files;
+      if (files.length > 0) {
+        handleJsonFileSelect(files[0]);
+      }
+    },
+    [handleJsonFileSelect]
+  );
 
   // Handle click to upload JSON
   const handleJsonUploadClick = useCallback(() => {
@@ -374,25 +416,26 @@ export default function DataStep() {
   }
 
   // Transform JSON to human-readable hierarchical display using improved logic
-  const DataPreview = ({ 
-    data, 
-    level = 0, 
-    keyName = '', 
-    options = { indentSize: 16, maxArrayPreview: 3, autoExpandLevels: 2 } 
-  }: { 
-    data: unknown; 
-    level?: number; 
-    keyName?: string; 
+  const DataPreview = ({
+    data,
+    level = 0,
+    keyName = '',
+    options = { indentSize: 16, maxArrayPreview: 3, autoExpandLevels: 2 },
+  }: {
+    data: unknown;
+    level?: number;
+    keyName?: string;
     options?: TransformOptions;
   }) => {
     const [expandedStates, setExpandedStates] = useState<TransformState>({});
     const nodeId = `${level}-${keyName}`;
-    const isExpanded = expandedStates[nodeId] ?? (level < (options.autoExpandLevels || 2));
+    const isExpanded =
+      expandedStates[nodeId] ?? level < (options.autoExpandLevels || 2);
 
     const toggleExpansion = () => {
-      setExpandedStates(prev => ({
+      setExpandedStates((prev) => ({
         ...prev,
-        [nodeId]: !isExpanded
+        [nodeId]: !isExpanded,
       }));
     };
 
@@ -401,7 +444,7 @@ export default function DataStep() {
       return str
         .replace(/_/g, ' ')
         .replace(/([A-Z])/g, ' $1')
-        .replace(/\b\w/g, l => l.toUpperCase())
+        .replace(/\b\w/g, (l) => l.toUpperCase())
         .trim();
     };
 
@@ -409,24 +452,32 @@ export default function DataStep() {
     const getSmartPreview = (value: unknown): string => {
       if (Array.isArray(value)) {
         if (value.length === 0) return 'empty';
-        
+
         // Get preview of array items
-        const previews = value.slice(0, options.maxArrayPreview || 3).map(item => {
-          if (typeof item === 'string' || typeof item === 'number') {
-            return String(item);
-          }
-          if (typeof item === 'object' && item !== null) {
-            // Look for a representative field
-            const displayFields = ['name', 'title', 'label', 'text', 'description'];
-            for (const field of displayFields) {
-              const itemObj = item as Record<string, unknown>;
-              if (itemObj[field]) return String(itemObj[field]);
+        const previews = value
+          .slice(0, options.maxArrayPreview || 3)
+          .map((item) => {
+            if (typeof item === 'string' || typeof item === 'number') {
+              return String(item);
             }
-            return 'object';
-          }
-          return typeof item;
-        });
-        
+            if (typeof item === 'object' && item !== null) {
+              // Look for a representative field
+              const displayFields = [
+                'name',
+                'title',
+                'label',
+                'text',
+                'description',
+              ];
+              for (const field of displayFields) {
+                const itemObj = item as Record<string, unknown>;
+                if (itemObj[field]) return String(itemObj[field]);
+              }
+              return 'object';
+            }
+            return typeof item;
+          });
+
         const remaining = value.length - (options.maxArrayPreview || 3);
         const suffix = remaining > 0 ? ` +${remaining} more` : '';
         return `${previews.join(', ')}${suffix}`;
@@ -435,14 +486,14 @@ export default function DataStep() {
       if (typeof value === 'object' && value !== null) {
         const keys = Object.keys(value as Record<string, unknown>);
         if (keys.length === 0) return 'empty';
-        
+
         // Try to find a representative value
         const displayFields = ['name', 'title', 'label', 'text', 'description'];
         for (const field of displayFields) {
           const valueObj = value as Record<string, unknown>;
           if (valueObj[field]) return String(valueObj[field]);
         }
-        
+
         return `${keys.length} field${keys.length !== 1 ? 's' : ''}`;
       }
 
@@ -455,8 +506,13 @@ export default function DataStep() {
     if (data === null || data === undefined) {
       if (!keyName) return null;
       return (
-        <div style={{ marginLeft: `${indent}px` }} className="text-sm py-0.5 flex items-center">
-          <span className="text-gray-400 mr-2 w-4 text-center inline-block">○</span>
+        <div
+          style={{ marginLeft: `${indent}px` }}
+          className="text-sm py-0.5 flex items-center"
+        >
+          <span className="text-gray-400 mr-2 w-4 text-center inline-block">
+            ○
+          </span>
           <span className="text-gray-700">{toTitleCase(keyName)}:</span>
           <span className="text-red-500 ml-2 italic font-medium">null</span>
         </div>
@@ -464,10 +520,19 @@ export default function DataStep() {
     }
 
     // Handle primitive values
-    if (typeof data === 'string' || typeof data === 'number' || typeof data === 'boolean') {
+    if (
+      typeof data === 'string' ||
+      typeof data === 'number' ||
+      typeof data === 'boolean'
+    ) {
       return (
-        <div style={{ marginLeft: `${indent}px` }} className="text-sm py-0.5 flex items-center">
-          <span className="text-blue-500 mr-2 w-4 text-center inline-block">●</span>
+        <div
+          style={{ marginLeft: `${indent}px` }}
+          className="text-sm py-0.5 flex items-center"
+        >
+          <span className="text-blue-500 mr-2 w-4 text-center inline-block">
+            ●
+          </span>
           {keyName && (
             <>
               <span className="text-gray-700">{toTitleCase(keyName)}:</span>
@@ -484,8 +549,13 @@ export default function DataStep() {
       if (data.length === 0) {
         if (!keyName) return null;
         return (
-          <div style={{ marginLeft: `${indent}px` }} className="text-sm py-0.5 flex items-center">
-            <span className="text-gray-400 mr-2 w-4 text-center inline-block">○</span>
+          <div
+            style={{ marginLeft: `${indent}px` }}
+            className="text-sm py-0.5 flex items-center"
+          >
+            <span className="text-gray-400 mr-2 w-4 text-center inline-block">
+              ○
+            </span>
             <span className="text-gray-700">{toTitleCase(keyName)}:</span>
             <span className="text-gray-400 ml-2 italic">empty</span>
           </div>
@@ -493,11 +563,11 @@ export default function DataStep() {
       }
 
       const preview = getSmartPreview(data);
-      
+
       return (
         <div style={{ marginLeft: `${indent}px` }} className="py-0.5">
           {keyName && (
-            <div 
+            <div
               className="flex items-center cursor-pointer hover:bg-gray-50 rounded py-0.5 transition-colors text-sm"
               onClick={toggleExpansion}
             >
@@ -509,11 +579,11 @@ export default function DataStep() {
             </div>
           )}
           {(isExpanded || !keyName) && (
-            <div className={keyName ? "mt-0.5" : ""}>
+            <div className={keyName ? 'mt-0.5' : ''}>
               {data.map((item, index) => (
-                <DataPreview 
-                  key={index} 
-                  data={item} 
+                <DataPreview
+                  key={index}
+                  data={item}
                   level={keyName ? level + 1 : level}
                   keyName={`[${index}]`}
                   options={options}
@@ -531,8 +601,13 @@ export default function DataStep() {
       if (keys.length === 0) {
         if (!keyName) return null;
         return (
-          <div style={{ marginLeft: `${indent}px` }} className="text-sm py-0.5 flex items-center">
-            <span className="text-gray-400 mr-2 w-4 text-center inline-block">○</span>
+          <div
+            style={{ marginLeft: `${indent}px` }}
+            className="text-sm py-0.5 flex items-center"
+          >
+            <span className="text-gray-400 mr-2 w-4 text-center inline-block">
+              ○
+            </span>
             <span className="text-gray-700">{toTitleCase(keyName)}:</span>
             <span className="text-gray-400 ml-2 italic">empty</span>
           </div>
@@ -541,14 +616,16 @@ export default function DataStep() {
 
       const preview = getSmartPreview(data);
       const dataObj = data as Record<string, unknown>;
-      const hasNestedData = keys.some(key => 
-        Array.isArray(dataObj[key]) || (typeof dataObj[key] === 'object' && dataObj[key] !== null)
+      const hasNestedData = keys.some(
+        (key) =>
+          Array.isArray(dataObj[key]) ||
+          (typeof dataObj[key] === 'object' && dataObj[key] !== null)
       );
 
       return (
         <div style={{ marginLeft: `${indent}px` }} className="py-0.5">
           {keyName && hasNestedData && (
-            <div 
+            <div
               className="flex items-center cursor-pointer hover:bg-gray-50 rounded py-0.5 transition-colors text-sm"
               onClick={toggleExpansion}
             >
@@ -561,17 +638,19 @@ export default function DataStep() {
           )}
           {keyName && !hasNestedData && (
             <div className="flex items-center text-sm py-0.5">
-              <span className="text-blue-500 mr-2 w-4 text-center inline-block">●</span>
+              <span className="text-blue-500 mr-2 w-4 text-center inline-block">
+                ●
+              </span>
               <span className="text-gray-700">{toTitleCase(keyName)}:</span>
               <span className="text-gray-900 ml-2">{preview}</span>
             </div>
           )}
           {(isExpanded || !keyName) && (
-            <div className={keyName ? "mt-0.5" : ""}>
-              {keys.map(key => (
-                <DataPreview 
-                  key={key} 
-                  data={dataObj[key]} 
+            <div className={keyName ? 'mt-0.5' : ''}>
+              {keys.map((key) => (
+                <DataPreview
+                  key={key}
+                  data={dataObj[key]}
                   level={keyName ? level + 1 : level}
                   keyName={key}
                   options={options}
@@ -590,9 +669,7 @@ export default function DataStep() {
     <div className="h-full flex flex-col space-y-6">
       {/* Header */}
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">
-          Add Your Data
-        </h2>
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">Add Your Data</h2>
         <p className="text-lg text-gray-600">
           Provide the data that will populate your document template
         </p>
@@ -603,17 +680,23 @@ export default function DataStep() {
         {/* Editor */}
         <div className="flex flex-col min-h-0">
           <div className="flex items-center justify-between mb-2">
-            <label htmlFor="json-editor" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="json-editor"
+              className="block text-sm font-medium text-gray-700"
+            >
               JSON Data
             </label>
-            <div className="h-6"></div> {/* Spacer to match toggle button height */}
+            <div className="h-6"></div>{' '}
+            {/* Spacer to match toggle button height */}
           </div>
           <div className="relative flex-1 min-h-0">
             {isLoading && (
               <div className="absolute inset-0 flex items-center justify-center z-10 bg-white bg-opacity-75 rounded-lg">
                 <div className="text-center">
                   <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto mb-2"></div>
-                  <p className="text-sm text-gray-600">Loading data editor...</p>
+                  <p className="text-sm text-gray-600">
+                    Loading data editor...
+                  </p>
                 </div>
               </div>
             )}
@@ -625,7 +708,7 @@ export default function DataStep() {
                 </div>
               </div>
             )}
-            <div 
+            <div
               ref={editorContainerRef}
               className="w-full h-full border border-gray-300 rounded-lg overflow-hidden"
               style={{ minHeight: '400px' }}
@@ -635,26 +718,29 @@ export default function DataStep() {
               aria-describedby="json-editor-help json-editor-instructions"
               aria-multiline="true"
             />
-            
+
             {/* Accessibility helper text */}
             <div id="json-editor-help" className="sr-only">
-              JSON editor for template data. Edit the data that will populate your document template. Use proper JSON syntax with config and model properties.
+              JSON editor for template data. Edit the data that will populate
+              your document template. Use proper JSON syntax with config and
+              model properties.
             </div>
             <div id="json-editor-instructions" className="sr-only">
-              This is a code editor. Use Tab to indent, Shift+Tab to unindent. Press Ctrl+A to select all text.
+              This is a code editor. Use Tab to indent, Shift+Tab to unindent.
+              Press Ctrl+A to select all text.
             </div>
           </div>
 
           {/* JSON File Upload for Custom Templates */}
           {isCustomTemplate && (
             <div className="mt-3">
-              <div 
+              <div
                 className={`relative p-4 border-2 border-dashed rounded-lg text-center transition-all duration-200 cursor-pointer ${
-                  isDragOver 
-                    ? 'border-blue-400 bg-blue-50' 
+                  isDragOver
+                    ? 'border-blue-400 bg-blue-50'
                     : uploadedJsonFile
-                    ? 'border-green-500 bg-green-50'
-                    : 'border-gray-300 hover:border-gray-400'
+                      ? 'border-green-500 bg-green-50'
+                      : 'border-gray-300 hover:border-gray-400'
                 }`}
                 onDragOver={handleJsonDragOver}
                 onDragLeave={handleJsonDragLeave}
@@ -682,11 +768,21 @@ export default function DataStep() {
                   aria-label="Upload JSON data file"
                   aria-describedby="json-upload-help"
                 />
-                
-                <svg className={`mx-auto h-8 w-8 mb-2 ${isDragOver ? 'text-blue-500' : uploadedJsonFile ? 'text-green-500' : 'text-gray-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+
+                <svg
+                  className={`mx-auto h-8 w-8 mb-2 ${isDragOver ? 'text-blue-500' : uploadedJsonFile ? 'text-green-500' : 'text-gray-400'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
+                  />
                 </svg>
-                
+
                 {uploadedJsonFile ? (
                   <div>
                     <p className="text-sm text-green-600 font-medium">
@@ -699,10 +795,9 @@ export default function DataStep() {
                 ) : (
                   <div>
                     <p className="text-sm text-gray-600">
-                      {isDragOver 
-                        ? 'Drop your JSON file here' 
-                        : 'Upload JSON data file'
-                      }
+                      {isDragOver
+                        ? 'Drop your JSON file here'
+                        : 'Upload JSON data file'}
                     </p>
                     <p className="text-xs text-gray-500 mt-1">
                       Drag & drop or click to browse
@@ -713,7 +808,9 @@ export default function DataStep() {
 
               {/* JSON upload accessibility help */}
               <div id="json-upload-help" className="sr-only">
-                Upload a JSON file containing template data. The file should contain config and model properties for populating the document template.
+                Upload a JSON file containing template data. The file should
+                contain config and model properties for populating the document
+                template.
               </div>
 
               {/* Upload Error */}
@@ -724,9 +821,7 @@ export default function DataStep() {
           )}
 
           {jsonError && (
-            <p className="mt-2 text-sm text-red-600">
-              {jsonError}
-            </p>
+            <p className="mt-2 text-sm text-red-600">{jsonError}</p>
           )}
         </div>
 
@@ -736,7 +831,11 @@ export default function DataStep() {
             <label className="block text-sm font-medium text-gray-700">
               Data Preview
             </label>
-            <div className="flex rounded-md shadow-sm" role="group" aria-label="Data preview mode selection">
+            <div
+              className="flex rounded-md shadow-sm"
+              role="group"
+              aria-label="Data preview mode selection"
+            >
               <button
                 type="button"
                 onClick={() => setPreviewMode('interactive')}
@@ -765,32 +864,40 @@ export default function DataStep() {
               </button>
             </div>
           </div>
-          
+
           {/* Preview mode help text */}
           <div id="preview-mode-help" className="sr-only">
-            Choose between Interactive mode for collapsible data structure or Simple mode for plain text view of your JSON data.
+            Choose between Interactive mode for collapsible data structure or
+            Simple mode for plain text view of your JSON data.
           </div>
-          
-          <div className="flex-1 p-4 bg-gray-50 border border-gray-300 rounded-lg overflow-auto" style={{ minHeight: '400px' }}>
+
+          <div
+            className="flex-1 p-4 bg-gray-50 border border-gray-300 rounded-lg overflow-auto"
+            style={{ minHeight: '400px' }}
+          >
             {(() => {
               const previewData = getPreviewData();
               if (!previewData) {
                 return (
                   <div className="flex items-center justify-center h-full text-gray-500">
-                    {isLoading ? 'Loading...' : 'Enter valid JSON to see preview'}
+                    {isLoading
+                      ? 'Loading...'
+                      : 'Enter valid JSON to see preview'}
                   </div>
                 );
               }
 
               if (previewMode === 'simple') {
-                const fullData = state.dataEditor ? (() => {
-                  try {
-                    return JSON.parse(state.dataEditor.getValue());
-                  } catch {
-                    return null;
-                  }
-                })() : null;
-                
+                const fullData = state.dataEditor
+                  ? (() => {
+                      try {
+                        return JSON.parse(state.dataEditor.getValue());
+                      } catch {
+                        return null;
+                      }
+                    })()
+                  : null;
+
                 if (!fullData) {
                   return (
                     <div className="flex items-center justify-center h-full text-gray-500">
@@ -817,9 +924,10 @@ export default function DataStep() {
         </div>
       </div>
 
-
       <StepNavigation
-        canProceed={isValidJson() && !!state.dataEditor && !isLoading && !jsonError}
+        canProceed={
+          isValidJson() && !!state.dataEditor && !isLoading && !jsonError
+        }
         onNext={handleNext}
       />
     </div>

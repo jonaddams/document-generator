@@ -1,6 +1,8 @@
 import { TemplateData, TemplateType } from '@/types';
 
-export const fetchTemplateData = async (template: TemplateType): Promise<TemplateData> => {
+export const fetchTemplateData = async (
+  template: TemplateType
+): Promise<TemplateData> => {
   const response = await fetch(`/data/${template}.json`);
   if (!response.ok) {
     throw new Error(`Failed to fetch template data for ${template}`);
@@ -8,7 +10,9 @@ export const fetchTemplateData = async (template: TemplateType): Promise<Templat
   return response.json();
 };
 
-export const fetchTemplateJson = async (template: TemplateType): Promise<unknown> => {
+export const fetchTemplateJson = async (
+  template: TemplateType
+): Promise<unknown> => {
   const response = await fetch(`/templates/${template}.json`);
   if (!response.ok) {
     throw new Error(`Failed to fetch template JSON for ${template}`);
@@ -16,7 +20,10 @@ export const fetchTemplateJson = async (template: TemplateType): Promise<unknown
   return response.json();
 };
 
-export const downloadPdf = (blob: Blob, filename: string = 'document.pdf'): void => {
+export const downloadPdf = (
+  blob: Blob,
+  filename: string = 'document.pdf'
+): void => {
   const url = window.URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -52,6 +59,8 @@ export const validateJsonString = (jsonString: string): boolean => {
   }
 };
 
-export const classNames = (...classes: (string | undefined | null | false)[]): string => {
+export const classNames = (
+  ...classes: (string | undefined | null | false)[]
+): string => {
   return classes.filter(Boolean).join(' ');
 };

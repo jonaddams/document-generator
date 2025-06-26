@@ -8,10 +8,10 @@ interface LiveRegionProps {
   clearDelay?: number;
 }
 
-export default function LiveRegion({ 
-  message, 
-  priority = 'polite', 
-  clearDelay = 3000 
+export default function LiveRegion({
+  message,
+  priority = 'polite',
+  clearDelay = 3000,
 }: LiveRegionProps) {
   const regionRef = useRef<HTMLDivElement>(null);
 
@@ -49,7 +49,7 @@ export function AnnouncementManager({ children }: AnnouncementManagerProps) {
   return (
     <>
       {children}
-      
+
       {/* Global live regions for different priorities */}
       <div
         id="polite-announcer"
@@ -58,7 +58,7 @@ export function AnnouncementManager({ children }: AnnouncementManagerProps) {
         className="sr-only"
         role="status"
       />
-      
+
       <div
         id="assertive-announcer"
         aria-live="assertive"

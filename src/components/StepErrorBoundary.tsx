@@ -19,7 +19,12 @@ interface StepErrorFallbackProps {
   onNavigateBack?: () => void;
 }
 
-function StepErrorFallback({ error, resetError, step, onNavigateBack }: StepErrorFallbackProps) {
+function StepErrorFallback({
+  error,
+  resetError,
+  step,
+  onNavigateBack,
+}: StepErrorFallbackProps) {
   const stepTitles = {
     'template-selection': 'Template Selection',
     'template-editor': 'Template Editor',
@@ -38,31 +43,26 @@ function StepErrorFallback({ error, resetError, step, onNavigateBack }: StepErro
         </div>
         <div className="nutri-card-content">
           <div className="mb-4">
-            <p className="text-red-600 mb-2">
-              {error.message}
-            </p>
+            <p className="text-red-600 mb-2">{error.message}</p>
             <p className="text-sm text-gray-600">
-              There was an issue with the {stepTitles[step].toLowerCase()}. 
-              You can try again or go back to the previous step.
+              There was an issue with the {stepTitles[step].toLowerCase()}. You
+              can try again or go back to the previous step.
             </p>
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <button 
-              onClick={resetError}
-              className="nutri-button-primary"
-            >
+            <button onClick={resetError} className="nutri-button-primary">
               Try Again
             </button>
             {onNavigateBack && (
-              <button 
+              <button
                 onClick={onNavigateBack}
                 className="nutri-button-secondary"
               >
                 Go Back
               </button>
             )}
-            <button 
+            <button
               onClick={() => window.location.reload()}
               className="nutri-button-secondary"
             >
@@ -83,15 +83,18 @@ function StepErrorFallback({ error, resetError, step, onNavigateBack }: StepErro
                   <strong>Step:</strong> {error.step || step}
                 </div>
                 <div>
-                  <strong>Recoverable:</strong> {error.recoverable ? 'Yes' : 'No'}
+                  <strong>Recoverable:</strong>{' '}
+                  {error.recoverable ? 'Yes' : 'No'}
                 </div>
                 {Boolean(error.details) && (
                   <div>
                     <strong>Details:</strong>
                     <pre className="mt-1 text-gray-600 overflow-auto max-h-32 bg-white p-2 rounded border">
-                      {String(typeof error.details === 'string' 
-                        ? error.details 
-                        : JSON.stringify(error.details, null, 2))}
+                      {String(
+                        typeof error.details === 'string'
+                          ? error.details
+                          : JSON.stringify(error.details, null, 2)
+                      )}
                     </pre>
                   </div>
                 )}
@@ -104,20 +107,26 @@ function StepErrorFallback({ error, resetError, step, onNavigateBack }: StepErro
   );
 }
 
-export default function StepErrorBoundary({ 
-  children, 
-  step, 
-  onReset, 
-  onNavigateBack 
+export default function StepErrorBoundary({
+  children,
+  step,
+  onReset,
+  onNavigateBack,
 }: StepErrorBoundaryProps) {
   const handleReset = () => {
     onReset?.();
   };
 
-  const StepFallback = ({ error, resetError }: { error: AppError; resetError: () => void }) => (
-    <StepErrorFallback 
-      error={error} 
-      resetError={resetError} 
+  const StepFallback = ({
+    error,
+    resetError,
+  }: {
+    error: AppError;
+    resetError: () => void;
+  }) => (
+    <StepErrorFallback
+      error={error}
+      resetError={resetError}
       step={step}
       onNavigateBack={onNavigateBack}
     />

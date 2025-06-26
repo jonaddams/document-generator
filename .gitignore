@@ -8,8 +8,14 @@ yarn.lock
 dist
 .vscode
 .DS_Store
+# Environment variables
 .env
-.env.*
+.env.local
+.env.production
+.env.staging
+!.env.example
+!.env.local.example
+!.env.production.example
 public/web-sdk
 CLAUDE.md
 instructions.md

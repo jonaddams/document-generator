@@ -24,59 +24,72 @@ export function useKeyboardNavigation({
   canGoPrevious = true,
   disabled = false,
 }: KeyboardNavigationOptions) {
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (disabled) return;
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (disabled) return;
 
-    // Don't handle keyboard events when user is typing in inputs
-    const target = event.target as HTMLElement;
-    const isInputElement = target.tagName === 'INPUT' || 
-                          target.tagName === 'TEXTAREA' || 
-                          target.isContentEditable ||
-                          target.closest('.CodeMirror');
+      // Don't handle keyboard events when user is typing in inputs
+      const target = event.target as HTMLElement;
+      const isInputElement =
+        target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.isContentEditable ||
+        target.closest('.CodeMirror');
 
-    if (isInputElement && !['Escape'].includes(event.key)) {
-      return;
-    }
+      if (isInputElement && !['Escape'].includes(event.key)) {
+        return;
+      }
 
-    switch (event.key) {
-      case 'ArrowRight':
-      case 'ArrowDown':
-        if (canGoNext && onNext) {
-          event.preventDefault();
-          onNext();
-        }
-        break;
-      
-      case 'ArrowLeft':
-      case 'ArrowUp':
-        if (canGoPrevious && onPrevious) {
-          event.preventDefault();
-          onPrevious();
-        }
-        break;
-      
-      case 'Escape':
-        if (onEscape) {
-          event.preventDefault();
-          onEscape();
-        }
-        break;
-      
-      case 'Enter':
-        if (onEnter && !event.ctrlKey && !event.metaKey) {
-          event.preventDefault();
-          onEnter();
-        }
-        break;
-      
-      case ' ':
-        if (onSpace) {
-          event.preventDefault();
-          onSpace();
-        }
-        break;
-    }
-  }, [disabled, canGoNext, canGoPrevious, onNext, onPrevious, onEscape, onEnter, onSpace]);
+      switch (event.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+          if (canGoNext && onNext) {
+            event.preventDefault();
+            onNext();
+          }
+          break;
+
+        case 'ArrowLeft':
+        case 'ArrowUp':
+          if (canGoPrevious && onPrevious) {
+            event.preventDefault();
+            onPrevious();
+          }
+          break;
+
+        case 'Escape':
+          if (onEscape) {
+            event.preventDefault();
+            onEscape();
+          }
+          break;
+
+        case 'Enter':
+          if (onEnter && !event.ctrlKey && !event.metaKey) {
+            event.preventDefault();
+            onEnter();
+          }
+          break;
+
+        case ' ':
+          if (onSpace) {
+            event.preventDefault();
+            onSpace();
+          }
+          break;
+      }
+    },
+    [
+      disabled,
+      canGoNext,
+      canGoPrevious,
+      onNext,
+      onPrevious,
+      onEscape,
+      onEnter,
+      onSpace,
+    ]
+  );
 
   useEffect(() => {
     if (disabled) return;
@@ -107,13 +120,16 @@ export function useStepNavigation({
   canGoNext = true,
   canGoPrevious = true,
 }: StepNavigationOptions) {
-  const stepOrder = useMemo<StepType[]>(() => [
-    'template-selection',
-    'template-editor',
-    'data-editor',
-    'docx-editor',
-    'pdf-viewer'
-  ], []);
+  const stepOrder = useMemo<StepType[]>(
+    () => [
+      'template-selection',
+      'template-editor',
+      'data-editor',
+      'docx-editor',
+      'pdf-viewer',
+    ],
+    []
+  );
 
   const currentIndex = stepOrder.indexOf(currentStep);
   const isFirstStep = currentIndex === 0;
@@ -127,7 +143,14 @@ export function useStepNavigation({
         onNavigateToStep(stepOrder[currentIndex + 1]);
       }
     }
-  }, [currentIndex, isLastStep, canGoNext, onNext, onNavigateToStep, stepOrder]);
+  }, [
+    currentIndex,
+    isLastStep,
+    canGoNext,
+    onNext,
+    onNavigateToStep,
+    stepOrder,
+  ]);
 
   const navigatePrevious = useCallback(() => {
     if (!isFirstStep && canGoPrevious) {
@@ -137,7 +160,14 @@ export function useStepNavigation({
         onNavigateToStep(stepOrder[currentIndex - 1]);
       }
     }
-  }, [currentIndex, isFirstStep, canGoPrevious, onPrevious, onNavigateToStep, stepOrder]);
+  }, [
+    currentIndex,
+    isFirstStep,
+    canGoPrevious,
+    onPrevious,
+    onNavigateToStep,
+    stepOrder,
+  ]);
 
   useKeyboardNavigation({
     onNext: navigateNext,

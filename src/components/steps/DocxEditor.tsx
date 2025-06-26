@@ -13,10 +13,10 @@ interface DocxEditorProps {
   navigateToStep: (step: 'data-editor' | 'pdf-viewer') => Promise<void>;
 }
 
-export default function DocxEditor({ 
-  appState, 
-  updateAppState, 
-  navigateToStep 
+export default function DocxEditor({
+  appState,
+  updateAppState,
+  navigateToStep,
 }: DocxEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -32,7 +32,7 @@ export default function DocxEditor({
       hasDocxDocument: !!appState.docxDocument,
       hasDocxEditor: !!appState.docxEditor,
       windowPSPDFKit: !!window.PSPDFKit,
-      isInitialized
+      isInitialized,
     });
 
     if (isInitialized) {
@@ -44,8 +44,10 @@ export default function DocxEditor({
     let attempts = 0;
     const maxAttempts = 20;
     while (!editorRef.current && attempts < maxAttempts) {
-      console.log(`🔄 Waiting for DOCX editor ref (attempt ${attempts + 1}/${maxAttempts})...`);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      console.log(
+        `🔄 Waiting for DOCX editor ref (attempt ${attempts + 1}/${maxAttempts})...`
+      );
+      await new Promise((resolve) => setTimeout(resolve, 100));
       attempts++;
     }
 
@@ -65,19 +67,22 @@ export default function DocxEditor({
     if (rect.width === 0 || rect.height === 0) {
       console.warn('❌ DOCX editor ref element has zero dimensions:', rect);
       // Wait a bit more for layout to complete
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
       const newRect = editorRef.current.getBoundingClientRect();
       if (newRect.width === 0 || newRect.height === 0) {
-        console.warn('❌ DOCX editor ref element still has zero dimensions after waiting:', newRect);
+        console.warn(
+          '❌ DOCX editor ref element still has zero dimensions after waiting:',
+          newRect
+        );
         return;
       }
     }
-    
+
     if (!appState.templateDocument) {
       console.warn('❌ No template document available');
       return;
     }
-    
+
     if (!appState.dataJson) {
       console.warn('❌ No data JSON available');
       return;
@@ -88,15 +93,15 @@ export default function DocxEditor({
       // Generate DOCX from template and data if not already done
       let docxDocument = appState.docxDocument;
       let docAuthSystem = appState.docAuthSystem;
-      
+
       if (!docxDocument) {
         console.log('📄 Generating DOCX document from template and data...');
-        
+
         if (!docAuthSystem) {
           console.error('❌ Document Authoring system not available');
           throw new Error('Document Authoring system not available');
         }
-        
+
         if (!window.PSPDFKit) {
           console.error('❌ PSPDFKit not available - SDK may not be loaded');
           throw new Error('PSPDFKit not loaded');
@@ -104,20 +109,26 @@ export default function DocxEditor({
 
         console.log('🔧 Exporting template to DOCX buffer...');
         const templateBuffer = await appState.templateDocument.exportDOCX();
-        console.log('✅ Template exported to buffer, size:', templateBuffer.byteLength);
-        
+        console.log(
+          '✅ Template exported to buffer, size:',
+          templateBuffer.byteLength
+        );
+
         console.log('🔧 Populating template with data...');
         console.log('Data to populate:', appState.dataJson);
         const docxBuffer = await window.PSPDFKit.populateDocumentTemplate(
           { document: templateBuffer },
           appState.dataJson
         );
-        console.log('✅ Template populated, result size:', docxBuffer.byteLength);
-        
+        console.log(
+          '✅ Template populated, result size:',
+          docxBuffer.byteLength
+        );
+
         console.log('🔧 Importing populated DOCX into Document Authoring...');
         docxDocument = await docAuthSystem.importDOCX(docxBuffer);
         console.log('✅ DOCX document imported:', docxDocument);
-        
+
         updateAppState({ docxDocument });
       } else {
         console.log('✅ DOCX document already exists');
@@ -125,14 +136,14 @@ export default function DocxEditor({
 
       // Initialize editor
       console.log('🖊️ Creating Document Authoring editor for DOCX...');
-      
+
       // Clear any existing content in the container
       const container = editorRef.current;
       if (!container) {
         console.warn('❌ Container became null during initialization');
         return;
       }
-      
+
       while (container.firstChild) {
         const child = container.firstChild;
         if (child.parentNode === container) {
@@ -142,36 +153,39 @@ export default function DocxEditor({
           break;
         }
       }
-      
-      console.log('📝 Container cleared, creating DOCX editor with dimensions:', {
-        width: container.getBoundingClientRect().width,
-        height: container.getBoundingClientRect().height
-      });
-      
+
+      console.log(
+        '📝 Container cleared, creating DOCX editor with dimensions:',
+        {
+          width: container.getBoundingClientRect().width,
+          height: container.getBoundingClientRect().height,
+        }
+      );
+
       // Ensure container is still valid before creating editor
       if (!container.isConnected) {
         console.warn('❌ Container lost DOM connection before editor creation');
         return;
       }
-      
+
       // Add a stable ID to the container for the SDK
       if (!container.id) {
         container.id = `docx-editor-${Date.now()}`;
       }
-      
+
       // Ensure container is properly styled and stable for the SDK
       container.style.position = 'relative';
       container.style.overflow = 'hidden';
-      
+
       // Wait a frame to ensure DOM is completely settled
-      await new Promise(resolve => requestAnimationFrame(resolve));
-      
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+
       // Final validation before SDK call
       if (!container.isConnected || !container.parentElement) {
         console.warn('❌ Container became disconnected before editor creation');
         return;
       }
-      
+
       try {
         const editor = await docAuthSystem!.createEditor(container, {
           document: docxDocument!,
@@ -183,19 +197,25 @@ export default function DocxEditor({
         console.error('❌ Document Authoring SDK error:', sdkError);
         // Try to recover by retrying after a short delay
         console.log('🔄 Retrying SDK initialization after delay...');
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
         // Re-validate container is still available
         if (container.isConnected && container.parentElement) {
           try {
             const editor = await docAuthSystem!.createEditor(container, {
               document: docxDocument!,
             });
-            console.log('✅ DOCX editor created successfully on retry:', editor);
+            console.log(
+              '✅ DOCX editor created successfully on retry:',
+              editor
+            );
             updateAppState({ docxEditor: editor });
             setIsInitialized(true);
           } catch (retryError) {
-            console.error('❌ Document Authoring SDK retry failed:', retryError);
+            console.error(
+              '❌ Document Authoring SDK retry failed:',
+              retryError
+            );
             throw retryError;
           }
         } else {
@@ -212,29 +232,46 @@ export default function DocxEditor({
           hasTemplateDocument: !!appState.templateDocument,
           hasDataJson: !!appState.dataJson,
           hasDocAuthSystem: !!appState.docAuthSystem,
-          hasDocxDocument: !!appState.docxDocument
-        }
+          hasDocxDocument: !!appState.docxDocument,
+        },
       });
     } finally {
       setIsLoading(false);
       console.log('🏁 DocxEditor initialization finished');
     }
-  }, [appState.templateDocument, appState.dataJson, appState.docAuthSystem, appState.docxDocument, appState.docxEditor, updateAppState, isInitialized]);
+  }, [
+    appState.templateDocument,
+    appState.dataJson,
+    appState.docAuthSystem,
+    appState.docxDocument,
+    appState.docxEditor,
+    updateAppState,
+    isInitialized,
+  ]);
 
   useEffect(() => {
     console.log('🔄 DocxEditor useEffect mounted');
-    
+
     // Only initialize if we have required data and no existing editor
-    if (appState.templateDocument && appState.dataJson && !appState.docxEditor && !isInitialized && !isLoading) {
+    if (
+      appState.templateDocument &&
+      appState.dataJson &&
+      !appState.docxEditor &&
+      !isInitialized &&
+      !isLoading
+    ) {
       // Use setTimeout to ensure DOM is fully rendered
       const timer = setTimeout(() => {
-        console.log('⏰ Timer triggered, checking DOM ref:', !!editorRef.current);
+        console.log(
+          '⏰ Timer triggered, checking DOM ref:',
+          !!editorRef.current
+        );
         if (editorRef.current) {
           console.log('🚀 Starting DOCX editor initialization');
           initializeDocxEditor();
         }
       }, 50);
-      
+
       return () => {
         console.log('🧹 DocxEditor cleanup called');
         clearTimeout(timer);
@@ -251,7 +288,15 @@ export default function DocxEditor({
     return () => {
       console.log('🧹 DocxEditor cleanup called (no-op)');
     };
-  }, [appState.templateDocument, appState.dataJson, appState.docxEditor, initializeDocxEditor, isInitialized, isLoading, updateAppState]);
+  }, [
+    appState.templateDocument,
+    appState.dataJson,
+    appState.docxEditor,
+    initializeDocxEditor,
+    isInitialized,
+    isLoading,
+    updateAppState,
+  ]);
 
   const handleBackToData = useCallback(async () => {
     console.log('⬅️ Navigating back to data editor');
@@ -259,9 +304,9 @@ export default function DocxEditor({
       console.log('🗑️ Destroying DOCX editor before navigation');
       appState.docxEditor.destroy();
     }
-    updateAppState({ 
+    updateAppState({
       docxEditor: null,
-      docxDocument: null 
+      docxDocument: null,
     });
     await navigateToStep('data-editor');
   }, [appState.docxEditor, updateAppState, navigateToStep]);
@@ -276,7 +321,7 @@ export default function DocxEditor({
       <div className="nutri-card-header flex-shrink-0">
         <h2 className="text-2xl font-bold">{STEP_TITLES['docx-editor']}</h2>
       </div>
-      
+
       <div className="nutri-card-content flex-1 min-h-0 p-0">
         {isLoading ? (
           <div className="flex items-center justify-center h-full p-6">
@@ -286,13 +331,10 @@ export default function DocxEditor({
             </div>
           </div>
         ) : (
-          <div 
-            ref={editorRef}
-            className="nutri-editor h-full m-6"
-          />
+          <div ref={editorRef} className="nutri-editor h-full m-6" />
         )}
       </div>
-      
+
       <div className="nutri-card-footer flex-shrink-0 relative z-10">
         <div className="flex justify-between">
           <button

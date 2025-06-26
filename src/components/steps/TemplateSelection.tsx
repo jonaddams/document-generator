@@ -18,78 +18,91 @@ interface TemplateSelectionProps {
   showWarning?: (message: string, duration?: number) => string;
 }
 
-export default function TemplateSelection({ 
-  appState, 
-  updateAppState, 
+export default function TemplateSelection({
+  appState,
+  updateAppState,
   navigateToStep,
   showError,
-  showWarning 
+  showWarning,
 }: TemplateSelectionProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleTemplateSelect = useCallback(async (template: TemplateType) => {
-    if (template === 'custom' && !selectedFile) {
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      let customTemplateBinary: ArrayBuffer | null = null;
-      
-      if (template === 'custom' && selectedFile) {
-        customTemplateBinary = await readFileAsArrayBuffer(selectedFile);
+  const handleTemplateSelect = useCallback(
+    async (template: TemplateType) => {
+      if (template === 'custom' && !selectedFile) {
+        return;
       }
 
-      updateAppState({
-        template,
-        customTemplateBinary,
-      });
+      setIsLoading(true);
+      try {
+        let customTemplateBinary: ArrayBuffer | null = null;
 
-      await navigateToStep('template-editor');
-    } catch (error) {
-      console.error('Error selecting template:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [selectedFile, updateAppState, navigateToStep]);
+        if (template === 'custom' && selectedFile) {
+          customTemplateBinary = await readFileAsArrayBuffer(selectedFile);
+        }
 
-  const handleFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-    
-    if (!file) {
-      setSelectedFile(null);
-      return;
-    }
-    
-    // File size validation
-    if (file.size > MAX_FILE_SIZE) {
-      showError?.('File size must be less than 10MB');
-      event.target.value = '';
-      setSelectedFile(null);
-      return;
-    }
-    
-    // MIME type validation
-    if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-      setSelectedFile(file);
-    } else {
-      showError?.('Please select a valid DOCX file');
-      event.target.value = '';
-      setSelectedFile(null);
-    }
-  }, [showError]);
+        updateAppState({
+          template,
+          customTemplateBinary,
+        });
+
+        await navigateToStep('template-editor');
+      } catch (error) {
+        console.error('Error selecting template:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [selectedFile, updateAppState, navigateToStep]
+  );
+
+  const handleFileChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+      if (!file) {
+        setSelectedFile(null);
+        return;
+      }
+
+      // File size validation
+      if (file.size > MAX_FILE_SIZE) {
+        showError?.('File size must be less than 10MB');
+        event.target.value = '';
+        setSelectedFile(null);
+        return;
+      }
+
+      // MIME type validation
+      if (
+        file.type ===
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      ) {
+        setSelectedFile(file);
+      } else {
+        showError?.('Please select a valid DOCX file');
+        event.target.value = '';
+        setSelectedFile(null);
+      }
+    },
+    [showError]
+  );
 
   return (
     <div className="nutri-card">
       <div className="nutri-card-header">
-        <h2 className="text-2xl font-bold">{STEP_TITLES['template-selection']}</h2>
+        <h2 className="text-2xl font-bold">
+          {STEP_TITLES['template-selection']}
+        </h2>
       </div>
-      
+
       <div className="nutri-card-content">
         <div className="mb-8">
-          <h3 className="text-lg font-semibold mb-4 text-gray-800">DEMO Templates</h3>
+          <h3 className="text-lg font-semibold mb-4 text-gray-800">
+            DEMO Templates
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {TEMPLATE_OPTIONS.map((option) => (
               <div key={option.id} className="nutri-card">
@@ -126,7 +139,9 @@ export default function TemplateSelection({
         </div>
 
         <div>
-          <h3 className="text-lg font-semibold mb-4 text-gray-800">CUSTOM Template</h3>
+          <h3 className="text-lg font-semibold mb-4 text-gray-800">
+            CUSTOM Template
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="nutri-card">
               <div className="nutri-card-header">

@@ -1,7 +1,12 @@
 'use client';
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { AppError, handleError, getRetryMessage, shouldShowDetails } from '@/lib/errorHandler';
+import {
+  AppError,
+  handleError,
+  getRetryMessage,
+  shouldShowDetails,
+} from '@/lib/errorHandler';
 
 interface Props {
   children: ReactNode;
@@ -18,25 +23,31 @@ export default class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false };
-    
+
     // Handle unhandled promise rejections
     if (typeof window !== 'undefined') {
-      window.addEventListener('unhandledrejection', this.handlePromiseRejection);
+      window.addEventListener(
+        'unhandledrejection',
+        this.handlePromiseRejection
+      );
     }
   }
-  
+
   componentWillUnmount() {
     if (typeof window !== 'undefined') {
-      window.removeEventListener('unhandledrejection', this.handlePromiseRejection);
+      window.removeEventListener(
+        'unhandledrejection',
+        this.handlePromiseRejection
+      );
     }
   }
-  
+
   handlePromiseRejection = (event: PromiseRejectionEvent) => {
     console.error('Unhandled promise rejection:', event.reason);
     const appError = handleError(event.reason, 'Promise rejection');
-    this.setState({ 
-      hasError: true, 
-      error: appError
+    this.setState({
+      hasError: true,
+      error: appError,
     });
     event.preventDefault(); // Prevent default browser error handling
   };
@@ -63,7 +74,12 @@ export default class ErrorBoundary extends Component<Props, State> {
       // Use custom fallback if provided
       if (this.props.fallback) {
         const FallbackComponent = this.props.fallback;
-        return <FallbackComponent error={this.state.error} resetError={this.handleReset} />;
+        return (
+          <FallbackComponent
+            error={this.state.error}
+            resetError={this.handleReset}
+          />
+        );
       }
 
       const retryMessage = getRetryMessage(this.state.error);
@@ -74,18 +90,16 @@ export default class ErrorBoundary extends Component<Props, State> {
           <div className="nutri-card">
             <div className="nutri-card-header">
               <h2 className="text-xl font-semibold text-red-700">
-                {this.state.error.recoverable ? 'Something went wrong' : 'Critical Error'}
+                {this.state.error.recoverable
+                  ? 'Something went wrong'
+                  : 'Critical Error'}
               </h2>
             </div>
             <div className="nutri-card-content">
               <div className="mb-4">
-                <p className="text-red-600 mb-2">
-                  {this.state.error.message}
-                </p>
+                <p className="text-red-600 mb-2">{this.state.error.message}</p>
                 {retryMessage && (
-                  <p className="text-sm text-gray-600">
-                    {retryMessage}
-                  </p>
+                  <p className="text-sm text-gray-600">{retryMessage}</p>
                 )}
               </div>
 
@@ -95,23 +109,25 @@ export default class ErrorBoundary extends Component<Props, State> {
                     Technical Details
                   </summary>
                   <pre className="text-xs text-gray-600 overflow-auto max-h-32">
-                    {String(typeof this.state.error.details === 'string' 
-                      ? this.state.error.details 
-                      : JSON.stringify(this.state.error.details, null, 2))}
+                    {String(
+                      typeof this.state.error.details === 'string'
+                        ? this.state.error.details
+                        : JSON.stringify(this.state.error.details, null, 2)
+                    )}
                   </pre>
                 </details>
               )}
 
               <div className="flex flex-wrap gap-3">
                 {this.state.error.recoverable && (
-                  <button 
+                  <button
                     onClick={this.handleReset}
                     className="nutri-button-primary"
                   >
                     Try Again
                   </button>
                 )}
-                <button 
+                <button
                   onClick={() => window.location.reload()}
                   className="nutri-button-secondary"
                 >

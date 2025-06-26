@@ -12,8 +12,10 @@ export function useFocusManagement() {
 
   // Restore focus to previously focused element
   const restoreFocus = useCallback(() => {
-    if (previouslyFocusedElementRef.current && 
-        document.contains(previouslyFocusedElementRef.current)) {
+    if (
+      previouslyFocusedElementRef.current &&
+      document.contains(previouslyFocusedElementRef.current)
+    ) {
       previouslyFocusedElementRef.current.focus();
     }
   }, []);
@@ -22,7 +24,7 @@ export function useFocusManagement() {
   const focusFirstElement = useCallback((container?: HTMLElement | null) => {
     const containerElement = container || document.body;
     const focusableElements = getFocusableElements(containerElement);
-    
+
     if (focusableElements.length > 0) {
       focusableElements[0].focus();
       return true;
@@ -34,7 +36,7 @@ export function useFocusManagement() {
   const focusLastElement = useCallback((container?: HTMLElement | null) => {
     const containerElement = container || document.body;
     const focusableElements = getFocusableElements(containerElement);
-    
+
     if (focusableElements.length > 0) {
       focusableElements[focusableElements.length - 1].focus();
       return true;
@@ -43,20 +45,25 @@ export function useFocusManagement() {
   }, []);
 
   // Focus an element by selector
-  const focusElement = useCallback((selector: string, container?: HTMLElement | null) => {
-    const containerElement = container || document;
-    const element = containerElement.querySelector(selector) as HTMLElement;
-    
-    if (element && element.focus) {
-      element.focus();
-      return true;
-    }
-    return false;
-  }, []);
+  const focusElement = useCallback(
+    (selector: string, container?: HTMLElement | null) => {
+      const containerElement = container || document;
+      const element = containerElement.querySelector(selector) as HTMLElement;
+
+      if (element && element.focus) {
+        element.focus();
+        return true;
+      }
+      return false;
+    },
+    []
+  );
 
   // Focus a step indicator
   const focusStep = useCallback((stepIndex: number) => {
-    const stepElement = document.querySelector(`[data-step-index="${stepIndex}"]`) as HTMLElement;
+    const stepElement = document.querySelector(
+      `[data-step-index="${stepIndex}"]`
+    ) as HTMLElement;
     if (stepElement) {
       stepElement.focus();
       return true;
@@ -67,7 +74,7 @@ export function useFocusManagement() {
   // Trap focus within a container (useful for modals)
   const trapFocus = useCallback((container: HTMLElement) => {
     const focusableElements = getFocusableElements(container);
-    
+
     if (focusableElements.length === 0) return () => {};
 
     const firstFocusable = focusableElements[0];
@@ -92,7 +99,7 @@ export function useFocusManagement() {
     };
 
     container.addEventListener('keydown', handleKeyDown);
-    
+
     // Focus the first element initially
     firstFocusable.focus();
 
@@ -129,16 +136,20 @@ function getFocusableElements(container: HTMLElement): HTMLElement[] {
     'details summary',
   ].join(', ');
 
-  const elements = Array.from(container.querySelectorAll(focusableSelectors)) as HTMLElement[];
-  
-  return elements.filter(element => {
+  const elements = Array.from(
+    container.querySelectorAll(focusableSelectors)
+  ) as HTMLElement[];
+
+  return elements.filter((element) => {
     // Filter out hidden elements
     const style = getComputedStyle(element);
-    return style.display !== 'none' && 
-           style.visibility !== 'hidden' && 
-           !element.hasAttribute('aria-hidden') &&
-           element.offsetWidth > 0 && 
-           element.offsetHeight > 0;
+    return (
+      style.display !== 'none' &&
+      style.visibility !== 'hidden' &&
+      !element.hasAttribute('aria-hidden') &&
+      element.offsetWidth > 0 &&
+      element.offsetHeight > 0
+    );
   });
 }
 
@@ -146,34 +157,40 @@ function getFocusableElements(container: HTMLElement): HTMLElement[] {
 export function useStepFocus() {
   const { focusFirstElement, focusElement } = useFocusManagement();
 
-  const focusStepContent = useCallback((stepContainer?: HTMLElement | null) => {
-    // Try to focus the step heading first, then first focusable element
-    if (!focusElement('h1, h2, h3', stepContainer)) {
-      focusFirstElement(stepContainer);
-    }
-  }, [focusElement, focusFirstElement]);
+  const focusStepContent = useCallback(
+    (stepContainer?: HTMLElement | null) => {
+      // Try to focus the step heading first, then first focusable element
+      if (!focusElement('h1, h2, h3', stepContainer)) {
+        focusFirstElement(stepContainer);
+      }
+    },
+    [focusElement, focusFirstElement]
+  );
 
-  const announceStepChange = useCallback((stepTitle: string, stepNumber: number, totalSteps: number) => {
-    // Create a live region announcement for screen readers
-    const announcement = `Step ${stepNumber} of ${totalSteps}: ${stepTitle}`;
-    
-    // Find or create the announcement container
-    let announcer = document.getElementById('step-announcer');
-    if (!announcer) {
-      announcer = document.createElement('div');
-      announcer.id = 'step-announcer';
-      announcer.setAttribute('aria-live', 'polite');
-      announcer.setAttribute('aria-atomic', 'true');
-      announcer.className = 'sr-only';
-      document.body.appendChild(announcer);
-    }
-    
-    // Clear and set the announcement
-    announcer.textContent = '';
-    setTimeout(() => {
-      announcer!.textContent = announcement;
-    }, 100);
-  }, []);
+  const announceStepChange = useCallback(
+    (stepTitle: string, stepNumber: number, totalSteps: number) => {
+      // Create a live region announcement for screen readers
+      const announcement = `Step ${stepNumber} of ${totalSteps}: ${stepTitle}`;
+
+      // Find or create the announcement container
+      let announcer = document.getElementById('step-announcer');
+      if (!announcer) {
+        announcer = document.createElement('div');
+        announcer.id = 'step-announcer';
+        announcer.setAttribute('aria-live', 'polite');
+        announcer.setAttribute('aria-atomic', 'true');
+        announcer.className = 'sr-only';
+        document.body.appendChild(announcer);
+      }
+
+      // Clear and set the announcement
+      announcer.textContent = '';
+      setTimeout(() => {
+        announcer!.textContent = announcement;
+      }, 100);
+    },
+    []
+  );
 
   return {
     focusStepContent,
