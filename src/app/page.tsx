@@ -1,64 +1,68 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { WizardProvider } from './wizard/context/WizardContext';
-import WizardLayout from './wizard/components/WizardLayout';
-import StepIndicator from './wizard/components/StepIndicator';
-import StepContent from './wizard/components/StepContent';
+import { useEffect } from "react";
+import StepContent from "./wizard/components/step-content";
+import StepIndicator from "./wizard/components/step-indicator";
+import WizardLayout from "./wizard/components/wizard-layout";
+import { WizardProvider } from "./wizard/context/wizard-context";
 
 export default function HomePage(): JSX.Element {
   // Simplified global error handler for SDK IntersectionObserver errors
   useEffect(() => {
-    const handleSDKError = (event: ErrorEvent): boolean | void => {
-      const filename = event.filename || '';
-      const message = event.message || '';
-      const stack = event.error?.stack || '';
+    const handleSDKError = (event: ErrorEvent): boolean | undefined => {
+      const filename = event.filename || "";
+      const message = event.message || "";
+      const stack = event.error?.stack || "";
 
       // Handle SDK errors more aggressively
       if (
-        filename.includes('docauth-impl') ||
-        filename.includes('document-authoring.cdn.nutrient.io') ||
-        stack.includes('docauth-impl') ||
-        stack.includes('document-authoring.cdn.nutrient.io') ||
-        message.includes('IntersectionObserver')
+        filename.includes("docauth-impl") ||
+        filename.includes("document-authoring.cdn.nutrient.io") ||
+        stack.includes("docauth-impl") ||
+        stack.includes("document-authoring.cdn.nutrient.io") ||
+        message.includes("IntersectionObserver")
       ) {
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation();
         return false;
       }
+      return true;
     };
 
     // Simplified promise rejection handler
-    const handleSDKRejection = (event: PromiseRejectionEvent): boolean | void => {
-      const stack = event.reason?.stack || '';
+    const handleSDKRejection = (
+      event: PromiseRejectionEvent,
+    ): boolean | undefined => {
+      const stack = event.reason?.stack || "";
 
       if (
-        stack.includes('docauth-impl') ||
-        stack.includes('document-authoring.cdn.nutrient.io')
+        stack.includes("docauth-impl") ||
+        stack.includes("document-authoring.cdn.nutrient.io")
       ) {
-        console.warn('🛡️ SDK promise rejection suppressed');
+        console.warn("🛡️ SDK promise rejection suppressed");
         event.preventDefault();
         return false;
       }
+      return true;
     };
 
     // Override console.error only for SDK errors to completely suppress them
     const originalConsoleError = console.error;
     console.error = (...args: unknown[]) => {
-      const message = args.join(' ');
+      const message = args.join(" ");
       const errorArg = args.find(
         (arg): arg is Error =>
           arg instanceof Error ||
-          (typeof arg === 'object' && arg !== null && 'stack' in arg)
+          (typeof arg === "object" && arg !== null && "stack" in arg),
       );
-      const stack = errorArg?.stack || '';
+      const stack = errorArg?.stack || "";
 
       // Suppress SDK errors completely
       if (
-        message.includes('docauth-impl') ||
-        stack.includes('docauth-impl') ||
-        stack.includes('document-authoring.cdn.nutrient.io')
+        message.includes("docauth-impl") ||
+        stack.includes("docauth-impl") ||
+        stack.includes("document-authoring.cdn.nutrient.io")
       ) {
         return; // Completely silent
       }
@@ -72,15 +76,15 @@ export default function HomePage(): JSX.Element {
       window.IntersectionObserver = class extends OriginalIntersectionObserver {
         constructor(
           callback: IntersectionObserverCallback,
-          options?: IntersectionObserverInit
+          options?: IntersectionObserverInit,
         ) {
           const safeCallback: IntersectionObserverCallback = (
             entries,
-            observer
+            observer,
           ) => {
             try {
               callback(entries, observer);
-            } catch (error) {
+            } catch (_error) {
               // Completely silent - no logging at all
               return;
             }
@@ -91,12 +95,12 @@ export default function HomePage(): JSX.Element {
     }
 
     // Minimal event handlers only
-    window.addEventListener('error', handleSDKError);
-    window.addEventListener('unhandledrejection', handleSDKRejection);
+    window.addEventListener("error", handleSDKError);
+    window.addEventListener("unhandledrejection", handleSDKRejection);
 
     return () => {
-      window.removeEventListener('error', handleSDKError);
-      window.removeEventListener('unhandledrejection', handleSDKRejection);
+      window.removeEventListener("error", handleSDKError);
+      window.removeEventListener("unhandledrejection", handleSDKRejection);
       // Restore original IntersectionObserver
       if (OriginalIntersectionObserver) {
         window.IntersectionObserver = OriginalIntersectionObserver;

@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
-import React, { useEffect } from 'react';
-import { classNames } from '@/lib/utils';
+import type React from "react";
+import { useEffect } from "react";
+import { classNames } from "@/lib/utils";
 
-export type ToastType = 'success' | 'error' | 'warning' | 'info';
+export type ToastType = "success" | "error" | "warning" | "info";
 
 export interface Toast {
   id: string;
@@ -18,10 +19,10 @@ interface ToastProps {
 }
 
 const toastStyles = {
-  success: 'bg-green-50 border-green-200 text-green-800',
-  error: 'bg-red-50 border-red-200 text-red-800',
-  warning: 'bg-yellow-50 border-yellow-200 text-yellow-800',
-  info: 'bg-blue-50 border-blue-200 text-blue-800',
+  success: "bg-green-50 border-green-200 text-green-800",
+  error: "bg-red-50 border-red-200 text-red-800",
+  warning: "bg-yellow-50 border-yellow-200 text-yellow-800",
+  info: "bg-blue-50 border-blue-200 text-blue-800",
 };
 
 const toastIcons = {
@@ -63,7 +64,10 @@ const toastIcons = {
   ),
 };
 
-export function ToastComponent({ toast, onClose }: ToastProps): React.JSX.Element {
+export function ToastComponent({
+  toast,
+  onClose,
+}: ToastProps): React.JSX.Element {
   useEffect(() => {
     if (toast.duration !== 0) {
       const timer = setTimeout(() => {
@@ -78,11 +82,11 @@ export function ToastComponent({ toast, onClose }: ToastProps): React.JSX.Elemen
   return (
     <div
       className={classNames(
-        'relative flex items-start p-4 border rounded-lg shadow-lg transition-all duration-300 ease-in-out',
-        toastStyles[toast.type]
+        "relative flex items-start p-4 border rounded-lg shadow-lg transition-all duration-300 ease-in-out",
+        toastStyles[toast.type],
       )}
       role="alert"
-      aria-live={toast.type === 'error' ? 'assertive' : 'polite'}
+      aria-live={toast.type === "error" ? "assertive" : "polite"}
     >
       <div className="flex-shrink-0 mr-3">{toastIcons[toast.type]}</div>
 
@@ -91,6 +95,7 @@ export function ToastComponent({ toast, onClose }: ToastProps): React.JSX.Elemen
       </div>
 
       <button
+        type="button"
         onClick={() => onClose(toast.id)}
         className="ml-3 flex-shrink-0 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 rounded"
         aria-label="Close notification"
@@ -112,17 +117,16 @@ interface ToastContainerProps {
   onClose: (id: string) => void;
 }
 
-export function ToastContainer({ toasts, onClose }: ToastContainerProps): React.JSX.Element | null {
+export function ToastContainer({
+  toasts,
+  onClose,
+}: ToastContainerProps): React.JSX.Element | null {
   if (toasts.length === 0) {
     return null;
   }
 
   return (
-    <div
-      className="fixed top-4 right-4 z-50 space-y-3"
-      aria-live="polite"
-      aria-label="Notifications"
-    >
+    <div className="fixed top-4 right-4 z-50 space-y-3" aria-live="polite">
       {toasts.map((toast) => (
         <ToastComponent key={toast.id} toast={toast} onClose={onClose} />
       ))}

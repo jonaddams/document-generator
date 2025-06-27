@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import React, { useState, useCallback } from 'react';
-import Image from 'next/image';
-import { AppState, TemplateType } from '@/types';
-import { TEMPLATE_OPTIONS, STEP_TITLES } from '@/lib/constants';
-import { readFileAsArrayBuffer } from '@/lib/utils';
+import Image from "next/image";
+import type React from "react";
+import { useCallback, useState } from "react";
+import { STEP_TITLES, TEMPLATE_OPTIONS } from "@/lib/constants";
+import { readFileAsArrayBuffer } from "@/lib/utils";
+import type { AppState, TemplateType } from "@/types";
 
 interface TemplateSelectionProps {
   isActive: boolean;
@@ -12,25 +13,25 @@ interface TemplateSelectionProps {
   onPrevious: () => void;
   appState: AppState;
   updateAppState: (updates: Partial<AppState>) => void;
-  navigateToStep: (step: 'template-editor') => Promise<void>;
+  navigateToStep: (step: "template-editor") => Promise<void>;
   showError?: (message: string, duration?: number) => string;
   showSuccess?: (message: string, duration?: number) => string;
   showWarning?: (message: string, duration?: number) => string;
 }
 
 export default function TemplateSelection({
-  appState,
+  appState: _appState,
   updateAppState,
   navigateToStep,
   showError,
-  showWarning,
+  showWarning: _showWarning,
 }: TemplateSelectionProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleTemplateSelect = useCallback(
     async (template: TemplateType) => {
-      if (template === 'custom' && !selectedFile) {
+      if (template === "custom" && !selectedFile) {
         return;
       }
 
@@ -38,7 +39,7 @@ export default function TemplateSelection({
       try {
         let customTemplateBinary: ArrayBuffer | null = null;
 
-        if (template === 'custom' && selectedFile) {
+        if (template === "custom" && selectedFile) {
           customTemplateBinary = await readFileAsArrayBuffer(selectedFile);
         }
 
@@ -47,14 +48,14 @@ export default function TemplateSelection({
           customTemplateBinary,
         });
 
-        await navigateToStep('template-editor');
+        await navigateToStep("template-editor");
       } catch (error) {
-        console.error('Error selecting template:', error);
+        console.error("Error selecting template:", error);
       } finally {
         setIsLoading(false);
       }
     },
-    [selectedFile, updateAppState, navigateToStep]
+    [selectedFile, updateAppState, navigateToStep],
   );
 
   const handleFileChange = useCallback(
@@ -69,8 +70,8 @@ export default function TemplateSelection({
 
       // File size validation
       if (file.size > MAX_FILE_SIZE) {
-        showError?.('File size must be less than 10MB');
-        event.target.value = '';
+        showError?.("File size must be less than 10MB");
+        event.target.value = "";
         setSelectedFile(null);
         return;
       }
@@ -78,23 +79,23 @@ export default function TemplateSelection({
       // MIME type validation
       if (
         file.type ===
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
       ) {
         setSelectedFile(file);
       } else {
-        showError?.('Please select a valid DOCX file');
-        event.target.value = '';
+        showError?.("Please select a valid DOCX file");
+        event.target.value = "";
         setSelectedFile(null);
       }
     },
-    [showError]
+    [showError],
   );
 
   return (
     <div className="nutri-card">
       <div className="nutri-card-header">
         <h2 className="text-2xl font-bold">
-          {STEP_TITLES['template-selection']}
+          {STEP_TITLES["template-selection"]}
         </h2>
       </div>
 
@@ -125,11 +126,12 @@ export default function TemplateSelection({
                 <div className="nutri-card-footer">
                   <div className="text-right">
                     <button
+                      type="button"
                       onClick={() => handleTemplateSelect(option.id)}
                       disabled={isLoading}
                       className="nutri-button-primary disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {isLoading ? 'Loading...' : 'Edit Template →'}
+                      {isLoading ? "Loading..." : "Edit Template →"}
                     </button>
                   </div>
                 </div>
@@ -168,11 +170,12 @@ export default function TemplateSelection({
               <div className="nutri-card-footer">
                 <div className="text-right">
                   <button
-                    onClick={() => handleTemplateSelect('custom')}
+                    type="button"
+                    onClick={() => handleTemplateSelect("custom")}
                     disabled={!selectedFile || isLoading}
                     className="nutri-button-primary disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {isLoading ? 'Loading...' : 'Upload & Edit Template →'}
+                    {isLoading ? "Loading..." : "Upload & Edit Template →"}
                   </button>
                 </div>
               </div>

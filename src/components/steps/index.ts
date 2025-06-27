@@ -1,5 +1,5 @@
-export { default as TemplateSelection } from './TemplateSelection';
-export { default as TemplateEditor } from './TemplateEditor';
-export { default as DataEditor } from './DataEditor';
-export { default as DocxEditor } from './DocxEditor';
-export { default as PdfViewer } from './PdfViewer';
+export { default as DataEditor } from "./data-editor";
+export { default as DocxEditor } from "./docx-editor";
+export { default as PdfViewer } from "./pdf-viewer";
+export { default as TemplateEditor } from "./template-editor";
+export { default as TemplateSelection } from "./template-selection";

@@ -16,25 +16,25 @@
     "postinstall": "echo 'Copying Web SDK files...' && shx mkdir -p ./public/web-sdk && shx cp -R ./node_modules/pspdfkit/dist/* ./public/web-sdk/"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.1.10",
+    "@tailwindcss/postcss": "^4.1.11",
     "next": "^15.3.4",
     "pspdfkit": "^2024.8.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
-    "@types/node": "^24.0.3",
+    "@types/node": "^24.0.6",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@typescript-eslint/eslint-plugin": "^8.34.1",
-    "@typescript-eslint/parser": "^8.34.1",
+    "@typescript-eslint/eslint-plugin": "^8.35.0",
+    "@typescript-eslint/parser": "^8.35.0",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.29.0",
     "eslint-config-next": "^15.3.4",
     "postcss": "^8.5.6",
-    "prettier": "^3.5.3",
+    "prettier": "^3.6.2",
     "shx": "^0.4.0",
-    "tailwindcss": "^4.1.10",
+    "tailwindcss": "^4.1.11",
     "typescript": "^5.8.3"
   }
 }

@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import React from 'react';
+import type React from "react";
 
 interface LoadingSpinnerProps {
   message?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
   className?: string;
 }
 
 export default function LoadingSpinner({
-  message = 'Loading...',
-  size = 'md',
-  className = '',
+  message = "Loading...",
+  size = "md",
+  className = "",
 }: LoadingSpinnerProps) {
   const sizeClasses = {
-    sm: 'h-4 w-4',
-    md: 'h-8 w-8',
-    lg: 'h-12 w-12',
+    sm: "h-4 w-4",
+    md: "h-8 w-8",
+    lg: "h-12 w-12",
   };
 
   return (
@@ -48,7 +48,7 @@ export function ProgressBar({
   progress,
   label,
   showPercentage = true,
-  className = '',
+  className = "",
 }: ProgressBarProps) {
   const percentage = Math.round(Math.max(0, Math.min(100, progress)));
 
@@ -56,7 +56,12 @@ export function ProgressBar({
     <div className={`w-full ${className}`}>
       {label && (
         <div className="flex justify-between items-center mb-1">
-          <label className="text-sm font-medium text-gray-700">{label}</label>
+          <span
+            className="text-sm font-medium text-gray-700"
+            id={`progress-label-${Math.random().toString(36).substr(2, 9)}`}
+          >
+            {label}
+          </span>
           {showPercentage && (
             <span className="text-sm text-gray-500">{percentage}%</span>
           )}
@@ -68,7 +73,7 @@ export function ProgressBar({
         aria-valuenow={percentage}
         aria-valuemin={0}
         aria-valuemax={100}
-        aria-label={label || 'Progress'}
+        aria-label={label || "Progress"}
       >
         <div
           className="bg-blue-600 h-2.5 rounded-full transition-all duration-300 ease-out"
@@ -93,7 +98,7 @@ interface LoadingOverlayProps {
 
 export function LoadingOverlay({
   isVisible,
-  message = 'Loading...',
+  message = "Loading...",
   progress,
   children,
 }: LoadingOverlayProps) {
@@ -110,7 +115,7 @@ export function LoadingOverlay({
       >
         <div className="text-center max-w-xs">
           <LoadingSpinner message={message} size="lg" />
-          {typeof progress === 'number' && (
+          {typeof progress === "number" && (
             <div className="mt-4 w-full">
               <ProgressBar
                 progress={progress}

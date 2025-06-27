@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from "react";
 
 interface KeyboardShortcutsProps {
   currentStep: string;
@@ -28,13 +28,13 @@ export default function KeyboardShortcuts({
   // Listen for ? key to show help
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === '?' && !event.ctrlKey && !event.metaKey) {
+      if (event.key === "?" && !event.ctrlKey && !event.metaKey) {
         const target = event.target as HTMLElement;
         const isInputElement =
-          target.tagName === 'INPUT' ||
-          target.tagName === 'TEXTAREA' ||
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
           target.isContentEditable ||
-          target.closest('.CodeMirror');
+          target.closest(".CodeMirror");
 
         if (!isInputElement) {
           event.preventDefault();
@@ -42,13 +42,13 @@ export default function KeyboardShortcuts({
         }
       }
 
-      if (event.key === 'Escape' && showHelp) {
+      if (event.key === "Escape" && showHelp) {
         setShowHelp(false);
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [showHelp]);
 
   if (!isVisible) return null;
@@ -58,6 +58,7 @@ export default function KeyboardShortcuts({
       {/* Help trigger */}
       <div className="fixed bottom-4 right-4 z-40">
         <button
+          type="button"
           onClick={() => setShowHelp(!showHelp)}
           className="bg-gray-800 text-white p-2 rounded-full shadow-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           aria-label="Show keyboard shortcuts"
@@ -83,6 +84,7 @@ export default function KeyboardShortcuts({
                   Keyboard Shortcuts
                 </h3>
                 <button
+                  type="button"
                   onClick={() => setShowHelp(false)}
                   className="text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
                   aria-label="Close keyboard shortcuts"
@@ -149,9 +151,9 @@ export default function KeyboardShortcuts({
                     Current Status
                   </h4>
                   <div className="space-y-1 text-xs text-gray-600">
-                    <div>Step: {currentStep.replace('-', ' ')}</div>
-                    <div>Can go next: {canGoNext ? 'Yes' : 'No'}</div>
-                    <div>Can go back: {canGoPrevious ? 'Yes' : 'No'}</div>
+                    <div>Step: {currentStep.replace("-", " ")}</div>
+                    <div>Can go next: {canGoNext ? "Yes" : "No"}</div>
+                    <div>Can go back: {canGoPrevious ? "Yes" : "No"}</div>
                   </div>
                 </div>
               </div>

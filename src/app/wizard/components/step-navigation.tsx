@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useWizard } from '../context/WizardContext';
+import { useWizard } from "../context/wizard-context";
 
 interface StepNavigationProps {
   canProceed?: boolean;
@@ -15,8 +15,8 @@ export default function StepNavigation({
   canProceed = true,
   onNext,
   onPrevious,
-  nextLabel = 'Next',
-  previousLabel = 'Previous',
+  nextLabel = "Next",
+  previousLabel = "Previous",
   isLastStep = false,
 }: StepNavigationProps) {
   const { state, nextStep, prevStep } = useWizard();
@@ -45,6 +45,7 @@ export default function StepNavigation({
       <div>
         {!isFirstStep && (
           <button
+            type="button"
             onClick={handlePrevious}
             className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors cursor-pointer"
           >
@@ -54,6 +55,7 @@ export default function StepNavigation({
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
+              <title>Previous step</title>
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -75,15 +77,16 @@ export default function StepNavigation({
         {/* Next/Finish Button */}
         {!isAtLastStep && (
           <button
+            type="button"
             onClick={handleNext}
             disabled={!canProceed}
             className={`inline-flex items-center px-6 py-2 shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors ${
               canProceed
-                ? 'text-white bg-indigo-600 hover:bg-indigo-700 cursor-pointer'
-                : 'text-gray-400 bg-gray-200 cursor-not-allowed'
+                ? "text-white bg-indigo-600 hover:bg-indigo-700 cursor-pointer"
+                : "text-gray-400 bg-gray-200 cursor-not-allowed"
             }`}
           >
-            {isLastStep ? 'Finish' : nextLabel}
+            {isLastStep ? "Finish" : nextLabel}
             {!isLastStep && (
               <svg
                 className="ml-2 h-4 w-4"
@@ -91,6 +94,7 @@ export default function StepNavigation({
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
+                <title>Next step</title>
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"

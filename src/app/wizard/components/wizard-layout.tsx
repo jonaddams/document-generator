@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { ReactNode } from 'react';
-import { useWizard } from '../context/WizardContext';
+import type { ReactNode } from "react";
+import { useWizard } from "../context/wizard-context";
 
 interface WizardLayoutProps {
   children: ReactNode;
