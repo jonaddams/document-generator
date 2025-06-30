@@ -1,5 +1,7 @@
 # Nutrient Document Generator - Next.js
 
+🌐 **[Live Demo](https://nutrient-document-generator-demo.vercel.app/)**
+
 ## Overview
 
 This is a modern, production-ready document generation application built with Next.js 14+ and TypeScript that demonstrates the combined power of Nutrient's Document Authoring and Web SDKs. The application provides a 5-step wizard interface that guides users from template selection to final PDF generation, with full editing capabilities at every stage.
