@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { downloadPdf } from "@/lib/utils";
-import { useWizard } from "../../context/wizard-context";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { downloadPdf } from '@/lib/utils';
+import { useWizard } from '../../context/wizard-context';
 
 export default function DownloadStep() {
   const { state, dispatch } = useWizard();
@@ -11,43 +11,43 @@ export default function DownloadStep() {
   const [isDownloading, setIsDownloading] = useState(false);
 
   const initializePdfViewer = useCallback(async () => {
-    console.log("🔄 DownloadStep: Initializing PDF viewer");
+    console.log('🔄 DownloadStep: Initializing PDF viewer');
 
     if (!viewerRef.current || !state.pdfDocument) {
-      console.warn("❌ No viewer ref or PDF document available");
+      console.warn('❌ No viewer ref or PDF document available');
       return;
     }
 
     // Validate PDF document before proceeding
     try {
       if (!(state.pdfDocument instanceof ArrayBuffer)) {
-        throw new Error("PDF document is not an ArrayBuffer");
+        throw new Error('PDF document is not an ArrayBuffer');
       }
 
       if (state.pdfDocument.byteLength === 0) {
-        throw new Error("PDF document is empty");
+        throw new Error('PDF document is empty');
       }
 
       // Check if ArrayBuffer is detached
       try {
         new Uint8Array(state.pdfDocument);
       } catch (_detachedError) {
-        throw new Error("PDF document ArrayBuffer is detached");
+        throw new Error('PDF document ArrayBuffer is detached');
       }
 
-      console.log("✅ PDF document validation passed:", {
+      console.log('✅ PDF document validation passed:', {
         type: state.pdfDocument.constructor.name,
         size: state.pdfDocument.byteLength,
         isDetached: false,
       });
     } catch (validationError) {
-      console.error("❌ PDF document validation failed:", validationError);
+      console.error('❌ PDF document validation failed:', validationError);
       const errorMessage =
         validationError instanceof Error
           ? validationError.message
-          : "Unknown validation error";
+          : 'Unknown validation error';
       dispatch({
-        type: "SET_ERROR",
+        type: 'SET_ERROR',
         payload: `PDF document validation failed: ${errorMessage}`,
       });
       return;
@@ -67,38 +67,38 @@ export default function DownloadStep() {
         try {
           // Try multiple cleanup approaches
           await window.PSPDFKit.unload(container);
-          console.log("🧹 Unloaded PSPDFKit from container element");
+          console.log('🧹 Unloaded PSPDFKit from container element');
         } catch (_unloadError1) {
           try {
             // Try unloading by CSS selector - but skip since PSPDFKit.unload expects element
-            console.log("ℹ️ Skipping CSS selector unload (not supported)");
+            console.log('ℹ️ Skipping CSS selector unload (not supported)');
           } catch (_unloadError2) {
             console.log(
-              "ℹ️ No existing PSPDFKit instance to unload (this is normal)",
+              'ℹ️ No existing PSPDFKit instance to unload (this is normal)'
             );
           }
         }
 
         // Clear the viewer from state regardless
-        dispatch({ type: "SET_PDF_VIEWER", payload: null });
+        dispatch({ type: 'SET_PDF_VIEWER', payload: null });
 
         // Wait a bit for cleanup to complete
         await new Promise((resolve) => setTimeout(resolve, 200));
       }
 
       // Ensure container has proper styling and dimensions (fix positioning warnings)
-      container.style.width = "100%";
-      container.style.height = "500px";
-      container.style.position = "relative";
-      container.style.overflow = "hidden";
+      container.style.width = '100%';
+      container.style.height = '500px';
+      container.style.position = 'relative';
+      container.style.overflow = 'hidden';
 
       // Give the container a static ID for NutrientViewer
-      const containerId = "pdf-viewer-container";
+      const containerId = 'pdf-viewer-container';
       container.id = containerId;
 
       // Validate container before loading
       if (!container.isConnected) {
-        throw new Error("Container is not connected to DOM");
+        throw new Error('Container is not connected to DOM');
       }
 
       // Wait for DOM to process the ID update
@@ -110,7 +110,7 @@ export default function DownloadStep() {
         throw new Error(`Container with ID ${containerId} not found in DOM`);
       }
 
-      console.log("🔍 Container validation:", {
+      console.log('🔍 Container validation:', {
         containerId,
         hasId: !!container.id,
         isConnected: container.isConnected,
@@ -120,7 +120,7 @@ export default function DownloadStep() {
 
       // Load the PDF into NutrientViewer with retry logic
       if (window.NutrientViewer) {
-        console.log("📄 Loading PDF into NutrientViewer...");
+        console.log('📄 Loading PDF into NutrientViewer...');
 
         let viewer: any = null;
         let retryCount = 0;
@@ -134,21 +134,21 @@ export default function DownloadStep() {
             const viewerConfig: {
               container: string;
               document: ArrayBuffer;
-              licenseKey?: string;
+              // licenseKey?: string; // Uncomment if you have a license key
             } = {
               container: `#${containerId}`, // Use CSS selector as expected by NutrientViewer
               document: pdfDocumentCopy,
-              licenseKey: process.env.NEXT_PUBLIC_NUTRIENT_LICENSE_KEY,
+              // licenseKey: process.env.NEXT_PUBLIC_NUTRIENT_LICENSE_KEY, // Uncomment if you have a license key
             };
 
             viewer = await window.NutrientViewer.load(viewerConfig);
-            console.log("✅ PDF viewer initialized successfully");
+            console.log('✅ PDF viewer initialized successfully');
             break;
           } catch (loadError) {
             retryCount++;
             console.warn(
               `⚠️ PDF viewer load attempt ${retryCount} failed:`,
-              loadError,
+              loadError
             );
 
             if (retryCount < maxRetries) {
@@ -161,7 +161,7 @@ export default function DownloadStep() {
 
               // Wait before retry
               await new Promise((resolve) =>
-                setTimeout(resolve, 500 * retryCount),
+                setTimeout(resolve, 500 * retryCount)
               );
             } else {
               throw loadError;
@@ -170,22 +170,22 @@ export default function DownloadStep() {
         }
 
         if (viewer) {
-          dispatch({ type: "SET_PDF_VIEWER", payload: viewer });
+          dispatch({ type: 'SET_PDF_VIEWER', payload: viewer });
         } else {
-          throw new Error("Failed to initialize PDF viewer after retries");
+          throw new Error('Failed to initialize PDF viewer after retries');
         }
       } else {
-        console.error("❌ NutrientViewer not available");
-        throw new Error("NutrientViewer not loaded");
+        console.error('❌ NutrientViewer not available');
+        throw new Error('NutrientViewer not loaded');
       }
     } catch (error) {
-      console.error("❌ Error initializing PDF viewer:", error);
+      console.error('❌ Error initializing PDF viewer:', error);
       dispatch({
-        type: "SET_ERROR",
+        type: 'SET_ERROR',
         payload:
           error instanceof Error
             ? error.message
-            : "PDF viewer initialization failed",
+            : 'PDF viewer initialization failed',
       });
     } finally {
       setIsLoading(false);
@@ -210,11 +210,11 @@ export default function DownloadStep() {
     // Cleanup function
     return () => {
       if (currentViewer && window.PSPDFKit && state.pdfViewer) {
-        console.log("🧹 Cleaning up PDF viewer");
+        console.log('🧹 Cleaning up PDF viewer');
         try {
           window.PSPDFKit.unload(currentViewer);
         } catch (error) {
-          console.warn("⚠️ PDF viewer cleanup error:", error);
+          console.warn('⚠️ PDF viewer cleanup error:', error);
         }
       }
     };
@@ -222,19 +222,19 @@ export default function DownloadStep() {
 
   const handleDownloadPdf = useCallback(async () => {
     if (!state.pdfDocument) {
-      console.warn("❌ No PDF document available for download");
+      console.warn('❌ No PDF document available for download');
       return;
     }
 
     setIsDownloading(true);
     try {
-      console.log("💾 Downloading PDF...");
-      const blob = new Blob([state.pdfDocument], { type: "application/pdf" });
-      downloadPdf(blob, "generated-document.pdf");
-      console.log("✅ PDF download initiated");
+      console.log('💾 Downloading PDF...');
+      const blob = new Blob([state.pdfDocument], { type: 'application/pdf' });
+      downloadPdf(blob, 'generated-document.pdf');
+      console.log('✅ PDF download initiated');
     } catch (error) {
-      console.error("❌ Error downloading PDF:", error);
-      dispatch({ type: "SET_ERROR", payload: "Failed to download PDF" });
+      console.error('❌ Error downloading PDF:', error);
+      dispatch({ type: 'SET_ERROR', payload: 'Failed to download PDF' });
     } finally {
       setIsDownloading(false);
     }
@@ -242,33 +242,33 @@ export default function DownloadStep() {
 
   const handleDownloadDocx = useCallback(async () => {
     if (!state.docxDocument) {
-      console.warn("❌ No DOCX document available for download");
+      console.warn('❌ No DOCX document available for download');
       return;
     }
 
     setIsDownloading(true);
     try {
-      console.log("💾 Downloading DOCX...");
+      console.log('💾 Downloading DOCX...');
       const docxBuffer = await state.docxDocument.exportDOCX();
       const blob = new Blob([docxBuffer], {
-        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       });
 
       // Create download link
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
+      const a = document.createElement('a');
       a.href = url;
-      a.download = "generated-document.docx";
-      a.style.display = "none";
+      a.download = 'generated-document.docx';
+      a.style.display = 'none';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
 
-      console.log("✅ DOCX download initiated");
+      console.log('✅ DOCX download initiated');
     } catch (error) {
-      console.error("❌ Error downloading DOCX:", error);
-      dispatch({ type: "SET_ERROR", payload: "Failed to download DOCX" });
+      console.error('❌ Error downloading DOCX:', error);
+      dispatch({ type: 'SET_ERROR', payload: 'Failed to download DOCX' });
     } finally {
       setIsDownloading(false);
     }
@@ -279,12 +279,12 @@ export default function DownloadStep() {
     if (viewerRef.current && window.PSPDFKit) {
       try {
         window.PSPDFKit.unload(viewerRef.current);
-        dispatch({ type: "SET_PDF_VIEWER", payload: null });
+        dispatch({ type: 'SET_PDF_VIEWER', payload: null });
       } catch (error) {
-        console.warn("⚠️ Error cleaning up PDF viewer during reset:", error);
+        console.warn('⚠️ Error cleaning up PDF viewer during reset:', error);
       }
     }
-    dispatch({ type: "RESET_WIZARD" });
+    dispatch({ type: 'RESET_WIZARD' });
   };
 
   return (
@@ -328,9 +328,9 @@ export default function DownloadStep() {
             id="pdf-viewer-container"
             className="w-full h-[500px]"
             style={{
-              minHeight: "500px",
-              position: "relative",
-              overflow: "hidden",
+              minHeight: '500px',
+              position: 'relative',
+              overflow: 'hidden',
             }}
           />
         </div>
@@ -431,7 +431,7 @@ export default function DownloadStep() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         <div className="text-center p-4 bg-white border border-gray-200 rounded-lg">
           <div className="text-2xl font-bold text-indigo-600">
-            {state.template || "N/A"}
+            {state.template || 'N/A'}
           </div>
           <div className="text-sm text-gray-600">Template Used</div>
         </div>
@@ -447,7 +447,7 @@ export default function DownloadStep() {
           <div className="text-2xl font-bold text-indigo-600">
             {state.pdfDocument
               ? `${Math.round(state.pdfDocument.byteLength / 1024)} KB`
-              : "N/A"}
+              : 'N/A'}
           </div>
           <div className="text-sm text-gray-600">PDF Size</div>
         </div>

@@ -1,42 +1,42 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import Image from "next/image";
-import Link from "next/link";
-import Script from "next/script";
-import "@/styles/globals.css";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import Image from 'next/image';
+import Link from 'next/link';
+import Script from 'next/script';
+import '@/styles/globals.css';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "Nutrient Document Generator Demo",
-  description: "A step-by-step document generator using Nutrient SDKs",
-  keywords: ["document", "generator", "PDF", "DOCX", "template", "Nutrient"],
-  authors: [{ name: "Nutrient" }],
-  manifest: "/manifest.json",
+  title: 'Nutrient Document Generator Demo',
+  description: 'A step-by-step document generator using Nutrient SDKs',
+  keywords: ['document', 'generator', 'PDF', 'DOCX', 'template', 'Nutrient'],
+  authors: [{ name: 'Nutrient' }],
+  manifest: '/manifest.json',
   icons: {
-    icon: "/favicon.ico",
-    apple: "/icon-192.png",
+    icon: '/favicon.ico',
+    apple: '/icon-192.png',
   },
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
-    title: "Doc Generator",
+    statusBarStyle: 'default',
+    title: 'Doc Generator',
   },
   openGraph: {
-    title: "Nutrient Document Generator Demo",
-    description: "A step-by-step document generator using Nutrient SDKs",
-    type: "website",
-    locale: "en_US",
+    title: 'Nutrient Document Generator Demo',
+    description: 'A step-by-step document generator using Nutrient SDKs',
+    type: 'website',
+    locale: 'en_US',
   },
   twitter: {
-    card: "summary",
-    title: "Nutrient Document Generator Demo",
-    description: "A step-by-step document generator using Nutrient SDKs",
+    card: 'summary',
+    title: 'Nutrient Document Generator Demo',
+    description: 'A step-by-step document generator using Nutrient SDKs',
   },
 };
 
 export const viewport = {
-  width: "device-width",
+  width: 'device-width',
   initialScale: 1,
 };
 
@@ -128,29 +128,6 @@ export default function RootLayout({
             });
           `}
         </Script>
-
-        <nav className="bg-white shadow-sm border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <Link
-                href="/"
-                className="flex items-center space-x-3 hover:opacity-80 transition-opacity cursor-pointer"
-              >
-                <Image
-                  src="/assets/logo-nutrient-docs.svg"
-                  alt="Nutrient Logo"
-                  width={32}
-                  height={32}
-                  className="h-8 w-auto"
-                  style={{ width: "auto", height: "auto" }}
-                />
-                <h1 className="text-xl font-semibold text-gray-900">
-                  Document Generator Demo
-                </h1>
-              </Link>
-            </div>
-          </div>
-        </nav>
         <main id="main-content" className="main-content">
           {children}
         </main>
